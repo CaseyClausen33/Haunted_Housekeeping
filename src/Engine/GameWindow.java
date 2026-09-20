@@ -21,6 +21,10 @@ public class GameWindow {
 		gameWindow.setLocationRelativeTo(null);
 		gameWindow.setVisible(true);
 		gameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // it'd be nice if this actually worked more than 1/3rd of the time
+		javax.swing.SwingUtilities.invokeLater(() -> {
+			gamePanel.requestFocusInWindow();
+			gamePanel.grabFocus();
+		});
 		gamePanel.setupGame();
 	}
 

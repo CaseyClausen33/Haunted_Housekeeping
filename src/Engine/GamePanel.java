@@ -60,6 +60,10 @@ public class GamePanel extends JPanel {
 	public void setupGame() {
 		setBackground(Colors.CORNFLOWER_BLUE);
 		screenManager.initialize(new Rectangle(getX(), getY(), getWidth(), getHeight()));
+		javax.swing.SwingUtilities.invokeLater(() -> {
+			requestFocusInWindow();
+			grabFocus();
+		});
 	}
 
 	// this starts the timer (the game loop is started here)
