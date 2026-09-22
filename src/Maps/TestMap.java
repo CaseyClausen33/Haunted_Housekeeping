@@ -2,7 +2,7 @@ package Maps;
 
 import EnhancedMapTiles.PushableRock;
 import Level.*;
-import NPCs.Bug;
+import NPCs.Ghost;
 import NPCs.Dinosaur;
 import NPCs.Walrus;
 import Scripts.SimpleTextScript;
@@ -42,9 +42,9 @@ public class TestMap extends Map {
         dinosaur.setInteractScript(new DinoScript());
         npcs.add(dinosaur);
         
-        Bug bug = new Bug(3, getMapTile(7, 12).getLocation().subtractX(20));
-        bug.setInteractScript(new BugScript());
-        npcs.add(bug);
+        Ghost ghost = new Ghost(3, getMapTile(7, 12).getLocation().subtractX(20));
+        ghost.setInteractScript(new GhostScript());
+        npcs.add(ghost);
 
         return npcs;
     }
