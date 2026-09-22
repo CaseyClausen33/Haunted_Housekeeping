@@ -1,9 +1,7 @@
 package Scripts.TestMap;
-
-import java.util.ArrayList;
-
 import Level.Script;
 import ScriptActions.*;
+import java.util.ArrayList;
 
 // script for talking to walrus npc
 // checkout the documentation website for a detailed guide on how this script works
