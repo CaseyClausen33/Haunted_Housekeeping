@@ -37,7 +37,7 @@ public class MenuScreen extends Screen {
         background.setAdjustCamera(false);
         keyPressTimer = 0;
         menuItemSelected = -1;
-        keyLocker.lockKey(Key.SPACE);
+        keyLocker.unlockKey(Key.SPACE);
     }
 
     public void update() {

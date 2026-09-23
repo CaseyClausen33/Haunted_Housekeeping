@@ -5,9 +5,11 @@ import Level.*;
 import NPCs.Ghost;
 import NPCs.Dinosaur;
 import NPCs.Walrus;
+import Scripts.ChangeMapScript;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.*;
 import Tilesets.CommonTileset;
+import Maps.TitleScreenMap;
 
 import java.util.ArrayList;
 
@@ -60,7 +62,7 @@ public class TestMap extends Map {
 
     @Override
     public void loadScripts() {
-        getMapTile(21, 19).setInteractScript(new SimpleTextScript("Cat's house"));
+        getMapTile(17, 19).setInteractScript(new ChangeMapScript(NewMap::new));
 
         getMapTile(7, 26).setInteractScript(new SimpleTextScript("Walrus's house"));
 
