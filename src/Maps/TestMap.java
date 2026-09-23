@@ -10,6 +10,7 @@ import Scripts.SimpleTextScript;
 import Scripts.TestMap.*;
 import Tilesets.CommonTileset;
 import Maps.TitleScreenMap;
+import Scripts.LobbyPuzzleScript; 
 
 import java.util.ArrayList;
 
@@ -64,7 +65,7 @@ public class TestMap extends Map {
     public void loadScripts() {
         getMapTile(17, 19).setInteractScript(new ChangeMapScript(NewMap::new));
 
-        getMapTile(7, 26).setInteractScript(new SimpleTextScript("Walrus's house"));
+        getMapTile(7, 26).setInteractScript(new LobbyPuzzleScript());
 
         getMapTile(20, 4).setInteractScript(new SimpleTextScript("Dino's house"));
 
