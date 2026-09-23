@@ -1,7 +1,7 @@
 package MapEditor;
 
-import javax.swing.*;
 import java.awt.*;
+import javax.swing.*;
 
 public class EditorWindow {
     private JFrame editorWindow;
@@ -20,6 +20,7 @@ public class EditorWindow {
         editorWindow.setJMenuBar(new MenuBar(editorMainPanel.getMapBuilder().getTileBuilder()));
         editorWindow.validate();
         editorMainPanel.getMapBuilder().scrollToMaxY();
+        
     }
 
 }

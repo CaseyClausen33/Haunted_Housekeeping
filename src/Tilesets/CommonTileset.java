@@ -7,7 +7,6 @@ import GameObject.Frame;
 import GameObject.ImageEffect;
 import Level.TileType;
 import Level.Tileset;
-
 import java.util.ArrayList;
 
 // This class represents a "common" tileset of standard tiles defined in the CommonTileset.png file
@@ -217,7 +216,7 @@ public class CommonTileset extends Tileset {
                 .build();
 
         MapTileBuilder houseBodyTile = new MapTileBuilder(houseBodyFrame)
-                .withTileType(TileType.NOT_PASSABLE);
+                .withTileType(TileType.PASSABLE);
 
         mapTiles.add(houseBodyTile);
 

@@ -8,7 +8,6 @@ import NPCs.Walrus;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.*;
 import Tilesets.CommonTileset;
-
 import java.util.ArrayList;
 
 // Represents a test map to be used in a level
