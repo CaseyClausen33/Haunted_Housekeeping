@@ -19,7 +19,7 @@ public class Ghost extends NPC {
     private float speed = 1;
     
     public Ghost(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("ghost4.png"), 48, 48), "WALK_RIGHT");
+        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("ghostspritesheet.png"), 48, 48), "WALK_RIGHT");
     }
 
     // this code makes the ghost npc walk back and forth (left to right)
@@ -57,36 +57,36 @@ public class Ghost extends NPC {
             put("STAND_LEFT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0))
                     .withScale(2)
-                    .withBounds(11, 5, 25, 38)
+                    .withBounds(11, 9, 25, 25)
                     .build()
             });
             put("STAND_RIGHT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0))
                     .withScale(2)
-                    .withBounds(11, 5, 25, 38)
+                    .withBounds(11, 9, 25, 25)
                     .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                     .build()
            });
            put("WALK_LEFT", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
-                        .withBounds(11, 5, 25, 38)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(11, 9, 25, 25)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
-                        .withBounds(11, 5, 25, 38)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(11, 9, 25, 25)
                         .build()
             });
             put("WALK_RIGHT", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
-                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                        .withBounds(11, 5, 25, 38)
+                        .withBounds(11, 9, 25, 25)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
-                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                        .withBounds(11, 5, 25, 38)
+                        .withBounds(11, 9, 25, 25)
                         .build()
             });
         }};

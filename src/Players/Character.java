@@ -10,12 +10,13 @@ import Level.Player;
 
 import java.util.HashMap;
 
-// This is the class for the Cat player character
-// basically just sets some values for physics and then defines animations
+// Player character using a 1-column x 2-row spritesheet (48x48 cells, 1px spacing)
+// Sheet layout: (0,0) = stand pose, (0,1) = walk pose
+// All frames face right; left-facing animations mirror them with FLIP_HORIZONTAL
 public class Character extends Player {
 
     public Character(float x, float y) {
-        super(new SpriteSheet(ImageLoader.load("spritesheet.png"), 99, 99), x, y, "STAND_RIGHT");
+        super(new SpriteSheet(ImageLoader.load("characterspritesheet4.png"), 48, 48), x, y, "STAND_RIGHT");
         walkSpeed = 2.3f;
     }
 
@@ -30,60 +31,45 @@ public class Character extends Player {
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{
+            // Body-only hitbox (excludes the gun barrel): sprite pixels span x=15..35, y=7..41 in each cell.
+            // x=16, width=16 is centered on the cell so it stays correct when flipped.
             put("STAND_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(3)
-                            .withBounds(6, 12, 12, 7)
+                            .withScale(2)
+                            .withBounds(16, 29, 16, 12)
                             .build()
             });
 
             put("STAND_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(3)
+                            .withScale(2)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(6, 12, 12, 7)
+                            .withBounds(16, 29, 16, 12)
                             .build()
             });
 
+            // Only one walk pose exists, so the cycle alternates walk pose <-> stand pose
             put("WALK_RIGHT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
-                            .withScale(3)
-                            .withBounds(6, 12, 12, 7)
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 12)
+                            .withScale(2)
+                            .withBounds(16, 29, 16, 12)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
-                            .withScale(3)
-                            .withBounds(6, 12, 12, 7)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 2), 14)
-                            .withScale(3)
-                            .withBounds(6, 12, 12, 7)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 3), 14)
-                            .withScale(3)
-                            .withBounds(6, 12, 12, 7)
+                    new FrameBuilder(spriteSheet.getSprite(2, 0), 12)
+                            .withScale(2)
+                            .withBounds(16, 29, 16, 12)
                             .build()
             });
 
             put("WALK_LEFT", new Frame[] {
-                    new FrameBuilder(spriteSheet.getSprite(1, 0), 14)
-                            .withScale(3)
+                    new FrameBuilder(spriteSheet.getSprite(1, 0), 12)
+                            .withScale(2)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(6, 12, 12, 7)
+                            .withBounds(16, 29, 16, 12)
                             .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 1), 14)
-                            .withScale(3)
+                    new FrameBuilder(spriteSheet.getSprite(2, 0), 12)
+                            .withScale(2)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(6, 12, 12, 7)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 2), 14)
-                            .withScale(3)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(6, 12, 12, 7)
-                            .build(),
-                    new FrameBuilder(spriteSheet.getSprite(1, 3), 14)
-                            .withScale(3)
-                            .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                            .withBounds(6, 12, 12, 7)
+                            .withBounds(16, 29, 16, 12)
                             .build()
             });
         }};
