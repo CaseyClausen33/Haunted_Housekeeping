@@ -2,7 +2,7 @@ package Maps;
 
 import EnhancedMapTiles.PushableRock;
 import Level.*;
-import NPCs.Bug;
+import NPCs.Ghost;
 import NPCs.Dinosaur;
 import NPCs.Walrus;
 import Scripts.ChangeMapScript;
