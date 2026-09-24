@@ -13,25 +13,25 @@ import Level.Player;
 import Utils.Direction;
 import Utils.Point;
 
-public class Bug extends NPC {
+public class Ghost extends NPC {
     private int totalAmountMoved = 0;
     private Direction direction = Direction.RIGHT;
     private float speed = 1;
     
-    public Bug(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("Bug.png"), 24, 15), "WALK_RIGHT");
+    public Ghost(int id, Point location) {
+        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("ghostspritesheet.png"), 48, 48), "WALK_RIGHT");
     }
 
-    // this code makes the bug npc walk back and forth (left to right)
+    // this code makes the ghost npc walk back and forth (left to right)
     @Override
     public void performAction(Player player) {
-        // if bug has not yet moved 90 pixels in one direction, move bug forward
+        // if ghost has not yet moved 90 pixels in one direction, move ghost forward
         if (totalAmountMoved < 90) {
             float amountMoved = moveXHandleCollision(speed * direction.getVelocity());
             totalAmountMoved += Math.abs(amountMoved);
         }
 
-        // else if bug has already moved 90 pixels in one direction, flip the bug's direction
+        // else if ghost has already moved 90 pixels in one direction, flip the ghost's direction
         else {
             totalAmountMoved = 0;
             if (direction == Direction.LEFT) {
@@ -42,7 +42,7 @@ public class Bug extends NPC {
             }
         }
 
-        // based off of the bugs current walking direction, set its animation to match
+        // based off of the ghosts current walking direction, set its animation to match
         if (direction == Direction.RIGHT) {
             currentAnimationName = "WALK_RIGHT";
         }
@@ -57,36 +57,36 @@ public class Bug extends NPC {
             put("STAND_LEFT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0))
                     .withScale(2)
-                    .withBounds(3, 5, 18, 7)
+                    .withBounds(11, 9, 25, 25)
                     .build()
             });
             put("STAND_RIGHT", new Frame[] {
                 new FrameBuilder(spriteSheet.getSprite(0, 0))
                     .withScale(2)
-                    .withBounds(3, 5, 18, 7)
+                    .withBounds(11, 9, 25, 25)
                     .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                     .build()
            });
            put("WALK_LEFT", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
-                        .withBounds(3, 5, 18, 7)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(11, 9, 25, 25)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 1), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
-                        .withBounds(3, 5, 18, 7)
+                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
+                        .withBounds(11, 9, 25, 25)
                         .build()
             });
             put("WALK_RIGHT", new Frame[] {
-                new FrameBuilder(spriteSheet.getSprite(0, 0), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
-                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                        .withBounds(3, 5, 18, 7)
+                        .withBounds(11, 9, 25, 25)
                         .build(),
-                new FrameBuilder(spriteSheet.getSprite(0, 1), 8)
+                new FrameBuilder(spriteSheet.getSprite(1, 0), 8)
                         .withScale(2)
-                        .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
-                        .withBounds(3, 5, 18, 7)
+                        .withBounds(11, 9, 25, 25)
                         .build()
             });
         }};

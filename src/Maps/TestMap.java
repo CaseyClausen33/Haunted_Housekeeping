@@ -2,9 +2,11 @@ package Maps;
 
 import EnhancedMapTiles.PushableRock;
 import Level.*;
-import NPCs.Bug;
 import NPCs.Dinosaur;
+import NPCs.Ghost;
 import NPCs.Walrus;
+import Scripts.ChangeMapScript;
+import Scripts.LobbyPuzzleScript;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.*;
 import Tilesets.CommonTileset;
@@ -41,9 +43,9 @@ public class TestMap extends Map {
         dinosaur.setInteractScript(new DinoScript());
         npcs.add(dinosaur);
         
-        Bug bug = new Bug(3, getMapTile(7, 12).getLocation().subtractX(20));
-        bug.setInteractScript(new BugScript());
-        npcs.add(bug);
+        Ghost ghost = new Ghost(3, getMapTile(7, 12).getLocation().subtractX(20));
+        ghost.setInteractScript(new GhostScript());
+        npcs.add(ghost);
 
         return npcs;
     }
@@ -59,9 +61,9 @@ public class TestMap extends Map {
 
     @Override
     public void loadScripts() {
-        getMapTile(21, 19).setInteractScript(new SimpleTextScript("Cat's house"));
+        getMapTile(17, 19).setInteractScript(new ChangeMapScript(NewMap::new));
 
-        getMapTile(7, 26).setInteractScript(new SimpleTextScript("Walrus's house"));
+        getMapTile(7, 26).setInteractScript(new LobbyPuzzleScript());
 
         getMapTile(20, 4).setInteractScript(new SimpleTextScript("Dino's house"));
 

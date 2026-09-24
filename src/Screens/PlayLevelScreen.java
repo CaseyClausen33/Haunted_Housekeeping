@@ -6,7 +6,7 @@ import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.*;
 import Maps.*;
-import Players.Cat;
+import Players.Character;
 import Utils.Direction;
 
 // This class is for when the RPG game is actually being played
@@ -36,25 +36,41 @@ public class PlayLevelScreen extends Screen implements GameListener {
         map.setFlagManager(flagManager);
 
         // setup player
-        player = new Cat(map.getPlayerStartPosition().x, map.getPlayerStartPosition().y);
-        player.setMap(map);
+
         playLevelScreenState = PlayLevelScreenState.RUNNING;
         player.setFacingDirection(Direction.LEFT);
 
-        map.setPlayer(player);
+        winScreen = new WinScreen(this);
+    }
+
+    private void loadMap(Map nextMap) {
+        if (nextMap == null) {
+            return;
+        }
+
+        this.map = nextMap;
+        this.map.setFlagManager(flagManager);
+
+        if (player == null) {
+            player = new Character(this.map.getPlayerStartPosition().x, this.map.getPlayerStartPosition().y);
+        } else {
+            player.setX(this.map.getPlayerStartPosition().x);
+            player.setY(this.map.getPlayerStartPosition().y);
+        }
+
+        player.setMap(this.map);
+        this.map.setPlayer(player);
 
         // let pieces of map know which button to listen for as the "interact" button
-        map.getTextbox().setInteractKey(player.getInteractKey());
+        this.map.getTextbox().setInteractKey(player.getInteractKey());
 
         // add this screen as a "game listener" so other areas of the game that don't normally have direct access to it (such as scripts) can "signal" to have it do something
         // this is used in the "onWin" method -- a script signals to this class that the game has been won by calling its "onWin" method
-        map.addListener(this);
+        this.map.addListener(this);
 
         // preloads all scripts ahead of time rather than loading them dynamically
         // both are supported, however preloading is recommended
-        map.preloadScripts();
-
-        winScreen = new WinScreen(this);
+        this.map.preloadScripts();
     }
 
     public void update() {
@@ -76,6 +92,11 @@ public class PlayLevelScreen extends Screen implements GameListener {
     public void onWin() {
         // when this method is called within the game, it signals the game has been "won"
         playLevelScreenState = PlayLevelScreenState.LEVEL_COMPLETED;
+    }
+
+    @Override
+    public void onMapChange(Map nextMap) {
+        loadMap(nextMap);
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
