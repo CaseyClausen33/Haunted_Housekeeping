@@ -7,7 +7,6 @@ import GameObject.Frame;
 import GameObject.ImageEffect;
 import GameObject.SpriteSheet;
 import Level.Player;
-
 import java.util.HashMap;
 
 // Player character using a 1-column x 2-row spritesheet (48x48 cells, 1px spacing)
@@ -35,14 +34,14 @@ public class Character extends Player {
             // x=16, width=16 is centered on the cell so it stays correct when flipped.
             put("STAND_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(2)
+                            .withScale(3)
                             .withBounds(16, 29, 16, 12)
                             .build()
             });
 
             put("STAND_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(2)
+                            .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(16, 29, 16, 12)
                             .build()
@@ -51,23 +50,23 @@ public class Character extends Player {
             // Only one walk pose exists, so the cycle alternates walk pose <-> stand pose
             put("WALK_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(1, 0), 12)
-                            .withScale(2)
+                            .withScale(3)
                             .withBounds(16, 29, 16, 12)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(2, 0), 12)
-                            .withScale(2)
+                            .withScale(3)
                             .withBounds(16, 29, 16, 12)
                             .build()
             });
 
             put("WALK_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(1, 0), 12)
-                            .withScale(2)
+                            .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(16, 29, 16, 12)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(2, 0), 12)
-                            .withScale(2)
+                            .withScale(3)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(16, 29, 16, 12)
                             .build()
