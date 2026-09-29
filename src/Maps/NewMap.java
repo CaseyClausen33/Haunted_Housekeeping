@@ -1,17 +1,8 @@
 package Maps;
 
-import EnhancedMapTiles.PushableRock;
 import Level.*;
-import NPCs.Ghost;
-import NPCs.Dinosaur;
-import NPCs.Walrus;
 import Scripts.ChangeMapScript;
-import Scripts.SimpleTextScript;
-import Scripts.TestMap.*;
 import Tilesets.CommonTileset;
-import Maps.TitleScreenMap;
-
-import java.util.ArrayList;
 
 // Represents a test map to be used in a level
 public class NewMap extends Map {
@@ -23,7 +14,7 @@ public class NewMap extends Map {
 
     @Override
     public void loadScripts() {
-        getMapTile(1, 1).setInteractScript(new ChangeMapScript(TestMap::new));
+        getMapTile(1, 1).setInteractScript(new ChangeMapScript(HotelLobbyMap::new));
 
     }
 }
