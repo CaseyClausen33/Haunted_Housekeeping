@@ -6,7 +6,7 @@ import NPCs.Dinosaur;
 import NPCs.Ghost;
 import NPCs.Walrus;
 import Scripts.ChangeMapScript;
-import Scripts.LobbyPuzzleScript;
+import Scripts.Match2PuzzleScript;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.*;
 import Tilesets.CommonTileset;
@@ -61,9 +61,7 @@ public class TestMap extends Map {
 
     @Override
     public void loadScripts() {
-        getMapTile(17, 19).setInteractScript(new ChangeMapScript(NewMap::new));
-
-        getMapTile(7, 26).setInteractScript(new LobbyPuzzleScript());
+        getMapTile(17, 19).setInteractScript(new Match2PuzzleScript());
 
         getMapTile(20, 4).setInteractScript(new SimpleTextScript("Dino's house"));
 
