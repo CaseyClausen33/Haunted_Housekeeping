@@ -47,6 +47,34 @@ public class HotelTileset extends Tileset {
                 .withTileType(TileType.PASSABLE);
         mapTiles.add(wood3);
 
+
+        // woodWall1
+        Frame woodWall1Frame = new FrameBuilder(getSubImage(1, 0))
+                .withScale(tileScale)
+                .withBounds(0, 0, 128, 128)
+                .build();
+        MapTileBuilder woodWall1 = new MapTileBuilder(woodWall1Frame)
+                .withTileType(TileType.NOT_PASSABLE);
+        mapTiles.add(woodWall1);
+
+        // woodWall2
+        Frame woodWall2Frame = new FrameBuilder(getSubImage(1, 1))
+                .withScale(tileScale)
+                .withBounds(0, 0, 128, 128)
+                .build();
+        MapTileBuilder woodWall2 = new MapTileBuilder(woodWall2Frame)
+                .withTileType(TileType.NOT_PASSABLE);
+        mapTiles.add(woodWall2);
+
+        // woodWall3
+        Frame woodWall3Frame = new FrameBuilder(getSubImage(1, 2))
+                .withScale(tileScale)
+                .withBounds(0, 0, 128, 128)
+                .build();
+        MapTileBuilder woodWall3 = new MapTileBuilder(woodWall3Frame)
+                .withTileType(TileType.NOT_PASSABLE);
+        mapTiles.add(woodWall3);
+
         // stone
         Frame stoneFrame = new FrameBuilder(getSubImage(2, 0))
                 .withScale(tileScale)
@@ -71,8 +99,26 @@ public class HotelTileset extends Tileset {
                 .withBounds(0, 0, 128, 128)
                 .build();
         MapTileBuilder redCarpet = new MapTileBuilder(redCarpetFrame)
-                .withTileType(TileType.NOT_PASSABLE);
+                .withTileType(TileType.PASSABLE);
         mapTiles.add(redCarpet);
+
+        // greenCarpet
+        Frame greenCarpetFrame = new FrameBuilder(getSubImage(0, 5))
+                .withScale(tileScale)
+                .withBounds(0, 0, 128, 128)
+                .build();
+        MapTileBuilder greenCarpet = new MapTileBuilder(greenCarpetFrame)
+                .withTileType(TileType.PASSABLE);
+        mapTiles.add(greenCarpet);
+
+        // blueCarpet
+        Frame blueCarpetFrame = new FrameBuilder(getSubImage(0, 6))
+                .withScale(tileScale)
+                .withBounds(0, 0, 128, 128)
+                .build();
+        MapTileBuilder blueCarpet = new MapTileBuilder(blueCarpetFrame)
+                .withTileType(TileType.PASSABLE);
+        mapTiles.add(blueCarpet);
 
         // door
         Frame doorFrame = new FrameBuilder(getSubImage(3, 0))
