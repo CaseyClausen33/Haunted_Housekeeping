@@ -4,6 +4,7 @@ import Level.Map;
 import Maps.TestMap;
 import Maps.TitleScreenMap;
 import Maps.HotelLobbyMap;
+import Maps.KitchenMap;
 
 import java.util.ArrayList;
 
@@ -13,6 +14,7 @@ public class EditorMaps {
             add("TestMap");
             add("TitleScreen");
             add("HotelLobbyMap");
+            add("KitchenMap");
         }};
     }
 
@@ -24,6 +26,8 @@ public class EditorMaps {
                 return new TitleScreenMap();
             case "HotelLobbyMap":
                 return new HotelLobbyMap();
+            case "KitchenMap":
+                return new KitchenMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }
