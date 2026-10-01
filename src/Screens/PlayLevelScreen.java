@@ -31,7 +31,7 @@ public class PlayLevelScreen extends Screen implements GameListener {
         flagManager.addFlag("hasFoundBall", false);
 
         // define/setup map
-        
+        //map = new TestMap();
         loadMap(new HotelLobbyMap());
         map.setFlagManager(flagManager);
 
