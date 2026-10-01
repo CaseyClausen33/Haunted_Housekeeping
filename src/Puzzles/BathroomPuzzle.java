@@ -291,7 +291,7 @@ public class BathroomPuzzle extends JFrame {
             g2.setColor(new Color(220, 205, 220));
             g2.setFont(new Font("Serif", Font.BOLD, 27));
 
-            String title ="Fix The Pipes";
+            String title ="🛠️ Fix The Pipes 🛠️";
 
             FontMetrics titleMetrics = g2.getFontMetrics();
             int titleX = (getWidth() - titleMetrics.stringWidth(title)) / 2;
