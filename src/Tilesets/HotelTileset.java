@@ -148,14 +148,7 @@ public class HotelTileset extends Tileset {
                 .withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(verticalPillar);
 
-        // regalDoor
-        Frame regalDoorFrame = new FrameBuilder(getSubImage(7, 6))
-                .withScale(tileScale)
-                .withBounds(0, 0, 128, 128)
-                .build();
-        MapTileBuilder regalDoor = new MapTileBuilder(regalDoorFrame)
-                .withTileType(TileType.NOT_PASSABLE);
-        mapTiles.add(regalDoor);
+       
 
         
         return mapTiles;
