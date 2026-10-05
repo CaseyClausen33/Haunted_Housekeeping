@@ -1,11 +1,10 @@
 package Scripts.TestMap;
 
-import java.util.ArrayList;
-
 import Level.Script;
 import ScriptActions.*;
+import java.util.ArrayList;
 
-// script for talking to bug npc
+// script for talking to ghost npc
 // checkout the documentation website for a detailed guide on how this script works
 public class GhostScript extends Script {
 
