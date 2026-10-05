@@ -32,7 +32,7 @@ public class PlayLevelScreen extends Screen implements GameListener {
 
         // define/setup map
         //map = new TestMap();
-        loadMap(new KitchenMap());
+        loadMap(new LibraryMap());
         map.setFlagManager(flagManager);
 
         // setup player

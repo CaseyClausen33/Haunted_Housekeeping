@@ -148,10 +148,49 @@ public class HotelTileset extends Tileset {
                 .withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(verticalPillar);
 
-       
+        boolean[][] definedTiles = new boolean[8][9];
+        definedTiles[0][0] = true;
+        definedTiles[0][1] = true;
+        definedTiles[0][3] = true;
+        definedTiles[0][4] = true;
+        definedTiles[0][5] = true;
+        definedTiles[0][6] = true;
+        definedTiles[1][0] = true;
+        definedTiles[1][1] = true;
+        definedTiles[1][2] = true;
+        definedTiles[1][7] = true;
+        definedTiles[2][0] = true;
+        definedTiles[2][1] = true;
+        definedTiles[3][0] = true;
+        definedTiles[4][5] = true;
+
+        for (int row = 0; row < definedTiles.length; row++) {
+            for (int column = 0; column < definedTiles[row].length; column++) {
+                if (definedTiles[row][column]) {
+                    continue;
+                }
+
+                boolean passable = row == 0
+                        || (row == 2 && column < 4)
+                        || (row == 4 && (column == 4 || column == 6))
+                        || (row == 5 && column == 8)
+                        || (row == 7 && column == 8);
+                addHotelTile(mapTiles, row, column, passable);
+            }
+        }
 
         
         return mapTiles;
 
     }
+
+    private void addHotelTile(ArrayList<MapTileBuilder> mapTiles, int row, int column, boolean passable) {
+        Frame frame = new FrameBuilder(getImage().getSubimage(column * 128, row * 128, 128, 128))
+                .withScale(tileScale)
+                .withBounds(0, 0, 128, 128)
+                .build();
+        TileType tileType = passable ? TileType.PASSABLE : TileType.NOT_PASSABLE;
+        mapTiles.add(new MapTileBuilder(frame).withTileType(tileType));
+    }
+
 }
