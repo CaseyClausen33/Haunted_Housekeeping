@@ -23,8 +23,10 @@ public class BathroomTileset extends Tileset {
 
     @Override
     public ArrayList<MapTileBuilder> defineTiles() {
+
         ArrayList<MapTileBuilder> tiles = new ArrayList<>();
 
+        // 64 tiles: 8 rows × 8 columns
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
 
