@@ -5,6 +5,7 @@ import Maps.TestMap;
 import Maps.TitleScreenMap;
 import Maps.HotelLobbyMap;
 import Maps.KitchenMap;
+import Maps.BathroomMap;
 
 import java.util.ArrayList;
 
@@ -15,8 +16,10 @@ public class EditorMaps {
             add("TitleScreen");
             add("HotelLobbyMap");
             add("KitchenMap");
+            add("BathroomMap");
         }};
     }
+
 
     public static Map getMapByName(String mapName) {
         switch(mapName) {
@@ -28,6 +31,8 @@ public class EditorMaps {
                 return new HotelLobbyMap();
             case "KitchenMap":
                 return new KitchenMap();
+            case "BathroomMap":
+                return new BathroomMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }
