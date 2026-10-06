@@ -10,6 +10,7 @@ import Maps.KitchenMap;
 import Maps.BedroomMap;
 import Maps.BathroomMap;
 import Maps.CleanKitchenMap;
+import Maps.CleanBathroomMap;
 
 import java.util.ArrayList;
 
@@ -25,6 +26,7 @@ public class EditorMaps {
             add("BathroomMap");
             add("LibraryMap");
             add("CleanKitchenMap");
+            add("CleanBathroomMap");
         }};
     }
 
@@ -49,6 +51,8 @@ public class EditorMaps {
                 return new LibraryMap();
             case "CleanKitchenMap":
                 return new CleanKitchenMap();
+            case "CleanBathroomMap":
+                return new CleanBathroomMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }
