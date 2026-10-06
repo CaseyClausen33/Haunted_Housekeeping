@@ -157,6 +157,15 @@ public class HotelTileset extends Tileset {
                 .withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(bed);
 
+        // bookcase
+        Frame bookcaseFrame = new FrameBuilder(getSubImage(4, 2))
+                .withScale(tileScale)
+                .withBounds(0, 0, 128, 128)
+                .build();
+        MapTileBuilder bookcase = new MapTileBuilder(bookcaseFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+        mapTiles.add(bookcase);
+
         return mapTiles;
 
     }
