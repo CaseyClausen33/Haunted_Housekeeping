@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class HotelTileset extends Tileset {
 
     public HotelTileset() {
-        super(ImageLoader.load("HotelTilesetNormalized.png"), 128, 128, 1);
+        super(ImageLoader.load("HotelTileset.png"), 128, 128, 1);
     }
 
     @Override 
@@ -148,9 +148,15 @@ public class HotelTileset extends Tileset {
                 .withTileType(TileType.NOT_PASSABLE);
         mapTiles.add(verticalPillar);
 
-       
+        // bed
+        Frame bedFrame = new FrameBuilder(getSubImage(4, 0))
+                .withScale(tileScale)
+                .withBounds(0, 0, 128, 128)
+                .build();
+        MapTileBuilder bed = new MapTileBuilder(bedFrame)
+                .withTileType(TileType.NOT_PASSABLE);
+        mapTiles.add(bed);
 
-        
         return mapTiles;
 
     }

@@ -28,7 +28,10 @@ public class HotelLobbyMap extends Map {
 
     @Override 
     public void loadScripts() {
-    getMapTile(1, 0).setInteractScript(new ChangeMapScript(NewMap::new));
+    getMapTile(1, 0).setInteractScript(new ChangeMapScript(BedroomMap::new));
+    getMapTile(1, 5).setInteractScript(new ChangeMapScript(NewMap::new));
+    getMapTile(1, 15).setInteractScript(new ChangeMapScript(NewMap::new));
+    getMapTile(11, 10).setInteractScript(new ChangeMapScript(NewMap::new));
     }
     
 }
