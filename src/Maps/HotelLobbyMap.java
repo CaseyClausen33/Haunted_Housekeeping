@@ -25,10 +25,12 @@ public class HotelLobbyMap extends Map {
 
         return npcs;
     }
+    
 
     @Override 
     public void loadScripts() {
     getMapTile(1, 0).setInteractScript(new ChangeMapScript(NewMap::new));
+    getMapTile(11, 10).setInteractScript(new ChangeMapScript(KitchenMap::new));
     }
     
 }

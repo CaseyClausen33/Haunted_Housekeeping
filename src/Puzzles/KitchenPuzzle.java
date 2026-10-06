@@ -9,12 +9,38 @@ import java.util.Random;
 
 public class KitchenPuzzle extends JFrame {
 
+    // Read by KitchenExitScript to decide whether the player can leave the kitchen
+    public static volatile boolean solved = false;
+
+    // True while the puzzle window is open (lets the game script wait for it to close)
+    private static volatile boolean open = false;
+
+    public static boolean isOpen() {
+        return open;
+    }
+
+    // Opens the puzzle window; does nothing if it's already open
+    public static synchronized void launch() {
+        if (open) {
+            return;
+        }
+        open = true;
+        SwingUtilities.invokeLater(() -> new KitchenPuzzle());
+    }
+
     public KitchenPuzzle() {
         setTitle("Kitchen Puzzle");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400, 400);
         setLocationRelativeTo(null);
         setResizable(false);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                open = false;
+            }
+        });
 
         KitchenPanel kitchenPanel = new KitchenPanel();
         add(kitchenPanel);
@@ -107,6 +133,9 @@ class KitchenPanel extends JPanel {
          * Shuffle by pressing random burners.
          * Every press is reversible, so this guarantees the puzzle is solvable.
          * Repeat until the board is not already solved.
+         *
+         * Note: KitchenPuzzle.solved is intentionally NOT reset here, so a
+         * puzzle the player already beat stays beaten.
          */
         do {
             for (int i = 0; i < 20; i++) {
@@ -177,6 +206,7 @@ class KitchenPanel extends JPanel {
         // Check for win
         if (checkWin()) {
             won = true;
+            KitchenPuzzle.solved = true;   // unlocks the kitchen exit
 
             Timer winTimer = new Timer(500, e -> {
                 ((Timer) e.getSource()).stop();
