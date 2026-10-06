@@ -4,6 +4,7 @@ import Level.Map;
 import Maps.TestMap;
 import Maps.TitleScreenMap;
 import Maps.HotelLobbyMap;
+import Maps.LibraryMap;
 import Maps.NewMap;
 import Maps.KitchenMap;
 import Maps.BathroomMap;
@@ -20,6 +21,7 @@ public class EditorMaps {
             add("newMap");
             add("KitchenMap");
             add("BathroomMap");
+            add("LibraryMap");
             add("CleanKitchenMap");
         }};
     }
@@ -39,6 +41,8 @@ public class EditorMaps {
                 return new KitchenMap();
             case "BathroomMap":
                 return new BathroomMap();
+            case "LibraryMap":
+                return new LibraryMap();
             case "CleanKitchenMap":
                 return new CleanKitchenMap();
             default:
