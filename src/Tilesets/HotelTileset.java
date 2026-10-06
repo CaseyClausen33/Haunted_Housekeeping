@@ -160,4 +160,36 @@ public class HotelTileset extends Tileset {
         return mapTiles;
 
     }
+
+    private void addRemainingTiles(ArrayList<MapTileBuilder> mapTiles) {
+        for (int row = 0; row < 8; row++) {
+            for (int column = 0; column < 9; column++) {
+                if (isAlreadyDefined(row, column)) {
+                    continue;
+                }
+
+                Frame frame = new FrameBuilder(getImage().getSubimage(column * 128, row * 128, 128, 128))
+                        .withScale(tileScale)
+                        .withBounds(0, 0, 128, 128)
+                        .build();
+                TileType tileType = isPassableAtlasTile(row, column) ? TileType.PASSABLE : TileType.NOT_PASSABLE;
+                mapTiles.add(new MapTileBuilder(frame).withTileType(tileType));
+            }
+        }
+    }
+
+    private boolean isAlreadyDefined(int row, int column) {
+        return (row == 0 && (column == 0 || column == 1 || column == 3 || (column >= 4 && column <= 6)))
+                || (row == 1 && (column <= 2 || column == 7))
+                || (row == 2 && column <= 1)
+                || (row == 3 && column == 0)
+                || (row == 4 && column == 5);
+    }
+
+    private boolean isPassableAtlasTile(int row, int column) {
+        return row == 0
+                || (row == 2 && column >= 2 && column <= 5)
+                || (row == 4 && (column == 4 || column == 6))
+                || (row == 7 && column == 8);
+    }
 }

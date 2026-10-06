@@ -8,20 +8,20 @@ import Level.TileType;
 import Level.Tileset;
 import java.util.ArrayList;
 
-public class KitchenTileset extends Tileset {
+public class CleanKitchenTileset extends Tileset {
 
     // Spooky kitchen sheet: 16x16 tiles, 13 columns x 2 rows.
     // The engine's SpriteSheet adds a 1px gap between tiles, so a 16px tile gives a
     // pitch of 17px. The sheet PNG has 1px of transparent space after every tile
     // (including the last column/row), so it is 221x34 (13*17 x 2*17).
-    private static final String SHEET_FILE = "spookykitchentileset2.png";
+    private static final String SHEET_FILE = "cleankitchentileset.png";
     private static final int TILE_SIZE = 16;
 
     // Draw scale. 16px * 4 = 64px tiles on screen. Change to taste.
     // Bounds below are written in sheet pixels (0-15) and get scaled with the tile.
     private static final int TILE_SCALE = 4;
 
-    public KitchenTileset() {
+    public CleanKitchenTileset() {
         super(ImageLoader.load(SHEET_FILE), TILE_SIZE, TILE_SIZE, TILE_SCALE);
     }
 
