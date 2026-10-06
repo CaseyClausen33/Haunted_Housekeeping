@@ -6,9 +6,9 @@ import Level.ScriptState;
 import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
-import Puzzles.LobbyPuzzle;
+import Puzzles.BathroomPuzzle;
 
-public class LobbyPuzzleScript extends Script {
+public class BathroomPuzzleScript extends Script {
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -21,13 +21,14 @@ public class LobbyPuzzleScript extends Script {
             @Override
             public ScriptState execute() {
                 javax.swing.SwingUtilities.invokeLater(() -> {
-                    new LobbyPuzzle();
+                    new BathroomPuzzle();
                 });
                 return ScriptState.COMPLETED;
             }
         });
+
         scriptActions.add(new UnlockPlayerScriptAction());
 
         return scriptActions;
     }
-} 
+}
