@@ -53,7 +53,7 @@ public class BathroomPuzzleScript extends Script {
             @Override
             public ScriptState execute() {
                 if (BathroomPuzzle.solved && !solvedBefore) {
-                    Map nextMap = new CleanBathroomMap2();
+                    Map nextMap = new BathroomMap2();
                     for (GameListener listener : BathroomPuzzleScript.this.listeners) {
                         listener.onMapChange(nextMap);
                     }
