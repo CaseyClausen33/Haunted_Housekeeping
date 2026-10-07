@@ -16,7 +16,7 @@ public class CleanBathroomMap extends Map {
 
         // Door back to lobby
         getMapTile(5, 1).setInteractScript(
-            new ChangeMapScript(HotelLobbyMap::new)
+            new ChangeMapScript(LobbyMap2::new)
         );
     }
 }
