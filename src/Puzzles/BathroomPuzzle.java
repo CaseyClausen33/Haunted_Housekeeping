@@ -6,6 +6,8 @@ import java.awt.event.*;
 import java.util.Random;
 
 public class BathroomPuzzle extends JFrame {
+    private Runnable puzzleCompleteListener;
+
     public BathroomPuzzle() {
         setTitle("Bathroom Pipe Puzzle");
         setSize(400, 400);
@@ -17,6 +19,10 @@ public class BathroomPuzzle extends JFrame {
         add(puzzlePanel);
 
         setVisible(true);
+    }
+
+    public void setPuzzleCompleteListener(Runnable listener) {
+        this.puzzleCompleteListener = listener;
     }
 
     public static void main(String[] args) {
@@ -277,6 +283,10 @@ public class BathroomPuzzle extends JFrame {
 
             if (window != null) {
                 window.dispose();
+            }
+
+            if (puzzleCompleteListener != null) {
+                puzzleCompleteListener.run();
             }
         }  
 

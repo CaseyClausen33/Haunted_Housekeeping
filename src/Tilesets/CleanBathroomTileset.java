@@ -67,7 +67,6 @@ public class CleanBathroomTileset extends Tileset {
                     tileNumber == 37 ||  // bathroom object
                     tileNumber == 38 ||  // broom/plunger
                     tileNumber == 39 ||  // trash can
-                    tileNumber == 45 ||  // lantern
                     tileNumber == 46 ||  // plant
                     tileNumber == 54    // wall
                 ) {
@@ -81,6 +80,7 @@ public class CleanBathroomTileset extends Tileset {
                     tileNumber == 41 ||  // floor
                     tileNumber == 42 ||  // floor
                     tileNumber == 43 ||  // floor
+                    tileNumber == 45 ||  // floor
                     tileNumber == 47 ||  // floor
                     tileNumber == 59     // floor
                 ) {
