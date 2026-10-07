@@ -12,6 +12,7 @@ import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
 import Maps.CleanBathroomMap;
+import Maps.CleanBathroomMap2;
 
 public class BathroomPuzzleScript extends Script {
 
@@ -52,7 +53,7 @@ public class BathroomPuzzleScript extends Script {
             @Override
             public ScriptState execute() {
                 if (BathroomPuzzle.solved && !solvedBefore) {
-                    Map nextMap = new CleanBathroomMap();
+                    Map nextMap = new CleanBathroomMap2();
                     for (GameListener listener : BathroomPuzzleScript.this.listeners) {
                         listener.onMapChange(nextMap);
                     }
