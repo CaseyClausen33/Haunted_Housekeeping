@@ -8,7 +8,6 @@ import java.awt.event.*;
 import java.util.Random;
 
 public class BathroomPuzzle extends JFrame {
-    private Runnable puzzleCompleteListener;
 
     // Read by the bathroom exit script to decide whether the player can leave the bathroom
     public static volatile boolean solved = false;
@@ -47,10 +46,6 @@ public class BathroomPuzzle extends JFrame {
         add(bathroomPanel);
 
         setVisible(true);
-    }
-
-    public void setPuzzleCompleteListener(Runnable listener) {
-        this.puzzleCompleteListener = listener;
     }
 
     public static void main(String[] args) {
@@ -336,10 +331,6 @@ class BathroomPanel extends JPanel {
 
             if (window != null) {
                 window.dispose();
-            }
-
-            if (puzzleCompleteListener != null) {
-                puzzleCompleteListener.run();
             }
         }  
 

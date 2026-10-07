@@ -32,7 +32,9 @@ public class LobbyMap2 extends Map {
     @Override 
     public void loadScripts() {
     getMapTile(17, 1).setInteractScript(new ChangeMapScript(KitchenMap::new));
-    getMapTile(22, 1).setInteractScript(new ChangeMapScript(BathroomMap2::new));
+    getMapTile(22, 1).setInteractScript(new ChangeMapScript(BathroomMap::new));
+    getMapTile(2, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
+    getMapTile(4, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
     }
     
 }
