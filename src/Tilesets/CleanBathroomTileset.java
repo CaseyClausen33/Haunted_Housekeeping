@@ -8,18 +8,19 @@ import Level.TileType;
 import Level.Tileset;
 import java.util.ArrayList;
 
-public class BathroomTileset extends Tileset {
+public class CleanBathroomTileset extends Tileset {
 
     private static final int TILE_SIZE = 127;
 
-    public BathroomTileset() {
+    public CleanBathroomTileset() {
         super(
-            ImageLoader.load("bathroomtileset.png"),
+            ImageLoader.load("cleanbathroomtileset.png"),
             TILE_SIZE,
             TILE_SIZE,
             1
         );
     }
+
 
    @Override
     public ArrayList<MapTileBuilder> defineTiles() {
@@ -66,7 +67,6 @@ public class BathroomTileset extends Tileset {
                     tileNumber == 37 ||  // bathroom object
                     tileNumber == 38 ||  // broom/plunger
                     tileNumber == 39 ||  // trash can
-                    tileNumber == 45 ||  // lantern
                     tileNumber == 46 ||  // plant
                     tileNumber == 54    // wall
                 ) {
@@ -80,6 +80,7 @@ public class BathroomTileset extends Tileset {
                     tileNumber == 41 ||  // floor
                     tileNumber == 42 ||  // floor
                     tileNumber == 43 ||  // floor
+                    tileNumber == 45 ||  // floor
                     tileNumber == 47 ||  // floor
                     tileNumber == 59     // floor
                 ) {

@@ -7,10 +7,13 @@ import Maps.HotelLobbyMap;
 import Maps.LibraryMap;
 import Maps.NewMap;
 import Maps.KitchenMap;
+import Maps.BedroomMap;
 import Maps.BathroomMap;
 import Maps.BathroomMap2;
 import Maps.CleanKitchenMap;
+import Maps.CleanBathroomMap;
 import Maps.LobbyMap2;
+
 import java.util.ArrayList;
 
 public class EditorMaps {
@@ -21,9 +24,11 @@ public class EditorMaps {
             add("HotelLobbyMap");
             add("newMap");
             add("KitchenMap");
+            add("BedroomMap");
             add("BathroomMap");
             add("LibraryMap");
             add("CleanKitchenMap");
+            add("CleanBathroomMap");
             add("LobbyMap2");
             add("BathroomMap2");
         }};
@@ -42,12 +47,16 @@ public class EditorMaps {
                 return new NewMap();
             case "KitchenMap":
                 return new KitchenMap();
+            case "BedroomMap":
+                return new BedroomMap();
             case "BathroomMap":
                 return new BathroomMap();
             case "LibraryMap":
                 return new LibraryMap();
             case "CleanKitchenMap":
                 return new CleanKitchenMap();
+            case "CleanBathroomMap":
+                return new CleanBathroomMap();
             case "LobbyMap2":
                 return new LobbyMap2();
             case "BathroomMap2":

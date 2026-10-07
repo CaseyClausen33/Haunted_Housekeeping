@@ -30,4 +30,4 @@ public class LobbyPuzzleScript extends Script {
 
         return scriptActions;
     }
-}
+} 
