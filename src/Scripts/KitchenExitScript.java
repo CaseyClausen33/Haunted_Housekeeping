@@ -6,7 +6,7 @@ import Level.GameListener;
 import Level.Map;
 import Level.Script;
 import Level.ScriptState;
-import Maps.HotelLobbyMap;
+import Maps.LobbyMap2;
 import Puzzles.KitchenPuzzle;
 import ScriptActions.*;
 
@@ -23,7 +23,7 @@ public class KitchenExitScript extends Script {
         ScriptAction changeMap = new ScriptAction() {
             @Override
             public ScriptState execute() {
-                Map nextMap = new HotelLobbyMap();
+                Map nextMap = new LobbyMap2();
                 for (GameListener listener : KitchenExitScript.this.listeners) {
                     listener.onMapChange(nextMap);
                 }

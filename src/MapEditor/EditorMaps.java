@@ -8,8 +8,9 @@ import Maps.LibraryMap;
 import Maps.NewMap;
 import Maps.KitchenMap;
 import Maps.BathroomMap;
+import Maps.BathroomMap2;
 import Maps.CleanKitchenMap;
-
+import Maps.LobbyMap2;
 import java.util.ArrayList;
 
 public class EditorMaps {
@@ -23,6 +24,8 @@ public class EditorMaps {
             add("BathroomMap");
             add("LibraryMap");
             add("CleanKitchenMap");
+            add("LobbyMap2");
+            add("BathroomMap2");
         }};
     }
 
@@ -45,6 +48,10 @@ public class EditorMaps {
                 return new LibraryMap();
             case "CleanKitchenMap":
                 return new CleanKitchenMap();
+            case "LobbyMap2":
+                return new LobbyMap2();
+            case "BathroomMap2":
+                return new BathroomMap2();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }

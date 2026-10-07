@@ -34,14 +34,14 @@ public class Character extends Player {
             // x=16, width=16 is centered on the cell so it stays correct when flipped.
             put("STAND_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(3)
+                            .withScale(2.75f)
                             .withBounds(16, 29, 16, 12)
                             .build()
             });
 
             put("STAND_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(0, 0))
-                            .withScale(3)
+                            .withScale(2.75f)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(16, 29, 16, 12)
                             .build()
@@ -50,23 +50,23 @@ public class Character extends Player {
             // Only one walk pose exists, so the cycle alternates walk pose <-> stand pose
             put("WALK_RIGHT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(1, 0), 12)
-                            .withScale(3)
+                            .withScale(2.75f)
                             .withBounds(16, 29, 16, 12)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(2, 0), 12)
-                            .withScale(3)
+                            .withScale(2.75f)
                             .withBounds(16, 29, 16, 12)
                             .build()
             });
 
             put("WALK_LEFT", new Frame[] {
                     new FrameBuilder(spriteSheet.getSprite(1, 0), 12)
-                            .withScale(3)
+                            .withScale(2.75f)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(16, 29, 16, 12)
                             .build(),
                     new FrameBuilder(spriteSheet.getSprite(2, 0), 12)
-                            .withScale(3)
+                            .withScale(2.75f)
                             .withImageEffect(ImageEffect.FLIP_HORIZONTAL)
                             .withBounds(16, 29, 16, 12)
                             .build()
