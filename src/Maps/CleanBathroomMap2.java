@@ -12,11 +12,11 @@ import Scripts.BathroomPuzzleScript;
 import Tilesets.CleanBathroomTileset2;
 import Puzzles.BathroomPuzzle;
 
-public class BathroomMap2 extends Map {
+public class CleanBathroomMap2 extends Map {
 
-    public BathroomMap2() {
+    public CleanBathroomMap2() {
 
-        super("bathroom_map2.txt", BathroomPuzzle.solved ? new CleanBathroomTileset2() : new BathroomTileset2());
+        super("cleanbathroom_map2.txt", BathroomPuzzle.solved ? new CleanBathroomTileset2() : new BathroomTileset2());
         if(BathroomPuzzle.solved) {
             this.playerStartPosition = getMapTile(5, 2).getLocation();
         } else {

@@ -15,5 +15,6 @@ public class LibraryMap2 extends Map {
     @Override 
     public void loadScripts() {
         getMapTile(3, 11).setInteractScript(new Match2PuzzleScript());
+        getMapTile(12, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
     }
 }
