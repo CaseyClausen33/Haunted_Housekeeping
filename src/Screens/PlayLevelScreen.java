@@ -25,14 +25,14 @@ public class PlayLevelScreen extends Screen implements GameListener {
     public void initialize() {
         // setup state
         flagManager = new FlagManager();
-        flagManager.addFlag("hasLostBall", false);
-        flagManager.addFlag("hasTalkedToWalrus", false);
-        flagManager.addFlag("hasTalkedToDinosaur", false);
-        flagManager.addFlag("hasFoundBall", false);
+        // flagManager.addFlag("hasLostBall", false);
+        // flagManager.addFlag("hasTalkedToWalrus", false);
+        // flagManager.addFlag("hasTalkedToDinosaur", false);
+        // flagManager.addFlag("hasFoundBall", false);
 
         // define/setup map
         //map = new TestMap();
-        loadMap(new HotelLobbyMap());
+        loadMap(new LobbyMap2());
         map.setFlagManager(flagManager);
 
         // setup player
