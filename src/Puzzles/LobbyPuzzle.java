@@ -2,20 +2,43 @@
 
 package Puzzles;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Random;
+import javax.swing.*;
 
 public class LobbyPuzzle extends JFrame {
-  
+
+    public static volatile boolean solved = false;
+
+    private static volatile boolean open = false;
+
+    public static boolean isOpen() {
+        return open;
+    }
+
+    public static synchronized void launch() {
+        if (open || solved) {
+            return;
+        }
+        open = true;
+        SwingUtilities.invokeLater(() -> new LobbyPuzzle());
+    }
+
     public LobbyPuzzle() {
         setTitle("Lobby Puzzle");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setSize(400,400);
         setLocationRelativeTo(null);
         setResizable(false);
- 
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                open = false;
+            }
+        });
+
         PuzzlePanel puzzlePanel = new PuzzlePanel();
         add(puzzlePanel);
 
@@ -110,8 +133,9 @@ public class LobbyPuzzle extends JFrame {
         /*
          * Shuffle by making legal moves.
          * This guarantees that the puzzle remains solvable.
+        * IMPORTANT: THIS IS BEING CHANGED TO 5 MOVES FOR TESTING PURPOSES. CHANGE BACK TO 150 WHEN IT'S TIME TO PUSH THE CODE.
          */
-        for (int i = 0; i < 150; i++) {
+        for (int i = 0; i < 5; i++) {
             int[] possibleMoves = getPossibleMoves();
             int randomPosition = possibleMoves[random.nextInt(possibleMoves.length)];
 
@@ -212,6 +236,7 @@ public class LobbyPuzzle extends JFrame {
 
         // Check for win
         if (checkWin()) {
+            LobbyPuzzle.solved = true;
             Timer winTimer = new Timer(250, e -> {
                 ((Timer) e.getSource()).stop();
                 showWinScreen();

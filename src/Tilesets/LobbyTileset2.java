@@ -85,7 +85,7 @@ public class LobbyTileset2 extends Tileset {
         addSolid(mapTiles, 2, 3, 0, 0, 16, 16);          // 29 double door right
         addSolid(mapTiles, 2, 4, 0, 0, 16, 16);          // 30 boarded-up door (stays locked)
         addSolid(mapTiles, 2, 5, 0, 0, 16, 16);          // 31 staff only door
-        addFloor(mapTiles, 2, 6);                        // 32 arch passage (walk through, put a trigger on it)
+        addSolid(mapTiles, 2, 6,0,0,16,16);                        // 32 arch passage (walk through, put a trigger on it)
 
         // ---------- NEW: STAIRS ----------
         addFloor(mapTiles, 2, 7);                        // 33 stairs middle (walkable)

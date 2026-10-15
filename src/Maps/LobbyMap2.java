@@ -1,13 +1,14 @@
 package Maps;
 
 import Level.Map;
+import Level.MapTile;
 import Level.NPC;
 import NPCs.Ghost;
+import Puzzles.LobbyPuzzle;
 import Scripts.ChangeMapScript;
+import Scripts.LobbyPuzzleScript;
 import Scripts.TestMap.GhostScript;
-import Tilesets.HotelTileset;
 import Tilesets.LobbyTileset2;
-
 import java.util.ArrayList;
 
 public class LobbyMap2 extends Map {
@@ -35,6 +36,16 @@ public class LobbyMap2 extends Map {
     getMapTile(22, 1).setInteractScript(new ChangeMapScript(BathroomMap2::new));
     getMapTile(2, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
     getMapTile(4, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
+    getMapTile(11,1).setInteractScript(new ChangeMapScript(NewMap::new));
+
+    // Show the puzzle if it hasn't been solved yet, otherwise show the open archway tile
+    // there will be a third case added soon if not all puzzles have been solved yet
+    if (LobbyPuzzle.solved) {
+        MapTile oldTile = getMapTile(11, 5);
+        setMapTile(11, 5, getTileset().getTile(33).build(oldTile.getX(), oldTile.getY()));
+    } else {
+        getMapTile(11, 5).setInteractScript(new LobbyPuzzleScript());
+    }
     }
     
 }
