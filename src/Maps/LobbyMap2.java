@@ -15,17 +15,16 @@ public class LobbyMap2 extends Map {
 
     public LobbyMap2() {
         super("lobby_map2.txt", new LobbyTileset2());
-        this.playerStartPosition = getMapTile(11, 12).getLocation();
+        this.playerStartPosition = getMapTile(11, 11).getLocation();
     }
 
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
         
-        Ghost ghost = new Ghost(1, getMapTile(5, 12).getLocation().subtractX(30).subtractY(30));
+        Ghost ghost = new Ghost(1, getMapTile(5, 11).getLocation().subtractX(30).subtractY(30));
         ghost.setInteractScript(new GhostScript());
         npcs.add(ghost);
-
         return npcs;
     }
     

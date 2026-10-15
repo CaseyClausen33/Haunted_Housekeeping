@@ -3,7 +3,7 @@ package Maps;
 import Level.Map;
 import Tilesets.BedroomTileset;
 import Scripts.ChangeMapScript;
-
+import Scripts.BedroomPuzzleScript;
 public class BedroomMap2 extends Map {
 
     public BedroomMap2() {
@@ -14,5 +14,6 @@ public class BedroomMap2 extends Map {
     @Override 
     public void loadScripts() {
         getMapTile(2, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
+        // getMapTile(8, 2).setInteractScript(new BedroomPuzzleScript()); - waiting for Danielle to update script
     }
 }

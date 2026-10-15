@@ -1,11 +1,8 @@
 package Maps;
 
 import Level.Map;
-import Puzzles.KitchenPuzzle;
 import Scripts.ChangeMapScript;
 import Scripts.Match2PuzzleScript;
-import Tilesets.CleanKitchenTileset;
-import Tilesets.KitchenTileset;
 import Tilesets.LibraryTileset;
 import Tilesets.CleanLibraryTileset;
 import Puzzles.Match2Puzzle;

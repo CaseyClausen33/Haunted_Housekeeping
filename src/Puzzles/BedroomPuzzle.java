@@ -59,7 +59,7 @@ public class BedroomPuzzle extends JFrame {
         roundLabel.setForeground(new Color(195, 170, 215));
 
         instructionLabel = new JLabel(
-            "<html><center>Listen closely...<br>" +
+            "<html><center>Look closely...<br>" +
             "the room remembers.</center></html>",
             SwingConstants.CENTER
         );
@@ -79,7 +79,7 @@ public class BedroomPuzzle extends JFrame {
             final int symbolIndex = i;
 
             JButton button = new JButton(symbols[i]);
-            button.setFont(new Font("Serif", Font.PLAIN, 42));
+            button.setFont(new Font("Serif", Font.PLAIN, 46));
             button.setForeground(Color.WHITE);
             button.setBackground(normalColor);
             button.setOpaque(true);
@@ -134,7 +134,7 @@ public class BedroomPuzzle extends JFrame {
 
         roundLabel.setText("Round " + round + " of 3");
         instructionLabel.setText(
-            "<html><center>Listen closely...<br>" +
+            "<html><center>Look closely...<br>" +
             "watch the objects glow!</center></html>"
         );
 

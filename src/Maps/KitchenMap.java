@@ -1,7 +1,6 @@
 package Maps;
 
 import Tilesets.CleanKitchenTileset;
-import Tilesets.CleanKitchenTileset;
 import Tilesets.KitchenTileset;
 
 import java.util.ArrayList;
@@ -29,7 +28,7 @@ public class KitchenMap extends Map {
     @Override
     public void loadScripts() {
         getMapTile(2, 9).setInteractScript(new KitchenPuzzleScript());
-        getMapTile(17, 2).setInteractScript(new KitchenExitScript());
+        getMapTile(17, 1).setInteractScript(new KitchenExitScript());
     }
 
     @Override

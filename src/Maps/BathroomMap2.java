@@ -1,13 +1,8 @@
 package Maps;
 
 import Level.Map;
-import Puzzles.KitchenPuzzle;
 import Scripts.ChangeMapScript;
-import Scripts.KitchenPuzzleScript;
-import Tilesets.BathroomTileset;
 import Tilesets.BathroomTileset2;
-import Tilesets.CleanKitchenTileset;
-import Tilesets.KitchenTileset;
 import Scripts.BathroomPuzzleScript;
 import Tilesets.CleanBathroomTileset2;
 import Puzzles.BathroomPuzzle;
