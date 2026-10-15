@@ -1,15 +1,24 @@
 package Maps;
 
 import Level.Map;
+import Puzzles.KitchenPuzzle;
 import Scripts.ChangeMapScript;
 import Scripts.Match2PuzzleScript;
+import Tilesets.CleanKitchenTileset;
+import Tilesets.KitchenTileset;
 import Tilesets.LibraryTileset;
-
+import Tilesets.CleanLibraryTileset;
+import Puzzles.Match2Puzzle;
+ 
 public class LibraryMap2 extends Map {
 
     public LibraryMap2() {
-        super("library_map2.txt", new LibraryTileset());
-        this.playerStartPosition = getMapTile(12, 2).getLocation();
+        super("library_map2.txt", Match2Puzzle.solved ? new CleanLibraryTileset() : new LibraryTileset());
+        if(Match2Puzzle.solved) {
+            this.playerStartPosition = getMapTile(4, 11).getLocation();
+        } else {
+            this.playerStartPosition = getMapTile(12, 2).getLocation();
+        }
     }
 
     @Override 

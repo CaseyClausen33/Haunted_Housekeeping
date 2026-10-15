@@ -11,7 +11,6 @@ import Puzzles.BathroomPuzzle;
 import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
-import Maps.CleanBathroomMap;
 import Maps.CleanBathroomMap2;
 
 public class BathroomPuzzleScript extends Script {
