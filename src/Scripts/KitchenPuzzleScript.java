@@ -1,16 +1,13 @@
 package Scripts;
 
-import java.util.ArrayList;
-
 import Level.GameListener;
 import Level.Map;
 import Level.Script;
 import Level.ScriptState;
 import Maps.KitchenMap;
 import Puzzles.KitchenPuzzle;
-import ScriptActions.LockPlayerScriptAction;
-import ScriptActions.ScriptAction;
-import ScriptActions.UnlockPlayerScriptAction;
+import ScriptActions.*;
+import java.util.ArrayList;
 
 public class KitchenPuzzleScript extends Script {
 
@@ -50,11 +47,16 @@ public class KitchenPuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
+                if (KitchenPuzzle.solved) {
+                    KitchenPuzzleScript.this.map.getFlagManager().setFlag("KitchenPuzzleSolved");
+                }
+
                 if (KitchenPuzzle.solved && !solvedBefore) {
                     Map nextMap = new KitchenMap();
                     for (GameListener listener : KitchenPuzzleScript.this.listeners) {
                         listener.onMapChange(nextMap);
                     }
+                    
                 }
                 return ScriptState.COMPLETED;
             }

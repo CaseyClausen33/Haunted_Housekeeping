@@ -261,8 +261,8 @@ public class LobbyPuzzle extends JFrame {
                 this,
 
                 "✨ Lobby Restored! ✨\n\n" +
-                "You put the hotel numbers back in order.\n\n" +
-                "Congratulations you have completed the lobby! ",
+                "You put the hotel numbers back in order!\n\n" +
+                "The gate has been unlocked, the final room awaits!",
 
                 "Puzzle Complete!",
 

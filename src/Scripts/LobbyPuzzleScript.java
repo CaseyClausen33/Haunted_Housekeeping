@@ -1,13 +1,13 @@
 package Scripts;
 
-import java.util.ArrayList;
 import Level.MapTile;
 import Level.Script;
 import Level.ScriptState;
+import Puzzles.LobbyPuzzle;
 import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
-import Puzzles.LobbyPuzzle;
+import java.util.ArrayList;
 
 public class LobbyPuzzleScript extends Script {
 
@@ -24,7 +24,11 @@ public class LobbyPuzzleScript extends Script {
             @Override
             public ScriptState execute() {
                 solvedBefore = LobbyPuzzle.solved;
-                if (!solvedBefore) {
+                boolean prerequisitesMet =
+                        LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("KitchenPuzzleSolved")
+                        && LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("BathroomPuzzleSolved")
+                        && LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("LibraryPuzzleSolved");
+                if (!solvedBefore && prerequisitesMet) {
                     LobbyPuzzle.launch();
                 }
                 return ScriptState.COMPLETED;

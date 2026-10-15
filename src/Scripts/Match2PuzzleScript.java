@@ -1,16 +1,13 @@
 package Scripts;
 
-import java.util.ArrayList;
-
 import Level.GameListener;
 import Level.Map;
 import Level.Script;
 import Level.ScriptState;
-import Puzzles.Match2Puzzle;
-import ScriptActions.LockPlayerScriptAction;
-import ScriptActions.ScriptAction;
-import ScriptActions.UnlockPlayerScriptAction;
 import Maps.LibraryMap2;
+import Puzzles.Match2Puzzle;
+import ScriptActions.*;
+import java.util.ArrayList;
 
 public class Match2PuzzleScript extends Script {
 
@@ -59,6 +56,10 @@ public class Match2PuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
+                if (Match2Puzzle.solved) {
+                    Match2PuzzleScript.this.map.getFlagManager().setFlag("LibraryPuzzleSolved");
+                }
+
                 if (Match2Puzzle.solved && !solvedBefore) {
 
                     Map nextMap = new LibraryMap2();

@@ -1,17 +1,13 @@
 package Scripts;
 
-import java.util.ArrayList;
-
 import Level.GameListener;
 import Level.Map;
 import Level.Script;
 import Level.ScriptState;
 import Maps.BathroomMap2;
 import Puzzles.BathroomPuzzle;
-import ScriptActions.LockPlayerScriptAction;
-import ScriptActions.ScriptAction;
-import ScriptActions.UnlockPlayerScriptAction;
-import Maps.CleanBathroomMap2;
+import ScriptActions.*;
+import java.util.ArrayList;
 
 public class BathroomPuzzleScript extends Script {
 
@@ -51,6 +47,10 @@ public class BathroomPuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
+                if (BathroomPuzzle.solved) {
+                    BathroomPuzzleScript.this.map.getFlagManager().setFlag("BathroomPuzzleSolved");
+                }
+
                 if (BathroomPuzzle.solved && !solvedBefore) {
                     Map nextMap = new BathroomMap2();
                     for (GameListener listener : BathroomPuzzleScript.this.listeners) {
