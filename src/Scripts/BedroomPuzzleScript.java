@@ -1,15 +1,14 @@
+package Scripts;
 import java.util.ArrayList;
-
 import Level.GameListener;
 import Level.Map;
 import Level.Script;
 import Level.ScriptState;
-import Maps.BathroomMap2;
-import Puzzles.BathroomPuzzle;
 import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
-import Maps.CleanBedroomMap2;
+import Puzzles.BedroomPuzzle;
+import Maps.BedroomMap2;
 
 public class BedroomPuzzleScript extends Script {
 
@@ -50,7 +49,7 @@ public class BedroomPuzzleScript extends Script {
             @Override
             public ScriptState execute() {
                 if (BedroomPuzzle.solved && !solvedBefore) {
-                    Map nextMap = new CleanBedroomMap2();
+                    Map nextMap = new BedroomMap2();
                     for (GameListener listener : BedroomPuzzleScript.this.listeners) {
                         listener.onMapChange(nextMap);
                     }

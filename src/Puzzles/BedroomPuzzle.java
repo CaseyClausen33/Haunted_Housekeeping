@@ -7,6 +7,28 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class BedroomPuzzle extends JFrame {
+
+    // Set to true when the player beats all three rounds. It lives on the class so the game
+    // can check it after the window closes (the same way KitchenPuzzle.solved works).
+    // Nothing resets it, so a puzzle the player already beat stays beaten.
+    public static volatile boolean solved = false;
+
+    // True while the puzzle window is open (lets the game script wait for it to close)
+    private static volatile boolean open = false;
+
+    public static boolean isOpen() {
+        return open;
+    }
+
+    // Opens the puzzle window; does nothing if it's already open
+    public static synchronized void launch() {
+        if (open) {
+            return;
+        }
+        open = true;
+        SwingUtilities.invokeLater(() -> new BedroomPuzzle());
+    }
+
     private Runnable puzzleCompleteListener;
 
     private final Color backgroundColor = new Color(25, 20, 35);
@@ -38,6 +60,17 @@ public class BedroomPuzzle extends JFrame {
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                // stop the glow animation if the window is closed mid-round
+                if (playbackTimer != null) {
+                    playbackTimer.stop();
+                }
+                open = false;
+            }
+        });
 
         JPanel mainPanel = new JPanel(new BorderLayout(8, 8));
         mainPanel.setBackground(backgroundColor);
@@ -89,21 +122,21 @@ public class BedroomPuzzle extends JFrame {
             );
 
             button.addActionListener(e -> {
-            // Make the clicked object glow
-            button.setBackground(activeColor);
-            button.setForeground(Color.BLACK);
+                // Make the clicked object glow
+                button.setBackground(activeColor);
+                button.setForeground(Color.BLACK);
 
-            Timer clickGlowTimer = new Timer(250, event -> {
-                button.setBackground(normalColor);
-                button.setForeground(Color.WHITE);
-                ((Timer) event.getSource()).stop();
+                Timer clickGlowTimer = new Timer(250, event -> {
+                    button.setBackground(normalColor);
+                    button.setForeground(Color.WHITE);
+                    ((Timer) event.getSource()).stop();
+                });
+
+                clickGlowTimer.setRepeats(false);
+                clickGlowTimer.start();
+
+                handlePlayerInput(symbolIndex);
             });
-
-            clickGlowTimer.setRepeats(false);
-            clickGlowTimer.start();
-
-            handlePlayerInput(symbolIndex);
-        });
 
             buttons[i] = button;
             buttonPanel.add(button);
@@ -247,6 +280,8 @@ public class BedroomPuzzle extends JFrame {
             playbackTimer.stop();
         }
 
+        BedroomPuzzle.solved = true;   // the game can now see the puzzle is done
+
         JOptionPane.showMessageDialog(
             this,
             "Bedroom Restored!\n\n" +
@@ -269,4 +304,3 @@ public class BedroomPuzzle extends JFrame {
         );
     }
 }
-
