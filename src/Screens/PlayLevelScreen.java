@@ -8,6 +8,7 @@ import Level.*;
 import Maps.*;
 import Players.Character;
 import Utils.Direction;
+import Scripts.IntroCutsceneScript;
 
 // This class is for when the RPG game is actually being played
 public class PlayLevelScreen extends Screen implements GameListener {
@@ -26,11 +27,9 @@ public class PlayLevelScreen extends Screen implements GameListener {
         // setup state
         flagManager = new FlagManager();
         flagManager.addFlag("BathroomPuzzleSolved", false);
-        // flagManager.addFlag("BedroomPuzzleSolved", false); 
+        flagManager.addFlag("BedroomPuzzleSolved", false); 
         flagManager.addFlag("KitchenPuzzleSolved", false);
         flagManager.addFlag("LibraryPuzzleSolved", false);
-        
-        
         // flagManager.addFlag("hasLostBall", false);
         // flagManager.addFlag("hasTalkedToWalrus", false);
         // flagManager.addFlag("hasTalkedToDinosaur", false);
@@ -38,13 +37,19 @@ public class PlayLevelScreen extends Screen implements GameListener {
 
         // define/setup map
         //map = new TestMap();
-        loadMap(new LobbyMap2());
-        map.setFlagManager(flagManager);
+        // Load the outside map first so the intro can play there
+loadMap(new OutsideMap());
 
-        // setup player
+// Set up the initial game state
+playLevelScreenState = PlayLevelScreenState.RUNNING;
 
-        playLevelScreenState = PlayLevelScreenState.RUNNING;
-        player.setFacingDirection(Direction.LEFT);
+// Start the intro cutscene if it hasn't already played
+        if (!Maps.OutsideMap.OutsideCutsceneSeen) {
+            map.setActiveScript(new IntroCutsceneScript());
+        } else {
+            // If the intro was already completed, go straight to the lobby
+            loadMap(new LobbyMap2());
+        }
 
         winScreen = new WinScreen(this);
     }
