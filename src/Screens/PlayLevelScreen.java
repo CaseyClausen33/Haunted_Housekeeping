@@ -38,13 +38,14 @@ public class PlayLevelScreen extends Screen implements GameListener {
         // define/setup map
         //map = new TestMap();
         // Load the outside map first so the intro can play there
-loadMap(new OutsideMap());
+        
 
 // Set up the initial game state
 playLevelScreenState = PlayLevelScreenState.RUNNING;
 
 // Start the intro cutscene if it hasn't already played
-        if (!Maps.OutsideMap.OutsideCutsceneSeen) {
+        if (!Maps.OutsideMap.cutsceneSeen) {
+            loadMap(new OutsideMap());
             map.setActiveScript(new IntroCutsceneScript());
         } else {
             // If the intro was already completed, go straight to the lobby

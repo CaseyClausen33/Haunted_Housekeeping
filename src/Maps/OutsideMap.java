@@ -2,27 +2,53 @@ package Maps;
 
 import java.util.ArrayList;
 
+import Engine.ScreenManager;
 import Level.Map;
 import Level.NPC;
-import Level.Trigger;
+import Level.Player;
+import Level.Script;
 import NPCs.Ghost;
 import NPCs.Taxi;
-// import Puzzles.RoomProgress;
 import Scripts.ChangeMapScript;
 import Scripts.IntroCutsceneScript;
 import Tilesets.OutsideTileset;
-import Utils.Point;
 
 public class OutsideMap extends Map {
 
-    // The taxi starts on the road six tiles left of the gate; the player starts hidden behind it.
+    private static final int TILE_PX = 64;          // 16px tiles drawn at scale 4
+    private static final int MAP_TILES_W = 29;
+    private static final int MAP_TILES_H = 22;
+
+    // The taxi starts on the road six tiles left of the gate
     private static final int TAXI_TILE_X = 6;
     private static final int ROAD_TILE_Y = 20;
-    public static Boolean OutsideCutsceneSeen = false;
+
+    // true once the cutscene has played so it never plays again. It is static because a new OutsideMap
+    // object is created every time the player enters this map, so an instance field would always start as false.
+    public static boolean cutsceneSeen = false;
+
+    private boolean cutsceneStarted = false;
 
     public OutsideMap() {
         super("outside_map.txt", new OutsideTileset());
-        this.playerStartPosition = getMapTile(TAXI_TILE_X, ROAD_TILE_Y).getLocation().addX(28).addY(14);
+
+        if (cutsceneSeen) {
+            // normal start (the cutscene only plays once): on the road in front of the gate
+            this.playerStartPosition = getMapTile(14, ROAD_TILE_Y).getLocation();
+        } else {
+            // Cutscene start: the player waits off to the left of the screen (off camera) while the taxi drives in.
+            // The camera is frozen on the road in front of the gate until the player steps out of the taxi.
+            this.playerStartPosition = getMapTile(3, 10).getLocation();
+            setAdjustCamera(false);
+
+            float screenW = ScreenManager.getScreenWidth();
+            float screenH = ScreenManager.getScreenHeight();
+            float mapW = MAP_TILES_W * TILE_PX;
+            float mapH = MAP_TILES_H * TILE_PX;
+            float camX = Math.max(0, Math.min(mapW - screenW, 14 * TILE_PX + TILE_PX / 2f - screenW / 2f));
+            float camY = Math.max(0, mapH - screenH);
+            getCamera().setLocation(camX, camY);
+        }
     }
 
     @Override
@@ -39,17 +65,20 @@ public class OutsideMap extends Map {
         return npcs;
     }
 
+    // Starts the opening cutscene on the first frame (a trigger would not work here, because the player
+    // is parked off camera and triggers only fire while they are on screen).
     @Override
-    public ArrayList<Trigger> loadTriggers() {
-        ArrayList<Trigger> triggers = new ArrayList<>();
-
-        // the player starts inside this trigger, so the cutscene begins as soon as the map loads
-        if (!OutsideCutsceneSeen) {
-            Point start = getMapTile(TAXI_TILE_X, ROAD_TILE_Y).getLocation().addX(28).addY(14);
-            triggers.add(new Trigger(start.x, start.y, 72, 72, new IntroCutsceneScript()));
+    public void update(Player player) {
+        if (!cutsceneStarted && !cutsceneSeen) {
+            cutsceneStarted = true;
+            Script intro = new IntroCutsceneScript();
+            intro.setMap(this);
+            intro.setPlayer(player);
+            intro.setListeners(listeners);
+            intro.initialize();
+            setActiveScript(intro);
         }
-
-        return triggers;
+        super.update(player);
     }
 
     @Override

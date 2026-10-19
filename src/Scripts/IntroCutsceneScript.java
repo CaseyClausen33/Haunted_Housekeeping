@@ -5,24 +5,23 @@ import java.util.ArrayList;
 import Level.NPC;
 import Level.Script;
 import Level.ScriptState;
-// import Puzzles.RoomProgress;
+import Maps.OutsideMap;
 import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.NPCStandScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.TextboxScriptAction;
 import ScriptActions.WaitScriptAction;
 import Utils.Direction;
-import Maps.OutsideMap;
 
 // Opening cutscene on OutsideMap:
-//   taxi pulls up -> player climbs out -> reads the letter -> walks up the path ->
+//   taxi pulls up -> player steps out -> reads the letter -> walks up the path ->
 //   a ghost flashes behind the player -> player jumps -> two lines of dialogue -> walks to the door and goes inside.
 public class IntroCutsceneScript extends Script {
 
-    // The player rides "inside" the taxi while it drives in: the player sprite is kept at this offset from the
-    // taxi's top-left corner, hidden behind the taxi sprite. Tune these if your player sprite is not 72x72.
-    private static final float PLAYER_OFFSET_X = 28;
-    private static final float PLAYER_OFFSET_Y = 4;
+    // Where the player appears when stepping out, measured from the taxi's top-left corner.
+    // The player's feet end up just overlapping the taxi's top edge. Tune if your player sprite is a different size.
+    private static final float EXIT_OFFSET_X = 28;
+    private static final float EXIT_OFFSET_Y = -50;
 
     private static final int TAXI_ID = 1;
     private static final int GHOST_ID = 2;
@@ -41,8 +40,8 @@ public class IntroCutsceneScript extends Script {
         actions.add(new NPCStandScriptAction(TAXI_ID, Direction.RIGHT));
         actions.add(new WaitScriptAction(50));
 
-        // --- player climbs out of the taxi and stands in front of the gate ---
-        actions.add(new PlayerWalk(Direction.UP, 90, 2, Direction.RIGHT));
+        // --- player steps out of the taxi (they were off screen until now) ---
+        actions.add(new PlayerAppear(TAXI_ID));
         actions.add(new WaitScriptAction(30));
 
         actions.add(new TextboxScriptAction("The letter says this is the place..."));
@@ -66,7 +65,7 @@ public class IntroCutsceneScript extends Script {
         actions.add(new WaitScriptAction(20));
 
         // --- walk the rest of the way to the door and go inside ---
-        actions.add(new PlayerWalk(Direction.UP, 350, 2, Direction.RIGHT));
+        actions.add(new PlayerWalk(Direction.UP, 386, 2, Direction.RIGHT));
         actions.add(new WaitScriptAction(25));
         actions.add(new EnterDoor(14, 8));
 
@@ -77,7 +76,7 @@ public class IntroCutsceneScript extends Script {
     // custom actions
     // ---------------------------------------------------------------------------------------------
 
-    // Drives the taxi to the right and carries the (hidden) player along with it
+    // Drives the taxi to the right
     private static class TaxiRide extends ScriptAction {
         private final int taxiId;
         private final float distance;
@@ -101,9 +100,27 @@ public class IntroCutsceneScript extends Script {
         public ScriptState execute() {
             float step = Math.min(speed, distance - moved);
             taxi.walk(Direction.RIGHT, step);
-            player.setLocation(taxi.getX() + PLAYER_OFFSET_X, taxi.getY() + PLAYER_OFFSET_Y);
             moved += step;
             return moved >= distance ? ScriptState.COMPLETED : ScriptState.RUNNING;
+        }
+    }
+
+    // The player has been waiting off screen while the taxi drove in. This puts them next to the taxi
+    // and lets the camera follow them again.
+    private static class PlayerAppear extends ScriptAction {
+        private final int taxiId;
+
+        PlayerAppear(int taxiId) {
+            this.taxiId = taxiId;
+        }
+
+        @Override
+        public ScriptState execute() {
+            NPC taxi = map.getNPCById(taxiId);
+            player.setLocation(taxi.getX() + EXIT_OFFSET_X, taxi.getY() + EXIT_OFFSET_Y);
+            player.stand(Direction.RIGHT);
+            map.setAdjustCamera(true);
+            return ScriptState.COMPLETED;
         }
     }
 
@@ -220,12 +237,11 @@ public class IntroCutsceneScript extends Script {
 
         @Override
         public ScriptState execute() {
-            // RoomProgress.introSeen = true;
-            OutsideMap.OutsideCutsceneSeen = true;  // set the flag to true when the cutscene is completed
+            OutsideMap.cutsceneSeen = true;
+            player.unlock();   // the player stays locked after a map change otherwise
             Script doorScript = map.getMapTile(doorX, doorY).getInteractScript();
             if (doorScript == null) {
-                player.unlock();             // nothing to hand off to, give control back
-                return ScriptState.COMPLETED;
+                return ScriptState.COMPLETED;   // nothing to hand off to; the player is already unlocked
             }
             // From here the map runs the door script instead of this one, so this action just stays "running".
             map.setActiveScript(doorScript);
