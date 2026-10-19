@@ -22,39 +22,6 @@ public class LibraryGhost extends NPC {
         super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("ghostspritesheet_library.png"), 48, 48), "WALK_RIGHT");
     }
 
-    // makes the ghost walk back and forth, turning around at 128 pixels or when it hits something
-    @Override
-    public void performAction(Player player) {
-        if (totalAmountMoved < 128) {
-            float requestedMove = speed * direction.getVelocity();
-            float amountMoved = moveXHandleCollision(requestedMove);
-            totalAmountMoved += Math.abs(amountMoved);
-
-            // if the ghost moved less than it tried to, it ran into something, so turn around
-            if (Math.abs(amountMoved) < Math.abs(requestedMove)) {
-                flipDirection();
-            }
-        }
-        // ghost has moved 128 pixels in one direction, so turn around
-        else {
-            flipDirection();
-        }
-
-        // set animation to match the current walking direction
-        if (direction == Direction.RIGHT) {
-            currentAnimationName = "WALK_RIGHT";
-        }
-        else {
-            currentAnimationName = "WALK_LEFT";
-        }
-    }
-
-    // reverses direction and resets the distance counter
-    private void flipDirection() {
-        totalAmountMoved = 0;
-        direction = (direction == Direction.LEFT) ? Direction.RIGHT : Direction.LEFT;
-    }
-
     @Override
     public HashMap<String, Frame[]> loadAnimations(SpriteSheet spriteSheet) {
         return new HashMap<String, Frame[]>() {{

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import Level.Map;
 import Level.NPC;
+import NPCs.Ghost;
 import NPCs.LibraryGhost;
 import Scripts.Match2PuzzleScript;
+import Scripts.TestMap.GhostScript;
 import Scripts.TestMap.LibraryGhostScript;
 import Tilesets.HotelTileset;
 
@@ -24,11 +26,10 @@ public class LibraryMap extends Map {
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
-
-        LibraryGhost ghost = new LibraryGhost(3, getMapTile(10, 6).getLocation().subtractX(20));
-        ghost.setInteractScript(new LibraryGhostScript());
-        npcs.add(ghost);
-
+        
+        LibraryGhost libraryGhost = new LibraryGhost(1, getMapTile(5, 11).getLocation().subtractX(30).subtractY(30));
+        libraryGhost.setInteractScript(new LibraryGhostScript());
+        npcs.add(libraryGhost);
         return npcs;
     }
 }

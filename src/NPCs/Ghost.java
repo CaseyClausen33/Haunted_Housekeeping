@@ -18,7 +18,7 @@ public class Ghost extends NPC {
     private float speed = 2;
     
     public Ghost(int id, Point location) {
-        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("ghostspritesheet.png"), 48, 48), "WALK_RIGHT");
+        super(id, location.x, location.y, new SpriteSheet(ImageLoader.load("ghostspritesheet_library.png"), 48, 48), "WALK_RIGHT");
     }
 
     // this code makes the ghost npc walk back and forth (left to right)
