@@ -2,12 +2,34 @@ package Puzzles;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class Match2Puzzle extends JFrame {
+
+    // Set to true when the player finds every pair. It lives on the class so the game can
+    // check it after the window closes (see Match2PuzzleScript.isSolved()).
+    public static volatile boolean solved = false;
+
+    // True while the puzzle window is open (lets the game script wait for it to close)
+    private static volatile boolean open = false;
+
+    public static boolean isOpen() {
+        return open;
+    }
+
+    // Opens the puzzle window; does nothing if it's already open
+    public static synchronized void launch() {
+        if (open) {
+            return;
+        }
+        open = true;
+        SwingUtilities.invokeLater(() -> new Match2Puzzle());
+    }
 
     private static final int COLUMNS = 5;
     private static final int ROWS = 4;
@@ -34,6 +56,8 @@ public class Match2Puzzle extends JFrame {
     private int moves;
     private int matchedPairs;
     private boolean resolvingTurn;
+    // true once every pair is found; blocks further clicks and RESET
+    private boolean won;
     private Timer revealTimer;
 
     public Match2Puzzle() {
@@ -42,6 +66,13 @@ public class Match2Puzzle extends JFrame {
         setSize(680, 590);
         setLocationRelativeTo(null);
         setResizable(false);
+
+        addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosed(WindowEvent e) {
+                open = false;
+            }
+        });
 
         createInterface();
         initializeGame();
@@ -87,13 +118,21 @@ public class Match2Puzzle extends JFrame {
         resetButton.setBackground(CARD_BACK);
         resetButton.setFocusPainted(false);
         resetButton.setBorder(BorderFactory.createLineBorder(new Color(150, 120, 150), 2));
-        resetButton.addActionListener(event -> initializeGame());
+        resetButton.addActionListener(event -> {
+            if (!won) {
+                initializeGame();
+            }
+        });
         footer.add(resetButton, BorderLayout.EAST);
         panel.add(footer, BorderLayout.SOUTH);
 
         add(panel);
     }
 
+    /*
+     * Note: Match2Puzzle.solved is intentionally NOT reset here, so a
+     * puzzle the player already beat stays beaten.
+     */
     private void initializeGame() {
         if (revealTimer != null) {
             revealTimer.stop();
@@ -117,11 +156,12 @@ public class Match2Puzzle extends JFrame {
         moves = 0;
         matchedPairs = 0;
         resolvingTurn = false;
+        won = false;
         updateStatus();
     }
 
     private void revealCard(int index) {
-        if (resolvingTurn || matched[index] || index == firstSelection) {
+        if (won || resolvingTurn || matched[index] || index == firstSelection) {
             return;
         }
 
@@ -155,6 +195,8 @@ public class Match2Puzzle extends JFrame {
             updateStatus();
 
             if (matchedPairs == PAIR_COUNT) {
+                won = true;
+                Match2Puzzle.solved = true;   // the game can now see the puzzle is done
                 showWinScreen();
             }
         });
@@ -246,17 +288,17 @@ public class Match2Puzzle extends JFrame {
                 return;
             }
 
-                Graphics2D graphics2D = (Graphics2D) graphics.create();
-                graphics2D.setRenderingHint(
+            Graphics2D graphics2D = (Graphics2D) graphics.create();
+            graphics2D.setRenderingHint(
                     RenderingHints.KEY_INTERPOLATION,
                     RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR
-                );
+            );
 
-                int bookHeight = Math.min(72, getHeight() - 20);
-                int bookWidth = bookHeight * 20 / 24;
+            int bookHeight = Math.min(72, getHeight() - 20);
+            int bookWidth = bookHeight * 20 / 24;
             int bookX = (getWidth() - bookWidth) / 2;
             int bookY = (getHeight() - bookHeight) / 2;
-                graphics2D.drawImage(bookImage, bookX, bookY, bookWidth, bookHeight, null);
+            graphics2D.drawImage(bookImage, bookX, bookY, bookWidth, bookHeight, null);
             graphics2D.dispose();
         }
     }

@@ -3,10 +3,14 @@ package MapEditor;
 import Level.Map;
 import Maps.TestMap;
 import Maps.TitleScreenMap;
-import Maps.HotelLobbyMap;
+import Maps.LibraryMap2;
 import Maps.NewMap;
 import Maps.KitchenMap;
-import Maps.LibraryMap;
+import Maps.BathroomMap2;
+import Maps.CleanKitchenMap;
+import Maps.LobbyMap2;
+import Maps.BedroomMap2;
+import Maps.OutsideMap;
 
 import java.util.ArrayList;
 
@@ -18,9 +22,15 @@ public class EditorMaps {
             add("HotelLobbyMap");
             add("newMap");
             add("KitchenMap");
-            add("LibraryMap");
+            add("CleanKitchenMap");
+            add("LobbyMap2");
+            add("BathroomMap2");
+            add("LibraryMap2");
+            add("BedroomMap2");
+            add("OutsideMap");
         }};
     }
+
 
     public static Map getMapByName(String mapName) {
         switch(mapName) {
@@ -28,14 +38,22 @@ public class EditorMaps {
                 return new TestMap();
             case "TitleScreen":
                 return new TitleScreenMap();
-            case "HotelLobbyMap":
-                return new HotelLobbyMap();
             case "newMap":
                 return new NewMap();
             case "KitchenMap":
                 return new KitchenMap();
-            case "LibraryMap":
-                return new LibraryMap();
+            case "CleanKitchenMap":
+                return new CleanKitchenMap();
+            case "LobbyMap2":
+                return new LobbyMap2();
+            case "BathroomMap2":
+                return new BathroomMap2();
+            case "LibraryMap2":
+                return new LibraryMap2();
+            case "BedroomMap2":
+                return new BedroomMap2();
+            case "OutsideMap":
+                return new OutsideMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }

@@ -114,4 +114,5 @@ C:\Haunted_Housekeeping\src\Utils\ImageUtils.java
 C:\Haunted_Housekeeping\src\Utils\MathUtils.java
 C:\Haunted_Housekeeping\src\Utils\Point.java
 C:\Haunted_Housekeeping\src\Utils\PrintUtils.java
+C:\Haunted_Housekeeping\src\Maps\LibraryMap.java
 C:\Haunted_Housekeeping\src\Utils\Visibility.java
