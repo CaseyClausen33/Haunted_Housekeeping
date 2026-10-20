@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class LobbyPuzzleScript extends Script {
 
     private boolean solvedBefore = false;
+    
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -27,8 +28,9 @@ public class LobbyPuzzleScript extends Script {
                 boolean prerequisitesMet =
                         LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("KitchenPuzzleSolved")
                         && LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("BathroomPuzzleSolved")
-                        && LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("LibraryPuzzleSolved");
-                if (!solvedBefore && prerequisitesMet) {
+                        && LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("LibraryPuzzleSolved")
+                        && LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("BedroomPuzzleSolved");
+                if (!solvedBefore && prerequisitesMet ) {
                     LobbyPuzzle.launch();
                 }
                 return ScriptState.COMPLETED;
@@ -52,6 +54,7 @@ public class LobbyPuzzleScript extends Script {
                     MapTile stairsTile = LobbyPuzzleScript.this.map.getTileset().getTile(33)
                             .build(oldTile.getX(), oldTile.getY());
                     LobbyPuzzleScript.this.map.setMapTile(11, 5, stairsTile);
+                    LobbyPuzzleScript.this.map.getFlagManager().setFlag("FinalRoomReady");
                 }
                 return ScriptState.COMPLETED;
             }

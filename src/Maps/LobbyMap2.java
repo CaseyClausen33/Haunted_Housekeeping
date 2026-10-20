@@ -35,7 +35,7 @@ public class LobbyMap2 extends Map {
     getMapTile(22, 1).setInteractScript(new ChangeMapScript(BathroomMap2::new));
     getMapTile(2, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
     getMapTile(4, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
-    getMapTile(11,1).setInteractScript(new ChangeMapScript(NewMap::new));
+    getMapTile(11,1).setInteractScript(new ChangeMapScript(FinalRoomMap::new));
 
     // Show the puzzle if it hasn't been solved yet, otherwise show the open archway tile
     // there will be a third case added soon if not all puzzles have been solved yet

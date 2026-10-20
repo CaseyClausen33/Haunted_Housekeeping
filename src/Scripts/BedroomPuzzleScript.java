@@ -1,19 +1,20 @@
 package Scripts;
-import java.util.ArrayList;
 import Level.GameListener;
 import Level.Map;
 import Level.Script;
 import Level.ScriptState;
+import Maps.BedroomMap2;
+import Puzzles.BedroomPuzzle;
 import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
-import Puzzles.BedroomPuzzle;
-import Maps.BedroomMap2;
+import java.util.ArrayList;
 
 public class BedroomPuzzleScript extends Script {
 
     // Was the puzzle already solved when the player started this interaction?
     private boolean solvedBefore = false;
+    private boolean isFinalRoom = false;
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -26,6 +27,11 @@ public class BedroomPuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
+                isFinalRoom = BedroomPuzzleScript.this.map.getFlagManager()
+                        .isFlagSet("FinalRoomReady");
+                if (isFinalRoom) {
+                    BedroomPuzzle.solved = false;
+                }
                 solvedBefore = BedroomPuzzle.solved;
                 if (!solvedBefore) {
                     BedroomPuzzle.launch();
@@ -48,7 +54,10 @@ public class BedroomPuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
-                if (BedroomPuzzle.solved && !solvedBefore) {
+                if (BedroomPuzzle.solved) {
+                    BedroomPuzzleScript.this.map.getFlagManager().setFlag("BedroomPuzzleSolved");
+                }
+                if (BedroomPuzzle.solved && !solvedBefore && !isFinalRoom) {
                     Map nextMap = new BedroomMap2();
                     for (GameListener listener : BedroomPuzzleScript.this.listeners) {
                         listener.onMapChange(nextMap);

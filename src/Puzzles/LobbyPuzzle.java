@@ -133,9 +133,8 @@ public class LobbyPuzzle extends JFrame {
         /*
          * Shuffle by making legal moves.
          * This guarantees that the puzzle remains solvable.
-        * IMPORTANT: THIS IS BEING CHANGED TO 5 MOVES FOR TESTING PURPOSES. CHANGE BACK TO 150 WHEN IT'S TIME TO PUSH THE CODE.
          */
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 150; i++) {
             int[] possibleMoves = getPossibleMoves();
             int randomPosition = possibleMoves[random.nextInt(possibleMoves.length)];
 
