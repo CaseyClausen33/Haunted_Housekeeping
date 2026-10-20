@@ -66,6 +66,11 @@ public abstract class Player extends GameObject {
             lastAmountMovedX = super.moveXHandleCollision(moveAmountX);
         }
 
+        if (!keyLocker.isKeyLocked(Key.R) && Keyboard.isKeyDown(Key.R)) {
+            keyLocker.lockKey(Key.R);
+            map.printInteractionCoordinates(this);
+        }
+
         handlePlayerAnimation();
 
         updateLockedKeys();
@@ -155,6 +160,9 @@ public abstract class Player extends GameObject {
     protected void updateLockedKeys() {
         if (Keyboard.isKeyUp(INTERACT_KEY) && !isLocked) {
             keyLocker.unlockKey(INTERACT_KEY);
+        }
+        if (Keyboard.isKeyUp(Key.R)) {
+            keyLocker.unlockKey(Key.R);
         }
     }
 

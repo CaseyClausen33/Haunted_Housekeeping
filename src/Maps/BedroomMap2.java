@@ -8,6 +8,7 @@ import NPCs.BedroomGhost;
 import Tilesets.BedroomTileset;
 import Tilesets.CleanBedroomTileset;
 import Scripts.ChangeMapScript;
+import Scripts.SimpleTextScript;
 import Scripts.TestMap.BedroomGhostScriptRestored;
 import Scripts.TestMap.BedroomGhostScript;
 import Scripts.BedroomPuzzleScript;
@@ -28,7 +29,7 @@ public class BedroomMap2 extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
         
-        BedroomGhost bedroomGhost = new BedroomGhost(1, getMapTile(9, 3).getLocation().subtractX(30).subtractY(30));
+        BedroomGhost bedroomGhost = new BedroomGhost(1, getMapTile(7, 3).getLocation().subtractX(30).subtractY(30));
         if(BedroomPuzzle.solved) {
             bedroomGhost.setInteractScript(new BedroomGhostScriptRestored());    
         } else {
@@ -41,6 +42,10 @@ public class BedroomMap2 extends Map {
     @Override 
     public void loadScripts() {
         getMapTile(2, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
-        getMapTile(6, 2).setInteractScript(new BedroomPuzzleScript());
+        getMapTile(5, 4).setInteractScript(new BedroomPuzzleScript());
+
+        getMapTile(1, 5).setInteractScript(new SimpleTextScript("A rideable plastic horse toy for a young child, \n some of the paint is scratched off."));
+        getMapTile(6, 4).setInteractScript(new SimpleTextScript("A pair of comfy-looking fur slippers, \n they must belong to the ghost here, \n but you're not sure how he puts them on."));
+        getMapTile(5, 3).setInteractScript(new SimpleTextScript("The sheets are a mess, it looks like that ghost \n has been sleeping here for a long time."));
     }
 }

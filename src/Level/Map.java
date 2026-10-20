@@ -438,6 +438,30 @@ public abstract class Map {
     }
 
     public void entityInteract(Player player) {
+        MapEntity interactedEntity = findInteractedEntity(player);
+        if (interactedEntity != null) {
+            setActiveScript(interactedEntity.getInteractScript());
+        }
+    }
+
+    public void printInteractionCoordinates(Player player) {
+        Rectangle playerBounds = player.getBounds();
+        Point playerTile = getTileIndexByPosition(
+                playerBounds.getX1() + playerBounds.getWidth() / 2,
+                playerBounds.getY1() + playerBounds.getHeight() / 2);
+        int targetX = Math.round(playerTile.x);
+        int targetY = Math.round(playerTile.y);
+
+        if (player.getFacingDirection() == Direction.LEFT) {
+            targetX--;
+        } else if (player.getFacingDirection() == Direction.RIGHT) {
+            targetX++;
+        }
+
+        System.out.println("Interaction target tile: (" + targetX + ", " + targetY + ")");
+    }
+
+    private MapEntity findInteractedEntity(Player player) {
         ArrayList<MapEntity> surroundingMapEntities = getSurroundingMapEntities(player);
         ArrayList<MapEntity> playerTouchingMapEntities = new ArrayList<>();
         for (MapEntity mapEntity : surroundingMapEntities) {
@@ -465,9 +489,7 @@ public abstract class Map {
             }
             interactedEntity = currentLargestAreaOverlappedEntity;
         }
-        if (interactedEntity != null) {
-            setActiveScript(interactedEntity.getInteractScript());
-        }
+        return interactedEntity;
     }
 
     private boolean isInteractedEntityValid(MapEntity interactedEntity, Player player) {

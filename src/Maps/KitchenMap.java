@@ -11,6 +11,7 @@ import NPCs.KitchenGhost;
 import Puzzles.KitchenPuzzle;
 import Scripts.KitchenExitScript;
 import Scripts.KitchenPuzzleScript;
+import Scripts.SimpleTextScript;
 import Scripts.TestMap.KitchenGhostScript;
 import Scripts.TestMap.KitchenGhostScriptRestored;
 
@@ -28,15 +29,19 @@ public class KitchenMap extends Map {
 
     @Override
     public void loadScripts() {
-        getMapTile(2, 9).setInteractScript(new KitchenPuzzleScript());
+        getMapTile(3, 2).setInteractScript(new KitchenPuzzleScript());
         getMapTile(17, 1).setInteractScript(new KitchenExitScript());
+
+        getMapTile(8, 2).setInteractScript(new SimpleTextScript("You open to fridge to find that it is still \nstocked with foods of all kinds."));
+        getMapTile(16, 4).setInteractScript(new SimpleTextScript("The cauldron seems to be the only functioning thing \nin this kitchen, brewing a soup in a greenish color \nyou don't find too appetizing."));
+        getMapTile(1, 5).setInteractScript(new SimpleTextScript("The drawer is stuffed with cookbooks from all \naround the world."));
     }
 
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        KitchenGhost ghost = new KitchenGhost(3, getMapTile(4, 7).getLocation().subtractX(20));
+        KitchenGhost ghost = new KitchenGhost(3, getMapTile(6, 3).getLocation().subtractX(20));
         if(KitchenPuzzle.solved) {
             ghost.setInteractScript(new KitchenGhostScriptRestored());
         } else {

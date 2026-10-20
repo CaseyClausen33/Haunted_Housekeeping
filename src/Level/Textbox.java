@@ -28,27 +28,27 @@ public class Textbox {
     protected final int fontBottomY = 472;
     protected final int fontTopY = 34;
     protected final int width = 750;
-    protected final int height = 100;
+    protected final int height = 200;
 
     // options textbox constants
     protected final int optionX = 350;
-    protected final int optionBottomY = 350;
-    protected final int optionTopY = 130;
+    protected final int optionBottomY = 400;
+    protected final int optionTopY = 250;
     protected final int optionWidth = 420;
     protected final int optionHeight = 100;
     protected final int fontOptionX = 380;
-    protected final int fontOptionBottomYStart = 360;
-    protected final int fontOptionTopYStart = 145;
+    protected final int fontOptionBottomYStart = 430;
+    protected final int fontOptionTopYStart = 260;
     protected final int optionPointerX = 360;
-    protected final int optionPointerYBottomStart = 373;
-    protected final int optionPointerYTopStart = 158;
+    protected final int optionPointerYBottomStart = 430;
+    protected final int optionPointerYTopStart = 260;
 
     // spacing/font size range used to fit a variable number of options in the fixed-size options box
     // when there are 2 or fewer options, the max values are used (this matches the original look/feel)
     // as more options are added, spacing and font size shrink (down to the min values) so everything still fits
-    protected final int maxFontOptionSpacing = 35;
+    protected final int maxFontOptionSpacing = 20;
     protected final int minFontOptionSpacing = 16;
-    protected final int maxOptionFontSize = 25;
+    protected final int maxOptionFontSize = 15;
     protected final int minOptionFontSize = 10;
 
     // current spacing/font size, recalculated each time a new options list is displayed
@@ -115,19 +115,11 @@ public class Textbox {
             currentTextItem = textQueue.peek();
             options = null;
 
-            // if camera is at bottom of screen, text is drawn at top of screen instead of the bottom like usual
-            // to prevent it from covering the player
-            int fontY = !map.getCamera().isAtBottomOfMap() ? fontBottomY : fontTopY;
-  
             // create text spritefont that will be drawn in textbox
-            text = new SpriteFont(currentTextItem.getText(), fontX, fontY, "Arial", 30, Color.black);
+            text = new SpriteFont(currentTextItem.getText(), fontX, fontTopY, "Arial", 30, Color.black);
 
             // if there are options associated with this text item, prepare option spritefont text to be drawn in options textbox
             if (currentTextItem.getOptions() != null) {
-                // if camera is at bottom of screen, text is drawn at top of screen instead of the bottom like usual
-                // to prevent it from covering the player
-                int fontOptionY = !map.getCamera().isAtBottomOfMap() ? fontOptionBottomYStart : fontOptionTopYStart;
-
                 int numOptions = currentTextItem.getOptions().size();
 
                 // shrink spacing and font size as more options are added so they all still fit in the fixed-size options box
@@ -142,7 +134,7 @@ public class Textbox {
                 options = new ArrayList<>();
                 // for each option, create option text spritefont that will be drawn in options textbox
                 for (int i = 0; i < numOptions; i++) {
-                    options.add(new SpriteFont(currentTextItem.options.get(i), fontOptionX, fontOptionY + (i * fontOptionSpacing), "Arial", optionFontSize, Color.black));
+                    options.add(new SpriteFont(currentTextItem.options.get(i), fontOptionX, fontOptionTopYStart + (i * fontOptionSpacing), "Arial", optionFontSize, Color.black));
                 }
                 selectedOptionIndex = 0;
             }
@@ -186,32 +178,22 @@ public class Textbox {
     }
 
     public void draw(GraphicsHandler graphicsHandler) {
-        // draw textbox
-        // if camera is at bottom of screen, textbox is drawn at top of screen instead of the bottom like usual
-        // to prevent it from covering the player
-        int y = !map.getCamera().isAtBottomOfMap() ? bottomY : topY;
-        graphicsHandler.drawFilledRectangleWithBorder(x, y, width, height, Color.white, Color.black, 2);
+        graphicsHandler.drawFilledRectangleWithBorder(x, topY, width, height, Color.white, Color.black, 2);
 
         if (text != null) {
             // draw text in textbox
             text.drawWithParsedNewLines(graphicsHandler, 10);
             
             if (options != null) {
-                // draw options textbox
-                // if camera is at bottom of screen, textbox is drawn at top of screen instead of the bottom like usual
-                // to prevent it from covering the player
-                int optionY = !map.getCamera().isAtBottomOfMap() ? optionBottomY : optionTopY;
-                graphicsHandler.drawFilledRectangleWithBorder(optionX, optionY, optionWidth, optionHeight, Color.white, Color.black, 2);
+                graphicsHandler.drawFilledRectangleWithBorder(optionX, optionTopY, optionWidth, optionHeight, Color.white, Color.black, 2);
 
                 // draw each option text
                 for (SpriteFont option : options) {
                     option.draw(graphicsHandler);
                 }
 
-                // the start y location of the option pointer depends on whether the options textbox is on top or bottom of screen
-                int optionPointerYStart = !map.getCamera().isAtBottomOfMap() ? optionPointerYBottomStart : optionPointerYTopStart;
                 // draw option selection indicator (small black rectangle)
-                graphicsHandler.drawFilledRectangle(optionPointerX, optionPointerYStart + (selectedOptionIndex * fontOptionSpacing), 10, 10, Color.black);
+                graphicsHandler.drawFilledRectangle(optionPointerX, optionPointerYTopStart + (selectedOptionIndex * fontOptionSpacing), 10, 10, Color.black);
             }
         }
     }

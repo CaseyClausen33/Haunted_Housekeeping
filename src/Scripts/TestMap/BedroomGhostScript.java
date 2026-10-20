@@ -87,7 +87,7 @@ public class BedroomGhostScript extends Script {
                 });
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Oh.... yawn... thanks...");
+                    addText("Oh.... yawn... thanks... it's in the drawer \n in front of my bed... yawn...");
                 }});
             }});
         }});
