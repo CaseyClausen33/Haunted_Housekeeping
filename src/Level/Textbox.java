@@ -4,9 +4,12 @@ import Engine.GraphicsHandler;
 import Engine.Key;
 import Engine.KeyLocker;
 import Engine.Keyboard;
+import Engine.ScreenManager;
 import SpriteFont.SpriteFont;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -14,46 +17,49 @@ import java.util.Queue;
 // Represents the game's textbox
 // Will display the text it is given to its textQueue
 // Each String in the textQueue will be displayed in the textbox, and hitting the interact key will cycle between additional Strings in the queue
-// Use the newline character in a String in the textQueue to break the text up into a second line if needed
+// Long lines are wrapped automatically, and the box grows (and optionally shrinks) to fit its text.
+// A newline character in a String still forces a line break.
 // Also supports adding options for a player to select from
 public class Textbox {
+
+    // ---------------------------------------------------------------------------------------------
+    // Look and feel: change these to restyle every textbox in the game
+    // ---------------------------------------------------------------------------------------------
+    // Font: either a font installed on the machine (a name like "Serif", "Georgia", "Palatino Linotype") or a
+    // .ttf file shipped with the game. If FONT_FILE is not null and loads, it wins; otherwise FONT_NAME is used.
+    private static final String FONT_NAME = "Serif";
+    private static final String FONT_FILE = null;              // e.g. "Resources/Fonts/MyFont.ttf"
+    private static final int FONT_STYLE = Font.BOLD;
+    private static final int FONT_SIZE = 24;
+    private static final int LINE_GAP = 8;                      // extra pixels between lines
+
+    private static final Color TEXT_COLOR = new Color(236, 222, 195);
+    private static final Color BOX_FILL = new Color(25, 22, 30);
+    private static final Color BOX_BORDER = new Color(150, 120, 150);
+    private static final int BORDER_THICKNESS = 3;
+
+    // Box sizing
+    private static final int PADDING = 16;                      // space between the border and the text
+    private static final int MIN_WIDTH = 260;
+    private static final int MAX_WIDTH = 750;
+    private static final int MIN_HEIGHT = 70;
+    private static final boolean SHRINK_WIDTH_TO_TEXT = true;   // false = always MAX_WIDTH wide, like the original box
+
+    // Placement (the box sits at the bottom of the screen, or the top when the camera is at the bottom of the map)
+    private static final int BOTTOM_MARGIN = 40;
+    private static final int TOP_MARGIN = 22;
+
+    // Options box (the choices a player can pick between)
+    private static final int OPTION_MIN_WIDTH = 92;
+    private static final int OPTION_SPACING = FONT_SIZE + 10;
+    private static final int OPTION_POINTER_SIZE = 10;
+    private static final int OPTION_GAP_FROM_TEXTBOX = 10;
+
+    private static final Font FONT = loadFont();
+    private static final FontRenderContext FRC = new FontRenderContext(null, true, true);
+
     // whether textbox is shown or not
     protected boolean isActive;
-
-    // textbox constants
-    protected final int x = 22;
-    protected final int bottomY = 460;
-    protected final int topY = 22;
-    protected final int fontX = 35;
-    protected final int fontBottomY = 472;
-    protected final int fontTopY = 34;
-    protected final int width = 750;
-    protected final int height = 200;
-
-    // options textbox constants
-    protected final int optionX = 350;
-    protected final int optionBottomY = 400;
-    protected final int optionTopY = 250;
-    protected final int optionWidth = 420;
-    protected final int optionHeight = 100;
-    protected final int fontOptionX = 380;
-    protected final int fontOptionBottomYStart = 430;
-    protected final int fontOptionTopYStart = 260;
-    protected final int optionPointerX = 360;
-    protected final int optionPointerYBottomStart = 430;
-    protected final int optionPointerYTopStart = 260;
-
-    // spacing/font size range used to fit a variable number of options in the fixed-size options box
-    // when there are 2 or fewer options, the max values are used (this matches the original look/feel)
-    // as more options are added, spacing and font size shrink (down to the min values) so everything still fits
-    protected final int maxFontOptionSpacing = 20;
-    protected final int minFontOptionSpacing = 16;
-    protected final int maxOptionFontSize = 15;
-    protected final int minOptionFontSize = 10;
-
-    // current spacing/font size, recalculated each time a new options list is displayed
-    private int fontOptionSpacing = maxFontOptionSpacing;
-    private int optionFontSize = maxOptionFontSize;
 
     // core vars that make textbox work
     private Queue<TextboxItem> textQueue;
@@ -64,11 +70,27 @@ public class Textbox {
     private KeyLocker keyLocker = new KeyLocker();
     private Key interactKey = Key.SPACE;
 
+    // layout of the current text item (recalculated every time a new item is shown)
+    private int boxX, boxY, boxWidth, boxHeight;
+    private boolean drawnAtBottom = true;
+    private int optionX, optionY, optionWidth, optionHeight;
+
     private Map map;
 
     public Textbox(Map map) {
         this.map = map;
         this.textQueue = new LinkedList<>();
+    }
+
+    private static Font loadFont() {
+        if (FONT_FILE != null) {
+            try {
+                return Font.createFont(Font.TRUETYPE_FONT, new File(FONT_FILE)).deriveFont(FONT_STYLE, (float) FONT_SIZE);
+            } catch (Exception e) {
+                System.out.println("Textbox: could not load " + FONT_FILE + ", using " + FONT_NAME + " instead");
+            }
+        }
+        return new Font(FONT_NAME, FONT_STYLE, FONT_SIZE);
     }
 
     public void addText(String text) {
@@ -115,30 +137,13 @@ public class Textbox {
             currentTextItem = textQueue.peek();
             options = null;
 
-            // create text spritefont that will be drawn in textbox
-            text = new SpriteFont(currentTextItem.getText(), fontX, fontTopY, "Arial", 30, Color.black);
+            layoutText(currentTextItem.getText());
 
-            // if there are options associated with this text item, prepare option spritefont text to be drawn in options textbox
+            // if there are options associated with this text item, prepare the option text and box
             if (currentTextItem.getOptions() != null) {
-                int numOptions = currentTextItem.getOptions().size();
-
-                // shrink spacing and font size as more options are added so they all still fit in the fixed-size options box
-                fontOptionSpacing = numOptions <= 2
-                        ? maxFontOptionSpacing
-                        : Math.max(minFontOptionSpacing, maxFontOptionSpacing - ((numOptions - 2) * 5));
-
-                optionFontSize = numOptions <= 2
-                        ? maxOptionFontSize
-                        : Math.max(minOptionFontSize, maxOptionFontSize - ((numOptions - 2) * 4));
-
-                options = new ArrayList<>();
-                // for each option, create option text spritefont that will be drawn in options textbox
-                for (int i = 0; i < numOptions; i++) {
-                    options.add(new SpriteFont(currentTextItem.options.get(i), fontOptionX, fontOptionTopYStart + (i * fontOptionSpacing), "Arial", optionFontSize, Color.black));
-                }
+                layoutOptions(currentTextItem.getOptions());
                 selectedOptionIndex = 0;
             }
-
         }
         // if interact key is pressed, remove the current text from the queue to prepare for the next text item to be displayed
         if (Keyboard.isKeyDown(interactKey) && !keyLocker.isKeyLocked(interactKey)) {
@@ -177,24 +182,95 @@ public class Textbox {
         }
     }
 
-    public void draw(GraphicsHandler graphicsHandler) {
-        graphicsHandler.drawFilledRectangleWithBorder(x, topY, width, height, Color.white, Color.black, 2);
+    // wraps the text to the box width, works out how big the box needs to be, and creates the text to draw
+    private void layoutText(String rawText) {
+        int maxTextWidth = MAX_WIDTH - 2 * PADDING - 6;   // small safety margin: wrapping is measured, drawing may differ by a pixel or two
+        ArrayList<String> lines = wrap(rawText, maxTextWidth);
 
-        if (text != null) {
-            // draw text in textbox
-            text.drawWithParsedNewLines(graphicsHandler, 10);
-            
-            if (options != null) {
-                graphicsHandler.drawFilledRectangleWithBorder(optionX, optionTopY, optionWidth, optionHeight, Color.white, Color.black, 2);
+        double widest = 0;
+        for (String line : lines) {
+            widest = Math.max(widest, FONT.getStringBounds(line, FRC).getWidth());
+        }
 
-                // draw each option text
-                for (SpriteFont option : options) {
-                    option.draw(graphicsHandler);
+        int contentWidth = (int) Math.ceil(widest) + 2 * PADDING + 6;
+        boxWidth = SHRINK_WIDTH_TO_TEXT ? Math.max(MIN_WIDTH, Math.min(MAX_WIDTH, contentWidth)) : MAX_WIDTH;
+
+        int lineAdvance = FONT_SIZE + LINE_GAP;
+        int textHeight = lines.size() * lineAdvance - LINE_GAP + 6;   // +6 leaves room for letters that hang below the line (g, y, p)
+        boxHeight = Math.max(MIN_HEIGHT, textHeight + 2 * PADDING);
+
+        boxX = (ScreenManager.getScreenWidth() - boxWidth) / 2;
+
+        // if camera is at bottom of map, textbox is drawn at top of screen instead of the bottom like usual
+        // to prevent it from covering the player
+        drawnAtBottom = !map.getCamera().isAtBottomOfMap();
+        boxY = drawnAtBottom ? ScreenManager.getScreenHeight() - BOTTOM_MARGIN - boxHeight : TOP_MARGIN;
+
+        int textY = boxY + (boxHeight - textHeight) / 2;
+        text = new SpriteFont(String.join("\n", lines), boxX + PADDING, textY, FONT, TEXT_COLOR);
+    }
+
+    private void layoutOptions(ArrayList<String> optionTexts) {
+        double widest = 0;
+        for (String option : optionTexts) {
+            widest = Math.max(widest, FONT.getStringBounds(option, FRC).getWidth());
+        }
+        int pointerSpace = OPTION_POINTER_SIZE + 14;
+        optionWidth = Math.max(OPTION_MIN_WIDTH, (int) Math.ceil(widest) + 2 * PADDING + pointerSpace);
+        optionHeight = optionTexts.size() * OPTION_SPACING + 2 * PADDING - 10;
+
+        // the options box sits just above the textbox (or just below it when the textbox is at the top), lined up with its right edge
+        optionX = boxX + boxWidth - optionWidth;
+        optionY = drawnAtBottom ? boxY - optionHeight - OPTION_GAP_FROM_TEXTBOX : boxY + boxHeight + OPTION_GAP_FROM_TEXTBOX;
+
+        options = new ArrayList<>();
+        for (int i = 0; i < optionTexts.size(); i++) {
+            options.add(new SpriteFont(optionTexts.get(i), optionX + PADDING + pointerSpace, optionY + PADDING - 4 + i * OPTION_SPACING, FONT, TEXT_COLOR));
+        }
+    }
+
+    // splits text into lines no wider than maxWidth pixels, keeping any line breaks that were already in the text
+    private ArrayList<String> wrap(String rawText, int maxWidth) {
+        ArrayList<String> lines = new ArrayList<>();
+        for (String paragraph : rawText.split("\n", -1)) {
+            String current = "";
+            for (String word : paragraph.split(" ")) {
+                String attempt = current.isEmpty() ? word : current + " " + word;
+                if (current.isEmpty() || FONT.getStringBounds(attempt, FRC).getWidth() <= maxWidth) {
+                    current = attempt;
+                } else {
+                    lines.add(current);
+                    current = word;
                 }
-
-                // draw option selection indicator (small black rectangle)
-                graphicsHandler.drawFilledRectangle(optionPointerX, optionPointerYTopStart + (selectedOptionIndex * fontOptionSpacing), 10, 10, Color.black);
             }
+            lines.add(current);
+        }
+        return lines;
+    }
+
+    public void draw(GraphicsHandler graphicsHandler) {
+        if (text == null) {
+            return;
+        }
+
+        // draw textbox
+        graphicsHandler.drawFilledRectangleWithBorder(boxX, boxY, boxWidth, boxHeight, BOX_FILL, BOX_BORDER, BORDER_THICKNESS);
+
+        // draw text in textbox
+        text.drawWithParsedNewLines(graphicsHandler, LINE_GAP);
+
+        if (options != null) {
+            // draw options textbox
+            graphicsHandler.drawFilledRectangleWithBorder(optionX, optionY, optionWidth, optionHeight, BOX_FILL, BOX_BORDER, BORDER_THICKNESS);
+
+            // draw each option text
+            for (SpriteFont option : options) {
+                option.draw(graphicsHandler);
+            }
+
+            // draw option selection indicator (small square)
+            int pointerY = optionY + PADDING + 4 + selectedOptionIndex * OPTION_SPACING;
+            graphicsHandler.drawFilledRectangle(optionX + PADDING, pointerY, OPTION_POINTER_SIZE, OPTION_POINTER_SIZE, TEXT_COLOR);
         }
     }
 
