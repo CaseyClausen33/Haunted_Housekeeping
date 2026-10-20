@@ -31,15 +31,15 @@ public class Textbox {
     protected final int height = 100;
 
     // options textbox constants
-    protected final int optionX = 680;
+    protected final int optionX = 350;
     protected final int optionBottomY = 350;
     protected final int optionTopY = 130;
-    protected final int optionWidth = 92;
+    protected final int optionWidth = 420;
     protected final int optionHeight = 100;
-    protected final int fontOptionX = 706;
+    protected final int fontOptionX = 380;
     protected final int fontOptionBottomYStart = 360;
     protected final int fontOptionTopYStart = 145;
-    protected final int optionPointerX = 690;
+    protected final int optionPointerX = 360;
     protected final int optionPointerYBottomStart = 373;
     protected final int optionPointerYTopStart = 158;
 

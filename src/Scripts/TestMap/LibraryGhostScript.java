@@ -31,7 +31,7 @@ public class LibraryGhostScript extends Script {
                 });
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Yes, it’s just all the books on this shelf toppled over when I was trying to put them back. ");
+                    addText("Yes, it’s just all the books on this shelf toppled \n over when I was trying to put them back. ");
                 }});
             }});
 
@@ -44,14 +44,14 @@ public class LibraryGhostScript extends Script {
                     }
                 });
                 
-                addScriptAction(new TextboxScriptAction("Oh, just a collection for the hotel's patrons... if we ever got any, that is."));
+                addScriptAction(new TextboxScriptAction("Oh, just a collection for the hotel's patrons... \n if we ever got any, that is."));
             }});
 
             
         }});
 
         scriptActions.add(new TextboxScriptAction() {{
-                    addText("It’s going to take me so long to put everything back in place... ", new String[] { "I can help, where are the books?", "What happened to the library?", "Let me have a look around" });
+                    addText("It’s going to take me so long to put everything \n back in place... ", new String[] { "I can help, where are the books?", "What happened to the library?", "Let me have a look around" });
                 }});
         
 
@@ -66,7 +66,7 @@ public class LibraryGhostScript extends Script {
                 });
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Oh, thank you, stranger! They’re just over there, in front of this bookshelf to my left.  ");
+                    addText("Oh, thank you, stranger! They’re just over \n there, in front of this bookshelf to my left.  ");
                 }});
             }});
 
@@ -79,7 +79,7 @@ public class LibraryGhostScript extends Script {
                     }
                 });
                 
-                addScriptAction(new TextboxScriptAction("Nobody’s wanted to come here in years... it’s been left to me to ensure these books are properly cared for, but it’s been difficult sometimes. "));
+                addScriptAction(new TextboxScriptAction("Nobody’s wanted to come here in years... \n it’s been left to me to ensure these books are \n properly cared for, but it’s been difficult sometimes. "));
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
@@ -91,9 +91,8 @@ public class LibraryGhostScript extends Script {
                     }
                 });
                 
-                addScriptAction(new TextboxScriptAction("Alright... I hope you find what you’re looking for... "));
+                addScriptAction(new TextboxScriptAction("Alright... I hope you find what you’re looking \n for... "));
             }});
-            int answer = outputManager.getFlagData("TEXTBOX_OPTION_SELECTION");
         }});
 
         scriptActions.add(new NPCUnlockScriptAction());
@@ -102,4 +101,3 @@ public class LibraryGhostScript extends Script {
         return scriptActions;
     }
 }
-

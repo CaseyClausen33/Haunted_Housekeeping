@@ -3,11 +3,11 @@ package Maps;
 import Level.Map;
 import Level.MapTile;
 import Level.NPC;
-import NPCs.Ghost;
+import NPCs.LobbyGhost;
 import Puzzles.LobbyPuzzle;
 import Scripts.ChangeMapScript;
 import Scripts.LobbyPuzzleScript;
-import Scripts.TestMap.GhostScript;
+import Scripts.TestMap.LobbyGhostScript;
 import Tilesets.LobbyTileset2;
 import java.util.ArrayList;
 
@@ -22,8 +22,8 @@ public class LobbyMap2 extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
         
-        Ghost ghost = new Ghost(1, getMapTile(5, 11).getLocation().subtractX(30).subtractY(30));
-        ghost.setInteractScript(new GhostScript());
+        LobbyGhost ghost = new LobbyGhost(1, getMapTile(5, 11).getLocation().subtractX(30).subtractY(30));
+        ghost.setInteractScript(new LobbyGhostScript());
         npcs.add(ghost);
         return npcs;
     }
