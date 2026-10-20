@@ -29,7 +29,7 @@ public class BedroomMap2 extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
         
-        BedroomGhost bedroomGhost = new BedroomGhost(1, getMapTile(7, 3).getLocation().subtractX(30).subtractY(30));
+        BedroomGhost bedroomGhost = new BedroomGhost(1, getMapTile(5, 6).getLocation().subtractX(30).subtractY(30));
         if(BedroomPuzzle.solved) {
             bedroomGhost.setInteractScript(new BedroomGhostScriptRestored());    
         } else {

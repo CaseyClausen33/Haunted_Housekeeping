@@ -20,7 +20,7 @@ public class KitchenMap extends Map {
         // Same layout either way; the clean tileset is used once the puzzle is solved
         super("kitchen_map.txt", KitchenPuzzle.solved ? new CleanKitchenTileset() : new KitchenTileset());
         if(KitchenPuzzle.solved) {
-            this.playerStartPosition = getMapTile(1, 9).getLocation();
+            this.playerStartPosition = getMapTile(3, 3).getLocation();
         } else {
             this.playerStartPosition = getMapTile(17, 2).getLocation();
         }
