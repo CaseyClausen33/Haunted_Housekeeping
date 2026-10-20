@@ -133,8 +133,9 @@ public class LobbyPuzzle extends JFrame {
         /*
          * Shuffle by making legal moves.
          * This guarantees that the puzzle remains solvable.
+         * The number of moves should be 150, I am setting it to 5 for testing purposes.
          */
-        for (int i = 0; i < 150; i++) {
+        for (int i = 0; i < 5; i++) {
             int[] possibleMoves = getPossibleMoves();
             int randomPosition = possibleMoves[random.nextInt(possibleMoves.length)];
 

@@ -4,6 +4,7 @@ import Level.GameListener;
 import Level.Map;
 import Level.Script;
 import Level.ScriptState;
+import Maps.FinalRoomMap;
 import Maps.LibraryMap2;
 import Puzzles.Match2Puzzle;
 import ScriptActions.*;
@@ -31,8 +32,7 @@ public class Match2PuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
-                isFinalRoom = Match2PuzzleScript.this.map.getFlagManager()
-                        .isFlagSet("FinalRoomReady");
+                isFinalRoom = Match2PuzzleScript.this.map instanceof FinalRoomMap;
                 if (isFinalRoom) {
                     Match2Puzzle.solved = false;
                 }
@@ -64,6 +64,10 @@ public class Match2PuzzleScript extends Script {
             public ScriptState execute() {
                 if (Match2Puzzle.solved) {
                     Match2PuzzleScript.this.map.getFlagManager().setFlag("LibraryPuzzleSolved");
+                    FinalRoomCompletionScript.recordSolved(
+                            Match2PuzzleScript.this.map,
+                            "FinalLibraryPuzzleSolved",
+                            Match2PuzzleScript.this.listeners);
                 }
 
                 if (Match2Puzzle.solved && !solvedBefore && !isFinalRoom) {

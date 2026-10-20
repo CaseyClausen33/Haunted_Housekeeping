@@ -29,11 +29,15 @@ public class PlayLevelScreen extends Screen implements GameListener {
         flagManager.addFlag("BedroomPuzzleSolved", false); 
         flagManager.addFlag("KitchenPuzzleSolved", false);
         flagManager.addFlag("LibraryPuzzleSolved", false);
+
         flagManager.addFlag("FinalRoomReady", false);
-        // flagManager.addFlag("hasLostBall", false);
-        // flagManager.addFlag("hasTalkedToWalrus", false);
-        // flagManager.addFlag("hasTalkedToDinosaur", false);
-        // flagManager.addFlag("hasFoundBall", false);
+
+        flagManager.addFlag("FinalBathroomPuzzleSolved", false);
+        flagManager.addFlag("FinalBedroomPuzzleSolved", false);
+        flagManager.addFlag("FinalKitchenPuzzleSolved", false);
+        flagManager.addFlag("FinalLibraryPuzzleSolved", false);
+        flagManager.addFlag("FinalRoomWinTriggered", false);
+        
 
         // define/setup map
         //map = new TestMap();
