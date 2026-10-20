@@ -7,7 +7,6 @@ import Game.ScreenCoordinator;
 import Level.*;
 import Maps.*;
 import Players.Character;
-import Utils.Direction;
 import Scripts.IntroCutsceneScript;
 
 // This class is for when the RPG game is actually being played
@@ -30,6 +29,7 @@ public class PlayLevelScreen extends Screen implements GameListener {
         flagManager.addFlag("BedroomPuzzleSolved", false); 
         flagManager.addFlag("KitchenPuzzleSolved", false);
         flagManager.addFlag("LibraryPuzzleSolved", false);
+        flagManager.addFlag("FinalRoomReady", false);
         // flagManager.addFlag("hasLostBall", false);
         // flagManager.addFlag("hasTalkedToWalrus", false);
         // flagManager.addFlag("hasTalkedToDinosaur", false);

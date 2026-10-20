@@ -13,6 +13,7 @@ public class Match2PuzzleScript extends Script {
 
     // Was the puzzle already solved when the player started this interaction?
     private boolean solvedBefore = false;
+    private boolean isFinalRoom = false;
 
     // True once the player has beaten the puzzle.
     public static boolean isSolved() {
@@ -30,6 +31,11 @@ public class Match2PuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
+                isFinalRoom = Match2PuzzleScript.this.map.getFlagManager()
+                        .isFlagSet("FinalRoomReady");
+                if (isFinalRoom) {
+                    Match2Puzzle.solved = false;
+                }
                 solvedBefore = Match2Puzzle.solved;
 
                 if (!solvedBefore) {
@@ -60,7 +66,7 @@ public class Match2PuzzleScript extends Script {
                     Match2PuzzleScript.this.map.getFlagManager().setFlag("LibraryPuzzleSolved");
                 }
 
-                if (Match2Puzzle.solved && !solvedBefore) {
+                if (Match2Puzzle.solved && !solvedBefore && !isFinalRoom) {
 
                     Map nextMap = new LibraryMap2();
 

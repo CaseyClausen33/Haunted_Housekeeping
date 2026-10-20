@@ -13,6 +13,7 @@ public class BathroomPuzzleScript extends Script {
 
     // Was the puzzle already solved when the player started this interaction?
     private boolean solvedBefore = false;
+    private boolean isFinalRoom = false;
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -25,6 +26,11 @@ public class BathroomPuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
+                isFinalRoom = BathroomPuzzleScript.this.map.getFlagManager()
+                        .isFlagSet("FinalRoomReady");
+                if (isFinalRoom) {
+                    BathroomPuzzle.solved = false;
+                }
                 solvedBefore = BathroomPuzzle.solved;
                 if (!solvedBefore) {
                     BathroomPuzzle.launch();
@@ -51,7 +57,7 @@ public class BathroomPuzzleScript extends Script {
                     BathroomPuzzleScript.this.map.getFlagManager().setFlag("BathroomPuzzleSolved");
                 }
 
-                if (BathroomPuzzle.solved && !solvedBefore) {
+                if (BathroomPuzzle.solved && !solvedBefore && !isFinalRoom) {
                     Map nextMap = new BathroomMap2();
                     for (GameListener listener : BathroomPuzzleScript.this.listeners) {
                         listener.onMapChange(nextMap);

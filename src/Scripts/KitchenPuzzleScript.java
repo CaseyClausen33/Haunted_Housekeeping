@@ -13,6 +13,7 @@ public class KitchenPuzzleScript extends Script {
 
     // Was the puzzle already solved when the player started this interaction?
     private boolean solvedBefore = false;
+    private boolean isFinalRoom = false;
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -25,6 +26,11 @@ public class KitchenPuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
+                isFinalRoom = KitchenPuzzleScript.this.map.getFlagManager()
+                        .isFlagSet("FinalRoomReady");
+                if (isFinalRoom) {
+                    KitchenPuzzle.solved = false;
+                }
                 solvedBefore = KitchenPuzzle.solved;
                 if (!solvedBefore) {
                     KitchenPuzzle.launch();
@@ -51,7 +57,7 @@ public class KitchenPuzzleScript extends Script {
                     KitchenPuzzleScript.this.map.getFlagManager().setFlag("KitchenPuzzleSolved");
                 }
 
-                if (KitchenPuzzle.solved && !solvedBefore) {
+                if (KitchenPuzzle.solved && !solvedBefore && !isFinalRoom) {
                     Map nextMap = new KitchenMap();
                     for (GameListener listener : KitchenPuzzleScript.this.listeners) {
                         listener.onMapChange(nextMap);

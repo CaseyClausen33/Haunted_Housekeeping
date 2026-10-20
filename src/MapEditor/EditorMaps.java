@@ -1,17 +1,17 @@
 package MapEditor;
 
 import Level.Map;
+import Maps.BathroomMap2;
+import Maps.BedroomMap2;
+import Maps.CleanKitchenMap;
+import Maps.FinalRoomMap;
+import Maps.KitchenMap;
+import Maps.LibraryMap2;
+import Maps.LobbyMap2;
+import Maps.NewMap;
+import Maps.OutsideMap;
 import Maps.TestMap;
 import Maps.TitleScreenMap;
-import Maps.LibraryMap2;
-import Maps.NewMap;
-import Maps.KitchenMap;
-import Maps.BathroomMap2;
-import Maps.CleanKitchenMap;
-import Maps.LobbyMap2;
-import Maps.BedroomMap2;
-import Maps.OutsideMap;
-
 import java.util.ArrayList;
 
 public class EditorMaps {
@@ -28,6 +28,7 @@ public class EditorMaps {
             add("LibraryMap2");
             add("BedroomMap2");
             add("OutsideMap");
+            add("FinalRoomMap");
         }};
     }
 
@@ -54,6 +55,8 @@ public class EditorMaps {
                 return new BedroomMap2();
             case "OutsideMap":
                 return new OutsideMap();
+            case "FinalRoomMap":
+                return new FinalRoomMap();
             default:
                 throw new RuntimeException("Unrecognized map name");
         }
