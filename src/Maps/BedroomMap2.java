@@ -1,25 +1,24 @@
 package Maps;
 
-import java.util.ArrayList;
-
 import Level.Map;
 import Level.NPC;
 import NPCs.BedroomGhost;
-import Tilesets.BedroomTileset;
-import Tilesets.CleanBedroomTileset;
+import Puzzles.BedroomPuzzle;
+import Scripts.BedroomPuzzleScript;
 import Scripts.ChangeMapScript;
 import Scripts.SimpleTextScript;
-import Scripts.TestMap.BedroomGhostScriptRestored;
 import Scripts.TestMap.BedroomGhostScript;
-import Scripts.BedroomPuzzleScript;
-import Puzzles.BedroomPuzzle;
+import Scripts.TestMap.BedroomGhostScriptRestored;
+import Tilesets.BedroomTileset;
+import Tilesets.CleanBedroomTileset;
+import java.util.ArrayList;
 
 public class BedroomMap2 extends Map {
 
     public BedroomMap2() {
         super("bedroom_map2.txt", BedroomPuzzle.solved ? new CleanBedroomTileset() : new BedroomTileset());
         if(BedroomPuzzle.solved) {
-            this.playerStartPosition = getMapTile(8, 3).getLocation();
+            this.playerStartPosition = getMapTile(5, 4).getLocation();
         } else {
             this.playerStartPosition = getMapTile(1, 2).getLocation();
         }
@@ -41,7 +40,7 @@ public class BedroomMap2 extends Map {
 
     @Override 
     public void loadScripts() {
-        getMapTile(2, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
+        getMapTile(1, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
         getMapTile(5, 4).setInteractScript(new BedroomPuzzleScript());
 
         getMapTile(1, 5).setInteractScript(new SimpleTextScript("A rideable plastic horse toy for a young child, \n some of the paint is scratched off."));
