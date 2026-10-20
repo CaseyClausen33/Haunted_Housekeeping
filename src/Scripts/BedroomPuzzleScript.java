@@ -4,6 +4,7 @@ import Level.Map;
 import Level.Script;
 import Level.ScriptState;
 import Maps.BedroomMap2;
+import Maps.FinalRoomMap;
 import Puzzles.BedroomPuzzle;
 import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
@@ -27,8 +28,7 @@ public class BedroomPuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
-                isFinalRoom = BedroomPuzzleScript.this.map.getFlagManager()
-                        .isFlagSet("FinalRoomReady");
+                isFinalRoom = BedroomPuzzleScript.this.map instanceof FinalRoomMap;
                 if (isFinalRoom) {
                     BedroomPuzzle.solved = false;
                 }
@@ -56,6 +56,10 @@ public class BedroomPuzzleScript extends Script {
             public ScriptState execute() {
                 if (BedroomPuzzle.solved) {
                     BedroomPuzzleScript.this.map.getFlagManager().setFlag("BedroomPuzzleSolved");
+                    FinalRoomCompletionScript.recordSolved(
+                            BedroomPuzzleScript.this.map,
+                            "FinalBedroomPuzzleSolved",
+                            BedroomPuzzleScript.this.listeners);
                 }
                 if (BedroomPuzzle.solved && !solvedBefore && !isFinalRoom) {
                     Map nextMap = new BedroomMap2();

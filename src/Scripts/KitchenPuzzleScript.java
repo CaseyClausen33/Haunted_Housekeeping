@@ -4,6 +4,7 @@ import Level.GameListener;
 import Level.Map;
 import Level.Script;
 import Level.ScriptState;
+import Maps.FinalRoomMap;
 import Maps.KitchenMap;
 import Puzzles.KitchenPuzzle;
 import ScriptActions.*;
@@ -26,8 +27,7 @@ public class KitchenPuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
-                isFinalRoom = KitchenPuzzleScript.this.map.getFlagManager()
-                        .isFlagSet("FinalRoomReady");
+                isFinalRoom = KitchenPuzzleScript.this.map instanceof FinalRoomMap;
                 if (isFinalRoom) {
                     KitchenPuzzle.solved = false;
                 }
@@ -55,6 +55,10 @@ public class KitchenPuzzleScript extends Script {
             public ScriptState execute() {
                 if (KitchenPuzzle.solved) {
                     KitchenPuzzleScript.this.map.getFlagManager().setFlag("KitchenPuzzleSolved");
+                    FinalRoomCompletionScript.recordSolved(
+                            KitchenPuzzleScript.this.map,
+                            "FinalKitchenPuzzleSolved",
+                            KitchenPuzzleScript.this.listeners);
                 }
 
                 if (KitchenPuzzle.solved && !solvedBefore && !isFinalRoom) {

@@ -5,6 +5,7 @@ import Level.Map;
 import Level.Script;
 import Level.ScriptState;
 import Maps.BathroomMap2;
+import Maps.FinalRoomMap;
 import Puzzles.BathroomPuzzle;
 import ScriptActions.*;
 import java.util.ArrayList;
@@ -26,8 +27,7 @@ public class BathroomPuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
-                isFinalRoom = BathroomPuzzleScript.this.map.getFlagManager()
-                        .isFlagSet("FinalRoomReady");
+                isFinalRoom = BathroomPuzzleScript.this.map instanceof FinalRoomMap;
                 if (isFinalRoom) {
                     BathroomPuzzle.solved = false;
                 }
@@ -55,6 +55,10 @@ public class BathroomPuzzleScript extends Script {
             public ScriptState execute() {
                 if (BathroomPuzzle.solved) {
                     BathroomPuzzleScript.this.map.getFlagManager().setFlag("BathroomPuzzleSolved");
+                    FinalRoomCompletionScript.recordSolved(
+                            BathroomPuzzleScript.this.map,
+                            "FinalBathroomPuzzleSolved",
+                            BathroomPuzzleScript.this.listeners);
                 }
 
                 if (BathroomPuzzle.solved && !solvedBefore && !isFinalRoom) {
