@@ -11,7 +11,8 @@ import NPCs.KitchenGhost;
 import Puzzles.KitchenPuzzle;
 import Scripts.KitchenExitScript;
 import Scripts.KitchenPuzzleScript;
-import Scripts.TestMap.GhostScript;
+import Scripts.TestMap.KitchenGhostScript;
+import Scripts.TestMap.KitchenGhostScriptRestored;
 
 public class KitchenMap extends Map {
     public KitchenMap() {
@@ -35,8 +36,12 @@ public class KitchenMap extends Map {
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
 
-        KitchenGhost ghost = new KitchenGhost(3, getMapTile(10, 6).getLocation().subtractX(20));
-        ghost.setInteractScript(new GhostScript());
+        KitchenGhost ghost = new KitchenGhost(3, getMapTile(4, 7).getLocation().subtractX(20));
+        if(KitchenPuzzle.solved) {
+            ghost.setInteractScript(new KitchenGhostScriptRestored());
+        } else {
+            ghost.setInteractScript(new KitchenGhostScript());
+        }
         npcs.add(ghost);
 
         return npcs;

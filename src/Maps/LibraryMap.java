@@ -4,10 +4,8 @@ import java.util.ArrayList;
 
 import Level.Map;
 import Level.NPC;
-import NPCs.Ghost;
 import NPCs.LibraryGhost;
 import Scripts.Match2PuzzleScript;
-import Scripts.TestMap.GhostScript;
 import Scripts.TestMap.LibraryGhostScript;
 import Tilesets.HotelTileset;
 

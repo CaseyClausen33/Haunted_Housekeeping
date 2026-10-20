@@ -8,6 +8,7 @@ import NPCs.LibraryGhost;
 import Scripts.ChangeMapScript;
 import Scripts.Match2PuzzleScript;
 import Scripts.TestMap.LibraryGhostScript;
+import Scripts.TestMap.LibraryGhostScriptRestored;
 import Tilesets.LibraryTileset;
 import Tilesets.CleanLibraryTileset;
 import Puzzles.Match2Puzzle;
@@ -34,7 +35,11 @@ public class LibraryMap2 extends Map {
         ArrayList<NPC> npcs = new ArrayList<>();
         
         LibraryGhost libraryGhost = new LibraryGhost(1, getMapTile(5, 11).getLocation().subtractX(30).subtractY(30));
-        libraryGhost.setInteractScript(new LibraryGhostScript());
+        if(Match2Puzzle.solved) {
+            libraryGhost.setInteractScript(new LibraryGhostScriptRestored());    
+        } else {
+            libraryGhost.setInteractScript(new LibraryGhostScript());
+        }
         npcs.add(libraryGhost);
         return npcs;
     }

@@ -79,7 +79,7 @@ public class LibraryGhostScript extends Script {
                     }
                 });
                 
-                addScriptAction(new TextboxScriptAction("Nobody’s wanted to come here in years... \n it’s been left to me to ensure these books are properly cared for, but it’s been difficult sometimes. "));
+                addScriptAction(new TextboxScriptAction("Nobody’s wanted to come here in years... \n it’s been left to me to ensure these books are \n properly cared for, but it’s been difficult sometimes. "));
             }});
 
             addConditionalScriptActionGroup(new ConditionalScriptActionGroup() {{
