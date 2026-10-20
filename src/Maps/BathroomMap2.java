@@ -21,7 +21,7 @@ public class BathroomMap2 extends Map {
         if(BathroomPuzzle.solved) {
             this.playerStartPosition = getMapTile(5, 2).getLocation();
         } else {
-            this.playerStartPosition = getMapTile(1, 2).getLocation();
+            this.playerStartPosition = getMapTile(14, 2).getLocation();
         }
     }
 
@@ -41,7 +41,7 @@ public class BathroomMap2 extends Map {
 
     @Override 
     public void loadScripts() {
-        getMapTile(2, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
+        getMapTile(14, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
         getMapTile(6, 2).setInteractScript(new BathroomPuzzleScript());
         getMapTile(4, 2).setInteractScript(new SimpleTextScript("The water runs an odd brown, the sink looks \n as if it has been rusting for years."));
         getMapTile(12, 4).setInteractScript(new SimpleTextScript("There's a wet floor sign here, but there \n doesn't seem to be any water here anymore..."));
