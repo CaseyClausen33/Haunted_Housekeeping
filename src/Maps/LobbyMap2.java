@@ -1,56 +1,74 @@
 package Maps;
 
-import Level.Map;
-import Level.MapTile;
-import Level.NPC;
-import NPCs.LobbyGhost;
-import Puzzles.LobbyPuzzle;
-import Scripts.ChangeMapScript;
-import Scripts.LobbyPuzzleScript;
-import Scripts.SimpleTextScript;
-import Scripts.TestMap.LobbyGhostScript;
-import Tilesets.LobbyTileset2;
 import java.util.ArrayList;
 
+import Level.Map;
+import Level.NPC;
+import Level.Player;
+import Level.Script;
+import NPCs.Ghost;
+import Scripts.ChangeMapScript;
+import Scripts.LobbyIntroScript;
+import Scripts.TestMap.GhostScript;
+import Tilesets.LobbyTileset2;
+
+// Based on the LobbyMap2 you pasted earlier. Merge the new parts into your own copy if you have changed it since:
+//   - lobbyIntroSeen + introStarted fields
+//   - the ghost is hidden until the cutscene, and waits behind the front desk afterwards
+//   - update() starts LobbyIntroScript the first time the lobby loads
+//   - door scripts for the library and bedroom (the cutscene pans the camera to these doors)
 public class LobbyMap2 extends Map {
+
+    // true once the lobby introduction has played. It is static because a new LobbyMap2 object is created
+    // every time the player enters the lobby, so an instance field would always start as false.
+    public static boolean lobbyIntroSeen = false;
+
+    private boolean introStarted = false;
 
     public LobbyMap2() {
         super("lobby_map2.txt", new LobbyTileset2());
-        this.playerStartPosition = getMapTile(11, 11).getLocation();
+        this.playerStartPosition = getMapTile(11, 12).getLocation();
     }
 
     @Override
     public ArrayList<NPC> loadNPCs() {
         ArrayList<NPC> npcs = new ArrayList<>();
-        
-        LobbyGhost ghost = new LobbyGhost(1, getMapTile(5, 2).getLocation().subtractX(30).subtractY(30));
-        ghost.setInteractScript(new LobbyGhostScript());
+
+        // The lobby ghost stands behind the front desk (the desk is in row 4, the ghost is centered on column 5).
+        // Before the intro cutscene it is hidden; LobbyIntroScript makes it appear.
+        Ghost ghost = new Ghost(1, getMapTile(5, 4).getLocation().addX(-4).addY(-48));
+        ghost.setIsHidden(!lobbyIntroSeen);
+        ghost.setInteractScript(new GhostScript());
         npcs.add(ghost);
+
         return npcs;
     }
-    
 
-    @Override 
+    // Starts the lobby introduction on the first frame of the first visit
+    @Override
+    public void update(Player player) {
+        if (!introStarted && !lobbyIntroSeen) {
+            introStarted = true;
+            Script intro = new LobbyIntroScript();
+            intro.setMap(this);
+            intro.setPlayer(player);
+            intro.setListeners(listeners);
+            intro.initialize();
+            setActiveScript(intro);
+        }
+        super.update(player);
+    }
+
+    @Override
     public void loadScripts() {
         getMapTile(17, 1).setInteractScript(new ChangeMapScript(KitchenMap::new));
         getMapTile(22, 1).setInteractScript(new ChangeMapScript(BathroomMap2::new));
-        getMapTile(2, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
-        getMapTile(4, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
-        getMapTile(11,1).setInteractScript(new ChangeMapScript(FinalRoomMap::new));
 
-        getMapTile(3, 4).setInteractScript(new SimpleTextScript("The shelves are filled with papers detailing bills \n going all the way back to over a century ago, \n they seem to be collecting dust."));
-        getMapTile(4, 4).setInteractScript(new SimpleTextScript("The documents and items on the desk are kept tidily, \n you notice a small gold emblem with your \n Grandfather's initials on it."));
-        getMapTile(5, 4).setInteractScript(new SimpleTextScript("The documents and items on the desk are kept tidily, \n you notice a small gold emblem with your \n Grandfather's initials on it."));
-        getMapTile(6, 4).setInteractScript(new SimpleTextScript("The candle's wax has long run out, \n and the small ashtray placed aside is \n strangely empty."));
+        // double door on the left: the library
+        getMapTile(6, 1).setInteractScript(new ChangeMapScript(LibraryMap::new));
+        getMapTile(7, 1).setInteractScript(new ChangeMapScript(LibraryMap::new));
 
-    // Show the puzzle if it hasn't been solved yet, otherwise show the open archway tile
-    // there will be a third case added soon if not all puzzles have been solved yet
-    if (LobbyPuzzle.solved) {
-        MapTile oldTile = getMapTile(11, 5);
-        setMapTile(11, 5, getTileset().getTile(33).build(oldTile.getX(), oldTile.getY()));
-    } else {
-        getMapTile(11, 5).setInteractScript(new LobbyPuzzleScript());
+        // room door on the far left: the bedroom
+        getMapTile(2, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
     }
-    }
-    
 }
