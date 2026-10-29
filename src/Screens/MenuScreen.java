@@ -6,7 +6,6 @@ import Game.ScreenCoordinator;
 import Level.Map;
 import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
-
 import java.awt.*;
 
 // This is the class for the main menu screen
@@ -14,8 +13,13 @@ public class MenuScreen extends Screen {
     protected ScreenCoordinator screenCoordinator;
     protected int currentMenuItemHovered = 0; // current menu item being "hovered" over
     protected int menuItemSelected = -1;
+    protected SpriteFont titleText;
     protected SpriteFont playGame;
     protected SpriteFont credits;
+    // text colors
+    protected Color purpleText = new Color(54, 49, 83);
+    protected Color yellowText = new Color(255, 215, 0);
+
     protected Map background;
     protected int keyPressTimer;
     protected int pointerLocationX, pointerLocationY;
@@ -23,15 +27,21 @@ public class MenuScreen extends Screen {
 
     public MenuScreen(ScreenCoordinator screenCoordinator) {
         this.screenCoordinator = screenCoordinator;
+
     }
 
     @Override
     public void initialize() {
-        playGame = new SpriteFont("PLAY GAME", 200, 123, "Arial", 30, new Color(49, 207, 240));
-        playGame.setOutlineColor(Color.black);
+
+
+        titleText = new SpriteFont("HAUNTED HOUSEKEEPING", 150, 125, "Arial", 40, purpleText);
+        titleText.setOutlineColor(Color.white);
+        titleText.setOutlineThickness(5);
+        playGame = new SpriteFont("PLAY GAME", 200, 220, "Arial", 30, purpleText);
+        playGame.setOutlineColor(Color.white);
         playGame.setOutlineThickness(3);
-        credits = new SpriteFont("CREDITS", 200, 223, "Arial", 30, new Color(49, 207, 240));
-        credits.setOutlineColor(Color.black);
+        credits = new SpriteFont("CREDITS/INSTRUCTIONS", 200, 320, "Arial", 30, purpleText);
+        credits.setOutlineColor(Color.white);
         credits.setOutlineThickness(3);
         background = new TitleScreenMap();
         background.setAdjustCamera(false);
@@ -66,15 +76,19 @@ public class MenuScreen extends Screen {
 
         // sets location for blue square in front of text (pointerLocation) and also sets color of spritefont text based on which menu item is being hovered
         if (currentMenuItemHovered == 0) {
-            playGame.setColor(new Color(255, 215, 0));
-            credits.setColor(new Color(49, 207, 240));
+            playGame.setColor(yellowText);
+            playGame.setOutlineColor(Color.black);
+            credits.setColor(purpleText);
+            credits.setOutlineColor(Color.white);
             pointerLocationX = 170;
-            pointerLocationY = 130;
+            pointerLocationY = 225;
         } else if (currentMenuItemHovered == 1) {
-            playGame.setColor(new Color(49, 207, 240));
-            credits.setColor(new Color(255, 215, 0));
+            playGame.setColor(purpleText);
+            playGame.setOutlineColor(Color.white);
+            credits.setColor(yellowText);
+            credits.setOutlineColor(Color.black);
             pointerLocationX = 170;
-            pointerLocationY = 230;
+            pointerLocationY = 325;
         }
 
         // if space is pressed on menu item, change to appropriate screen based on which menu item was chosen
@@ -95,6 +109,7 @@ public class MenuScreen extends Screen {
         background.draw(graphicsHandler);
         playGame.draw(graphicsHandler);
         credits.draw(graphicsHandler);
-        graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, new Color(49, 207, 240), Color.black, 2);
+        titleText.draw(graphicsHandler);
+        graphicsHandler.drawFilledRectangleWithBorder(pointerLocationX, pointerLocationY, 20, 20, yellowText, Color.black, 2);
     }
 }
