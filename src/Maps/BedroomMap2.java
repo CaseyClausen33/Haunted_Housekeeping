@@ -45,6 +45,14 @@ public class BedroomMap2 extends Map {
 
         getMapTile(1, 5).setInteractScript(new SimpleTextScript("A rideable plastic horse toy for a young child, \n some of the paint is scratched off."));
         getMapTile(6, 4).setInteractScript(new SimpleTextScript("A pair of comfy-looking fur slippers, \n they must belong to the ghost here, \n but you're not sure how he puts them on."));
-        getMapTile(5, 3).setInteractScript(new SimpleTextScript("The sheets are a mess, it looks like that ghost \n has been sleeping here for a long time."));
+        // change the text based on how clean the room is
+        if (!BedroomPuzzle.solved) {
+            getMapTile(5, 3).setInteractScript(new SimpleTextScript("The sheets are a mess, it looks like that ghost \n has been sleeping here for a long time."));
+            getMapTile(7, 3).setInteractScript(new SimpleTextScript("The sheets are a mess, it looks like that ghost \n has been sleeping here for a long time."));
+        }
+        else {
+            getMapTile(5, 3).setInteractScript(new SimpleTextScript("The sheets are neatly made, thanks to you."));
+            getMapTile(7, 3).setInteractScript(new SimpleTextScript("The sheets are neatly made, thanks to you."));
+        }
     }
 }

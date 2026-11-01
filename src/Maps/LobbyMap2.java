@@ -1,7 +1,5 @@
 package Maps;
 
-import java.util.ArrayList;
-
 import Level.Map;
 import Level.NPC;
 import Level.Player;
@@ -11,6 +9,7 @@ import Scripts.ChangeMapScript;
 import Scripts.LobbyIntroScript;
 import Scripts.TestMap.GhostScript;
 import Tilesets.LobbyTileset2;
+import java.util.ArrayList;
 
 // Based on the LobbyMap2 you pasted earlier. Merge the new parts into your own copy if you have changed it since:
 //   - lobbyIntroSeen + introStarted fields
@@ -27,7 +26,7 @@ public class LobbyMap2 extends Map {
 
     public LobbyMap2() {
         super("lobby_map2.txt", new LobbyTileset2());
-        this.playerStartPosition = getMapTile(11, 12).getLocation();
+        this.playerStartPosition = getMapTile(11, 11).getLocation();
     }
 
     @Override
@@ -65,8 +64,8 @@ public class LobbyMap2 extends Map {
         getMapTile(22, 1).setInteractScript(new ChangeMapScript(BathroomMap2::new));
 
         // double door on the left: the library
-        getMapTile(6, 1).setInteractScript(new ChangeMapScript(LibraryMap::new));
-        getMapTile(7, 1).setInteractScript(new ChangeMapScript(LibraryMap::new));
+        getMapTile(6, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
+        getMapTile(7, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
 
         // room door on the far left: the bedroom
         getMapTile(2, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
