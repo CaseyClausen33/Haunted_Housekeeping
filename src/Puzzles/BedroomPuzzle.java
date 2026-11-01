@@ -1,8 +1,18 @@
 package Puzzles;
 
+import Engine.Config;
+
 import javax.swing.*;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -41,6 +51,7 @@ public class BedroomPuzzle extends JFrame {
     };
 
     private final JButton[] buttons = new JButton[4];
+    private final Clip[] buttonSoundEffects = new Clip[buttons.length];
     private final ArrayList<Integer> sequence = new ArrayList<>();
     private final Random random = new Random();
 
@@ -68,9 +79,12 @@ public class BedroomPuzzle extends JFrame {
                 if (playbackTimer != null) {
                     playbackTimer.stop();
                 }
+                closeSoundEffects();
                 open = false;
             }
         });
+
+        loadSoundEffects();
 
         JPanel mainPanel = new JPanel(new BorderLayout(8, 8));
         mainPanel.setBackground(backgroundColor);
@@ -122,6 +136,8 @@ public class BedroomPuzzle extends JFrame {
             );
 
             button.addActionListener(e -> {
+                playSoundEffect(symbolIndex);
+
                 // Make the clicked object glow
                 button.setBackground(activeColor);
                 button.setForeground(Color.BLACK);
@@ -199,6 +215,7 @@ public class BedroomPuzzle extends JFrame {
             if (playbackStep % 2 == 0) {
                 int symbolIndex = sequence.get(playbackStep / 2);
 
+                playSoundEffect(symbolIndex);
                 buttons[symbolIndex].setBackground(activeColor);
                 buttons[symbolIndex].setForeground(Color.BLACK);
             } else {
@@ -210,6 +227,41 @@ public class BedroomPuzzle extends JFrame {
 
         playbackTimer.setInitialDelay(800);
         playbackTimer.start();
+    }
+
+    private void loadSoundEffects() {
+        for (int i = 0; i < buttonSoundEffects.length; i++) {
+            String fileName = "bedroompuzzlesoundeffect" + (i + 1) + ".wav";
+            Path soundFile = Paths.get(Config.RESOURCES_PATH, fileName);
+            Clip clip = null;
+            try (AudioInputStream input = AudioSystem.getAudioInputStream(soundFile.toFile())) {
+                clip = AudioSystem.getClip();
+                clip.open(input);
+                buttonSoundEffects[i] = clip;
+            } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+                if (clip != null) {
+                    clip.close();
+                }
+                System.err.println("Unable to load bedroom puzzle sound effect " + soundFile + ": " + e.getMessage());
+            }
+        }
+    }
+
+    private void playSoundEffect(int buttonIndex) {
+        Clip clip = buttonSoundEffects[buttonIndex];
+        if (clip != null) {
+            clip.stop();
+            clip.setFramePosition(0);
+            clip.start();
+        }
+    }
+
+    private void closeSoundEffects() {
+        for (Clip clip : buttonSoundEffects) {
+            if (clip != null) {
+                clip.close();
+            }
+        }
     }
 
     private void handlePlayerInput(int symbolIndex) {
