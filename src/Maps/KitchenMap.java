@@ -1,10 +1,5 @@
 package Maps;
 
-import Tilesets.CleanKitchenTileset;
-import Tilesets.KitchenTileset;
-
-import java.util.ArrayList;
-
 import Level.Map;
 import Level.NPC;
 import NPCs.KitchenGhost;
@@ -14,6 +9,9 @@ import Scripts.KitchenPuzzleScript;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.KitchenGhostScript;
 import Scripts.TestMap.KitchenGhostScriptRestored;
+import Tilesets.CleanKitchenTileset;
+import Tilesets.KitchenTileset;
+import java.util.ArrayList;
 
 public class KitchenMap extends Map {
     public KitchenMap() {
@@ -33,8 +31,14 @@ public class KitchenMap extends Map {
         getMapTile(17, 1).setInteractScript(new KitchenExitScript());
 
         getMapTile(8, 2).setInteractScript(new SimpleTextScript("You open to fridge to find that it is still \nstocked with foods of all kinds."));
-        getMapTile(16, 4).setInteractScript(new SimpleTextScript("The cauldron seems to be the only functioning thing \nin this kitchen, brewing a soup in a greenish color \nyou don't find too appetizing."));
+        getMapTile(12, 10).setInteractScript(new SimpleTextScript("You open to fridge to find that it is still \nstocked with foods of all kinds."));
         getMapTile(1, 5).setInteractScript(new SimpleTextScript("The drawer is stuffed with cookbooks from all \naround the world."));
+
+        if (!KitchenPuzzle.solved) {
+         getMapTile(16, 4).setInteractScript(new SimpleTextScript("The cauldron seems to be the only functioning thing \nin this kitchen, brewing a soup in a greenish color \nyou don't find too appetizing."));
+        } else {
+            getMapTile(16, 4).setInteractScript(new SimpleTextScript("The new soup smells amazing, and would probably \n taste even better if you had time to eat it."));
+        }
     }
 
     @Override

@@ -1,18 +1,17 @@
 package Maps;
 
-import java.util.ArrayList;
-
 import Level.Map;
 import Level.NPC;
 import NPCs.BathroomGhost;
-import Tilesets.BathroomTileset2;
-import Tilesets.CleanBathroomTileset2;
+import Puzzles.BathroomPuzzle;
+import Scripts.BathroomPuzzleScript;
 import Scripts.ChangeMapScript;
 import Scripts.SimpleTextScript;
-import Scripts.TestMap.BathroomGhostScriptRestored;
 import Scripts.TestMap.BathroomGhostScript;
-import Scripts.BathroomPuzzleScript;
-import Puzzles.BathroomPuzzle;
+import Scripts.TestMap.BathroomGhostScriptRestored;
+import Tilesets.BathroomTileset2;
+import Tilesets.CleanBathroomTileset2;
+import java.util.ArrayList;
 
 public class BathroomMap2 extends Map {
 
@@ -43,8 +42,16 @@ public class BathroomMap2 extends Map {
     public void loadScripts() {
         getMapTile(14, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
         getMapTile(6, 2).setInteractScript(new BathroomPuzzleScript());
+        // change text based on how clean the room is
+        if (!BathroomPuzzle.solved) {
         getMapTile(4, 2).setInteractScript(new SimpleTextScript("The water runs an odd brown, the sink looks \n as if it has been rusting for years."));
         getMapTile(12, 4).setInteractScript(new SimpleTextScript("There's a wet floor sign here, but there \n doesn't seem to be any water here anymore..."));
-        getMapTile(8, 2).setInteractScript(new SimpleTextScript("You open the lid and immediately close it to \n ward off the smell. You don't want to know how long \n it's been sitting there."));
+        getMapTile(3, 10).setInteractScript(new SimpleTextScript("You open the lid and immediately close it to \n ward off the smell. You don't want to know how long \n it's been sitting there."));
+        }
+        else {
+            getMapTile(4, 2).setInteractScript(new SimpleTextScript("The water is clear, but you'd rather not \n think about how long it's been sitting here."));
+            getMapTile(12, 4).setInteractScript(new SimpleTextScript("The wet floor sign is still here, but the \n floor is dry and clean now."));
+            getMapTile(6, 2).setInteractScript(new SimpleTextScript("The toilet is clean and sparkling,  best \n not to think about how long it took to get it this way."));
+        }
     }
 }

@@ -7,6 +7,7 @@ import Level.Script;
 import NPCs.Ghost;
 import Scripts.ChangeMapScript;
 import Scripts.LobbyIntroScript;
+import Scripts.LobbyPuzzleScript;
 import Scripts.TestMap.GhostScript;
 import Tilesets.LobbyTileset2;
 import java.util.ArrayList;
@@ -69,5 +70,13 @@ public class LobbyMap2 extends Map {
 
         // room door on the far left: the bedroom
         getMapTile(2, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
+
+        // final room
+        getMapTile(11, 1).setInteractScript(new ChangeMapScript(FinalRoomMap::new));
+
+
+        // if all four puzzles are done, activate the lobby puzzle
+
+        getMapTile(11,5).setInteractScript(new LobbyPuzzleScript());
     }
 }
