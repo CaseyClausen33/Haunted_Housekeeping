@@ -6,8 +6,7 @@ Students will be paired up in teams for an entire semester, and will utilize agi
 This usually involves adding features and fixing bugs (I'm sure there are bugs...)
 
 ## How to run this project?
-I did not use any external libraries for this, so you can clone this repo as is and run it out of the box with Java (min version 8).
-I recommend using a tool such as Visual Studio Code or IntelliJ to run this game.
+This project requires Java 8 or later. In VS Code, reload the Java project after opening the workspace so it picks up the MP3 decoder in `lib/`, then run `Game.java`. To run from the command line, install Maven and use `mvn compile exec:java` from the project root.
 
 The main method for the game is in the `Game` package > `Game.java` file.<br>
 The main method for the map editor is in the `MapEditor` package > `MapEditor.java` file.
