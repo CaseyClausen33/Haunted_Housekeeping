@@ -16,10 +16,10 @@ final class FinalRoomCompletionScript {
         }
 
         map.getFlagManager().setFlag(puzzleFlag);
-        if (map.getFlagManager().isFlagSet("FinalBathroomPuzzleSolved")
-                && map.getFlagManager().isFlagSet("FinalBedroomPuzzleSolved")
-                && map.getFlagManager().isFlagSet("FinalKitchenPuzzleSolved")
-                && map.getFlagManager().isFlagSet("FinalLibraryPuzzleSolved")
+        if (map.getFlagManager().isFlagSet("FinalRoomPuzzle1Solved")
+                && map.getFlagManager().isFlagSet("FinalRoomPuzzle2Solved")
+                && map.getFlagManager().isFlagSet("FinalRoomPuzzle3Solved")
+                && map.getFlagManager().isFlagSet("FinalRoomPuzzle4Solved")
                 && !map.getFlagManager().isFlagSet("FinalRoomWinTriggered")) {
             map.getFlagManager().setFlag("FinalRoomWinTriggered");
             for (GameListener listener : listeners) {
