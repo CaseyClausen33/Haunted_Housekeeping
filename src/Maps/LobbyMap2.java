@@ -65,8 +65,8 @@ public class LobbyMap2 extends Map {
         getMapTile(22, 1).setInteractScript(new ChangeMapScript(BathroomMap2::new));
 
         // double door on the left: the library
-        getMapTile(6, 1).setInteractScript(new ChangeMapScript(LibraryMap::new));
-        getMapTile(7, 1).setInteractScript(new ChangeMapScript(LibraryMap::new));
+        getMapTile(6, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
+        getMapTile(7, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
 
         // room door on the far left: the bedroom
         getMapTile(2, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
