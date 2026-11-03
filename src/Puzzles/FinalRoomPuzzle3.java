@@ -527,7 +527,6 @@ public class FinalRoomPuzzle3 extends JFrame {
 
             "You cleared the haunted room!\n\n"
             + "The dark spirits disappear into the light...\n\n"
-            + "\"YOU ARE ONE STEP CLOSER TO RESTORING THE HOTEL!\"\n\n"
             + "Your grandfather's spirit is finally at peace.",
 
             "Puzzle Complete!",

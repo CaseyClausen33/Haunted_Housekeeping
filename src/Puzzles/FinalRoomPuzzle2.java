@@ -389,7 +389,7 @@ public class FinalRoomPuzzle2 extends JFrame {
 
             "You found every hidden word!\n\n"
             + "The letters begin to glow...\n\n"
-            + "\"YOU ARE ONE STEP CLOSER TO RESTORING THE HOTEL!\"\n\n"
+            + "\"You are one step closer to restoring the hotel!\"\n\n"
             + "Your grandfather's spirit seems to be guiding you.\n"
             + "The hotel is slowly coming back to life...",
 
