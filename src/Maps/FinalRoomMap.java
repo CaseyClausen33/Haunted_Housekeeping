@@ -9,20 +9,26 @@ import Puzzles.*;
 import Scripts.*;
 import Tilesets.LobbyTileset2;
 import java.util.ArrayList;
+import Level.Player;
 
 public class FinalRoomMap extends Map {
 
     public FinalRoomMap() {
         super("finalroom_map.txt", new LobbyTileset2());
         this.playerStartPosition = getMapTile(7,13).getLocation();
+
     }
 
-    // public ArrayList<NPC> loadNPCs() {
-    //     // StoryNPCs.addStoryGhosts(npcs, );
+    public ArrayList<NPC> loadNPCs() {
+        StoryNPCs.addStoryGhosts(npcs, getMapTile(7, 8).getLocation());
 
-    //     return npcs;
+        return npcs;
 
-    // }
+    }
+
+    public void update(Player player) {
+        BossStory.update(this, player);
+    }
 
     @Override 
     public void loadScripts() {
