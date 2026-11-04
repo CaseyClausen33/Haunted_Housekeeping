@@ -1,12 +1,17 @@
 package Screens;
 
-import Engine.*;
+import java.awt.Color;
+
+import Engine.GraphicsHandler;
+import Engine.Key;
+import Engine.KeyLocker;
+import Engine.Keyboard;
+import Engine.Screen;
 import Game.GameState;
 import Game.ScreenCoordinator;
 import Level.Map;
 import Maps.TitleScreenMap;
 import SpriteFont.SpriteFont;
-import java.awt.*;
 
 // This class is for the credits screen
 public class CreditsScreen extends Screen {
@@ -19,6 +24,7 @@ public class CreditsScreen extends Screen {
     protected SpriteFont moveInstructionsLabel;
     protected SpriteFont interactInstructionsLabel;
     protected SpriteFont puzzleInstructionsLabel;
+    protected SpriteFont checklistLabel;
     // I only need one color for this screen
     protected Color purpleText = new Color(54, 49, 83);
 
@@ -42,17 +48,21 @@ public class CreditsScreen extends Screen {
         returnInstructionsLabel = new SpriteFont("Press SPACE to return to main menu", 20, 500, "Arial", 24, purpleText);
         returnInstructionsLabel.setOutlineColor(Color.white);
         returnInstructionsLabel.setOutlineThickness(2);
-        moveInstructionsLabel = new SpriteFont("Use the Arrow Keys to move around", 50, 350, "Arial", 24, purpleText);
+        moveInstructionsLabel = new SpriteFont("Use the Arrow Keys to move around", 50, 320, "Arial", 24, purpleText);
         moveInstructionsLabel.setOutlineColor(Color.white);
         moveInstructionsLabel.setOutlineThickness(2);
 
-        interactInstructionsLabel = new SpriteFont("Use SPACE to interact with ghosts and objects", 50, 380, "Arial", 24, purpleText);
+        interactInstructionsLabel = new SpriteFont("Use SPACE to interact with ghosts and objects", 50, 350, "Arial", 24, purpleText);
         interactInstructionsLabel.setOutlineColor(Color.white);
         interactInstructionsLabel.setOutlineThickness(2);
 
-        puzzleInstructionsLabel = new SpriteFont("When a puzzle window opens, use the mouse to solve it", 50, 410, "Arial", 24, purpleText);
+        puzzleInstructionsLabel = new SpriteFont("When a puzzle window opens, use the mouse to solve it", 50, 380, "Arial", 24, purpleText);
         puzzleInstructionsLabel.setOutlineColor(Color.white);
         puzzleInstructionsLabel.setOutlineThickness(2);
+
+        checklistLabel = new SpriteFont("Press c to view a checklist of all the puzzles that need to be completed", 50, 410, "Arial", 24, purpleText);
+        checklistLabel.setOutlineColor(Color.white);
+        checklistLabel.setOutlineThickness(2);
 
         keyLocker.lockKey(Key.SPACE);
     }
@@ -89,5 +99,6 @@ public class CreditsScreen extends Screen {
         moveInstructionsLabel.draw(graphicsHandler);
         interactInstructionsLabel.draw(graphicsHandler);
         puzzleInstructionsLabel.draw(graphicsHandler);
+        checklistLabel.draw(graphicsHandler);
     }
 }
