@@ -5,7 +5,9 @@ import Level.ScriptState;
 import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
+import Puzzles.FinalRoomPuzzle1;
 import Puzzles.FinalRoomPuzzle3;
+import Puzzles.StoryProgress;
 
 import java.util.ArrayList;
 
@@ -56,6 +58,9 @@ public class FinalRoomPuzzle3Script extends Script {
             public ScriptState execute() {
 
                 if (FinalRoomPuzzle3.solved && !solvedBefore) {
+
+                     FinalRoomPuzzle3.solved = true;
+                    StoryProgress.markBossPuzzleSolved(2);
 
                     FinalRoomPuzzle3Script.this.map.getFlagManager()
                         .setFlag("FinalRoomPuzzle3Solved");

@@ -167,6 +167,7 @@ public class FinalRoomPuzzle4 extends JFrame {
             // Check whether the puzzle is completed.
             if (isSolved()) {
                 showWinScreen();
+                solved = true;
             }
         }
 

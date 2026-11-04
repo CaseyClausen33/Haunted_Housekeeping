@@ -13,7 +13,7 @@ public class Match2Puzzle extends JFrame {
 
     // Set to true when the player finds every pair. It lives on the class so the game can
     // check it after the window closes (see Match2PuzzleScript.isSolved()).
-    public static volatile boolean solved = true;
+    public static volatile boolean solved = false;
 
     // True while the puzzle window is open (lets the game script wait for it to close)
     private static volatile boolean open = false;

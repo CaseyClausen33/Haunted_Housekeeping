@@ -500,6 +500,7 @@ public class FinalRoomPuzzle3 extends JFrame {
             gameOver = true;
 
             showWinScreen();
+            solved = true;
 
         } else if (movesLeft <= 0) {
 

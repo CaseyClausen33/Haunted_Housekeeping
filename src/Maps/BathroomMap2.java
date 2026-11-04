@@ -15,6 +15,7 @@ import Scripts.TestMap.BathroomGhostScript;
 import Scripts.BathroomPuzzleScript;
 import Puzzles.BathroomPuzzle;
 import Puzzles.StoryProgress;
+import Level.Player;
 
 public class BathroomMap2 extends Map {
 

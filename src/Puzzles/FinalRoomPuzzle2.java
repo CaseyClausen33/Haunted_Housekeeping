@@ -374,6 +374,7 @@ public class FinalRoomPuzzle2 extends JFrame {
 
                 if (foundWords.size() == words.length) {
                     showWinScreen();
+                    solved = true;
                 }
 
                 return;

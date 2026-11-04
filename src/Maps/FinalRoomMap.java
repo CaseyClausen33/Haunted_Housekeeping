@@ -10,6 +10,7 @@ import Scripts.*;
 import Tilesets.LobbyTileset2;
 import java.util.ArrayList;
 import Level.Player;
+import Puzzles.StoryProgress;
 
 public class FinalRoomMap extends Map {
 
@@ -19,15 +20,19 @@ public class FinalRoomMap extends Map {
 
     }
 
+    @Override
     public ArrayList<NPC> loadNPCs() {
+        ArrayList<NPC> npcs = new ArrayList<>();
         StoryNPCs.addStoryGhosts(npcs, getMapTile(7, 8).getLocation());
 
         return npcs;
 
     }
 
+    @Override 
     public void update(Player player) {
         BossStory.update(this, player);
+        super.update(player);
     }
 
     @Override 
@@ -36,6 +41,9 @@ public class FinalRoomMap extends Map {
         getMapTile(2, 13).setInteractScript(new FinalRoomPuzzle2Script());
         getMapTile(13, 2).setInteractScript(new FinalRoomPuzzle3Script());
         getMapTile(13, 13).setInteractScript(new FinalRoomPuzzle4Script());
+
+        getMapTile(7, 15).setInteractScript(new ChangeMapScript(LobbyMap2::new));
+        getMapTile(8, 15).setInteractScript(new ChangeMapScript(LobbyMap2::new));
     }
     
 }

@@ -709,6 +709,7 @@ public class FinalRoomPuzzle1 extends JFrame {
         if (correct) {
 
             showWinScreen();
+            solved = true;
 
         } else {
 
