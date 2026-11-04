@@ -1,20 +1,21 @@
 package Scripts;
 
+import java.util.ArrayList;
+
 import Level.GameListener;
 import Level.Map;
 import Level.Script;
 import Level.ScriptState;
 import Maps.BathroomMap2;
-import Maps.FinalRoomMap;
 import Puzzles.BathroomPuzzle;
-import ScriptActions.*;
-import java.util.ArrayList;
+import ScriptActions.LockPlayerScriptAction;
+import ScriptActions.ScriptAction;
+import ScriptActions.UnlockPlayerScriptAction;
 
 public class BathroomPuzzleScript extends Script {
 
     // Was the puzzle already solved when the player started this interaction?
     private boolean solvedBefore = false;
-    private boolean isFinalRoom = false;
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -27,10 +28,6 @@ public class BathroomPuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
-                isFinalRoom = BathroomPuzzleScript.this.map instanceof FinalRoomMap;
-                if (isFinalRoom) {
-                    BathroomPuzzle.solved = false;
-                }
                 solvedBefore = BathroomPuzzle.solved;
                 if (!solvedBefore) {
                     BathroomPuzzle.launch();
@@ -53,15 +50,7 @@ public class BathroomPuzzleScript extends Script {
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
-                if (BathroomPuzzle.solved) {
-                    BathroomPuzzleScript.this.map.getFlagManager().setFlag("BathroomPuzzleSolved");
-                    FinalRoomCompletionScript.recordSolved(
-                            BathroomPuzzleScript.this.map,
-                            "FinalBathroomPuzzleSolved",
-                            BathroomPuzzleScript.this.listeners);
-                }
-
-                if (BathroomPuzzle.solved && !solvedBefore && !isFinalRoom) {
+                if (BathroomPuzzle.solved && !solvedBefore) {
                     Map nextMap = new BathroomMap2();
                     for (GameListener listener : BathroomPuzzleScript.this.listeners) {
                         listener.onMapChange(nextMap);

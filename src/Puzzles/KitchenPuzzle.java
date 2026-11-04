@@ -13,7 +13,7 @@ public class KitchenPuzzle extends JFrame {
     public static volatile boolean solved = false;
 
     // True while the puzzle window is open (lets the game script wait for it to close)
-    private static volatile boolean open = true;
+    private static volatile boolean open = false;
 
     public static boolean isOpen() {
         return open;
