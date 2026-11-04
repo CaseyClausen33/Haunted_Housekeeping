@@ -30,7 +30,7 @@ public class BathroomMap2 extends Map {
     public BathroomMap2() {
         super("bathroom_map2.txt", BathroomPuzzle.solved ? new CleanBathroomTileset2() : new BathroomTileset2());
         // after the puzzle is solved the room reloads clean and the player appears in front of the puzzle; otherwise at the door
-        if (StoryProgress.consumeReload(StoryProgress.Room.BATHROOM)) {
+        if (BathroomPuzzle.solved) {
             this.playerStartPosition = getMapTile(5, 2).getLocation();
         } else {
             this.playerStartPosition = getMapTile(14, 2).getLocation();
