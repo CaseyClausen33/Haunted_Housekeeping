@@ -4,17 +4,18 @@ import java.util.ArrayList;
 
 import Level.Map;
 import Level.NPC;
+import Level.Player;
 import NPCs.BathroomGhost;
-import Tilesets.BathroomTileset2;
-import Tilesets.CleanBathroomTileset2;
+import Puzzles.BathroomPuzzle;
+import Puzzles.StoryProgress;
+import Scripts.BathroomPuzzleScript;
 import Scripts.ChangeMapScript;
 import Scripts.RoomStory;
 import Scripts.SimpleTextScript;
-import Scripts.TestMap.BathroomGhostScriptRestored;
 import Scripts.TestMap.BathroomGhostScript;
-import Scripts.BathroomPuzzleScript;
-import Puzzles.BathroomPuzzle;
-import Puzzles.StoryProgress;
+import Scripts.TestMap.BathroomGhostScriptRestored;
+import Tilesets.BathroomTileset2;
+import Tilesets.CleanBathroomTileset2;
 
 public class BathroomMap2 extends Map {
 
