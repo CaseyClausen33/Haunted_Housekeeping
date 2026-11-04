@@ -1,53 +1,41 @@
 package Maps;
 
-import java.util.ArrayList;
-
 import Level.Map;
-import Level.NPC;
-import NPCs.LibraryGhost;
+import Level.Player;
+import Puzzles.StoryProgress;
+import Puzzles.Match2Puzzle;
 import Scripts.ChangeMapScript;
 import Scripts.Match2PuzzleScript;
-import Scripts.SimpleTextScript;
-import Scripts.TestMap.LibraryGhostScript;
-import Scripts.TestMap.LibraryGhostScriptRestored;
-import Tilesets.LibraryTileset;
+import Scripts.RoomStory;
 import Tilesets.CleanLibraryTileset;
-import Puzzles.Match2Puzzle;
- 
+import Tilesets.LibraryTileset;
+
 public class LibraryMap2 extends Map {
+
+    // true when this map was built with the clean tileset (the puzzle was already solved)
+    private final boolean clean = Match2Puzzle.solved;
 
     public LibraryMap2() {
         super("library_map2.txt", Match2Puzzle.solved ? new CleanLibraryTileset() : new LibraryTileset());
-        if(Match2Puzzle.solved) {
-            this.playerStartPosition = getMapTile(4, 11).getLocation();
+        // after the puzzle is solved the room reloads clean and the player appears beside the puzzle; otherwise at the door
+        if (StoryProgress.consumeReload(StoryProgress.Room.LIBRARY)) {
+            this.playerStartPosition = getMapTile(13, 5).getLocation();
         } else {
             this.playerStartPosition = getMapTile(12, 2).getLocation();
         }
     }
 
-    @Override 
-    public void loadScripts() {
-        getMapTile(3, 11).setInteractScript(new Match2PuzzleScript());
-        getMapTile(12, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
-
-        getMapTile(5, 1).setInteractScript(new SimpleTextScript("The green fire shines brightly, as if it were just lit."));
-        getMapTile(6, 1).setInteractScript(new SimpleTextScript("The green fire shines brightly, as if it were just lit."));
-        getMapTile(7, 2).setInteractScript(new SimpleTextScript("You shudder to think who was once reading here."));
-        getMapTile(12, 7).setInteractScript(new SimpleTextScript("A small replica of the Earth, made for your \n geographical needs, though it is quite dusty."));
+    // plays the library's before/after story scenes and swaps in the clean room once the puzzle is solved
+    @Override
+    public void update(Player player) {
+        RoomStory.update(this, player, StoryProgress.Room.LIBRARY, () -> new ChangeMapScript(LibraryMap2::new), clean);
+        super.update(player);
     }
 
     @Override
-    public ArrayList<NPC> loadNPCs() {
-        ArrayList<NPC> npcs = new ArrayList<>();
-        
-        LibraryGhost libraryGhost = new LibraryGhost(1, getMapTile(5, 9).getLocation().subtractX(30).subtractY(30));
-        if(Match2Puzzle.solved) {
-            libraryGhost.setInteractScript(new LibraryGhostScriptRestored());    
-        } else {
-            libraryGhost.setInteractScript(new LibraryGhostScript());
-        }
-        npcs.add(libraryGhost);
-        return npcs;
+    public void loadScripts() {
+        getMapTile(12, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
+        // the puzzle: the table with the open book
+        getMapTile(13, 4).setInteractScript(new Match2PuzzleScript());
     }
-    
 }

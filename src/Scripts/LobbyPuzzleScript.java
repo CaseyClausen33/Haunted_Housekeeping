@@ -4,10 +4,14 @@ import Level.MapTile;
 import Level.Script;
 import Level.ScriptState;
 import Puzzles.LobbyPuzzle;
+import Puzzles.Match2Puzzle;
 import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
 import java.util.ArrayList;
+import Puzzles.BedroomPuzzle;
+import Puzzles.BathroomPuzzle;
+import Puzzles.KitchenPuzzle;
 
 public class LobbyPuzzleScript extends Script {
 
@@ -26,10 +30,7 @@ public class LobbyPuzzleScript extends Script {
             public ScriptState execute() {
                 solvedBefore = LobbyPuzzle.solved;
                 boolean prerequisitesMet =
-                        LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("KitchenPuzzleSolved")
-                        && LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("BathroomPuzzleSolved")
-                        && LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("LibraryPuzzleSolved")
-                        && LobbyPuzzleScript.this.map.getFlagManager().isFlagSet("BedroomPuzzleSolved");
+                        Match2Puzzle.solved && BathroomPuzzle.solved && KitchenPuzzle.solved && BedroomPuzzle.solved;
                 if (!solvedBefore && prerequisitesMet ) {
                     LobbyPuzzle.launch();
                 }

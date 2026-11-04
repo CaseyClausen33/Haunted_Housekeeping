@@ -1,21 +1,20 @@
 package Scripts;
-import Level.GameListener;
-import Level.Map;
+
+import java.util.ArrayList;
 import Level.Script;
 import Level.ScriptState;
-import Maps.BedroomMap2;
-import Maps.FinalRoomMap;
-import Puzzles.BedroomPuzzle;
 import ScriptActions.LockPlayerScriptAction;
 import ScriptActions.ScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
-import java.util.ArrayList;
+import Puzzles.BedroomPuzzle;
 
+// Opens the bedroom's sequence puzzle and keeps the player locked until the puzzle window is closed
 public class BedroomPuzzleScript extends Script {
 
-    // Was the puzzle already solved when the player started this interaction?
-    private boolean solvedBefore = false;
-    private boolean isFinalRoom = false;
+    // True once the player has beaten the puzzle (the flag itself lives on BedroomPuzzle)
+    public static boolean isSolved() {
+        return BedroomPuzzle.solved;
+    }
 
     @Override
     public ArrayList<ScriptAction> loadScriptActions() {
@@ -24,18 +23,11 @@ public class BedroomPuzzleScript extends Script {
 
         scriptActions.add(new LockPlayerScriptAction());
 
-        // Open the puzzle window (skipped if it's already been solved)
+        // Open the puzzle window (does nothing if it is already open)
         scriptActions.add(new ScriptAction() {
             @Override
             public ScriptState execute() {
-                isFinalRoom = BedroomPuzzleScript.this.map instanceof FinalRoomMap;
-                if (isFinalRoom) {
-                    BedroomPuzzle.solved = false;
-                }
-                solvedBefore = BedroomPuzzle.solved;
-                if (!solvedBefore) {
-                    BedroomPuzzle.launch();
-                }
+                BedroomPuzzle.launch();
                 return ScriptState.COMPLETED;
             }
         });
@@ -49,27 +41,6 @@ public class BedroomPuzzleScript extends Script {
         });
 
         scriptActions.add(new UnlockPlayerScriptAction());
-
-        // If the puzzle was just solved, reload the bedroom (BedroomMap now uses the clean tileset)
-        scriptActions.add(new ScriptAction() {
-            @Override
-            public ScriptState execute() {
-                if (BedroomPuzzle.solved) {
-                    BedroomPuzzleScript.this.map.getFlagManager().setFlag("BedroomPuzzleSolved");
-                    FinalRoomCompletionScript.recordSolved(
-                            BedroomPuzzleScript.this.map,
-                            "FinalBedroomPuzzleSolved",
-                            BedroomPuzzleScript.this.listeners);
-                }
-                if (BedroomPuzzle.solved && !solvedBefore && !isFinalRoom) {
-                    Map nextMap = new BedroomMap2();
-                    for (GameListener listener : BedroomPuzzleScript.this.listeners) {
-                        listener.onMapChange(nextMap);
-                    }
-                }
-                return ScriptState.COMPLETED;
-            }
-        });
 
         return scriptActions;
     }

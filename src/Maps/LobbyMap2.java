@@ -7,10 +7,15 @@ import Level.NPC;
 import Level.Player;
 import Level.Script;
 import NPCs.Ghost;
+import NPCs.StoryNPCs;
 import Scripts.ChangeMapScript;
 import Scripts.LobbyIntroScript;
+import Scripts.LobbyPuzzleScript;
+import Scripts.LobbyStory;
+import Scripts.Match2PuzzleScript;
 import Scripts.TestMap.GhostScript;
 import Tilesets.LobbyTileset2;
+import Scripts.LobbyPuzzleScript;
 
 // Based on the LobbyMap2 you pasted earlier. Merge the new parts into your own copy if you have changed it since:
 //   - lobbyIntroSeen + introStarted fields
@@ -27,7 +32,7 @@ public class LobbyMap2 extends Map {
 
     public LobbyMap2() {
         super("lobby_map2.txt", new LobbyTileset2());
-        this.playerStartPosition = getMapTile(11, 12).getLocation();
+        this.playerStartPosition = getMapTile(11, 10).getLocation();
     }
 
     @Override
@@ -40,6 +45,8 @@ public class LobbyMap2 extends Map {
         ghost.setIsHidden(!lobbyIntroSeen);
         ghost.setInteractScript(new GhostScript());
         npcs.add(ghost);
+
+        StoryNPCs.addLobbyCast(npcs, this);
 
         return npcs;
     }
@@ -56,6 +63,9 @@ public class LobbyMap2 extends Map {
             intro.initialize();
             setActiveScript(intro);
         }
+
+         LobbyStory.update(this, player);
+
         super.update(player);
     }
 
@@ -65,10 +75,13 @@ public class LobbyMap2 extends Map {
         getMapTile(22, 1).setInteractScript(new ChangeMapScript(BathroomMap2::new));
 
         // double door on the left: the library
-        getMapTile(6, 1).setInteractScript(new ChangeMapScript(LibraryMap::new));
-        getMapTile(7, 1).setInteractScript(new ChangeMapScript(LibraryMap::new));
-
+        getMapTile(2, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
+        
         // room door on the far left: the bedroom
-        getMapTile(2, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
+        getMapTile(4, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
+
+        getMapTile(11, 5).setInteractScript(new LobbyPuzzleScript());
+
+        getMapTile(11, 1).setInteractScript(new ChangeMapScript(FinalRoomMap::new));
     }
 }

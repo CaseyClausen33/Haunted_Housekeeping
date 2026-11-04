@@ -4,6 +4,7 @@ import Level.Map;
 import Level.MapTile;
 import Level.NPC;
 import NPCs.Ghost;
+import NPCs.StoryNPCs;
 import Puzzles.*;
 import Scripts.*;
 import Tilesets.LobbyTileset2;
@@ -15,6 +16,13 @@ public class FinalRoomMap extends Map {
         super("finalroom_map.txt", new LobbyTileset2());
         this.playerStartPosition = getMapTile(7,13).getLocation();
     }
+
+    // public ArrayList<NPC> loadNPCs() {
+    //     // StoryNPCs.addStoryGhosts(npcs, );
+
+    //     return npcs;
+
+    // }
 
     @Override 
     public void loadScripts() {

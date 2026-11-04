@@ -10,10 +10,10 @@ import java.util.Random;
 public class KitchenPuzzle extends JFrame {
 
     // Read by KitchenExitScript to decide whether the player can leave the kitchen
-    public static volatile boolean solved = false;
+    public static volatile boolean solved = true;
 
     // True while the puzzle window is open (lets the game script wait for it to close)
-    private static volatile boolean open = false;
+    private static volatile boolean open = true;
 
     public static boolean isOpen() {
         return open;

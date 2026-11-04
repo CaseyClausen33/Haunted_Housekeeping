@@ -21,7 +21,7 @@ public class BedroomPuzzle extends JFrame {
     // Set to true when the player beats all three rounds. It lives on the class so the game
     // can check it after the window closes (the same way KitchenPuzzle.solved works).
     // Nothing resets it, so a puzzle the player already beat stays beaten.
-    public static volatile boolean solved = false;
+    public static volatile boolean solved = true;
 
     // True while the puzzle window is open (lets the game script wait for it to close)
     private static volatile boolean open = false;

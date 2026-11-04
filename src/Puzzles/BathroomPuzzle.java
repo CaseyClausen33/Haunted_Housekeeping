@@ -10,7 +10,7 @@ import java.util.Random;
 public class BathroomPuzzle extends JFrame {
 
     // Read by the bathroom exit script to decide whether the player can leave the bathroom
-    public static volatile boolean solved = false;
+    public static volatile boolean solved = true;
 
     // True while the puzzle window is open (lets the game script wait for it to close)
     private static volatile boolean open = false;
