@@ -1,7 +1,5 @@
 package Maps;
 
-import java.util.ArrayList;
-
 import Level.Map;
 import Level.NPC;
 import Level.Player;
@@ -13,9 +11,10 @@ import Scripts.LobbyIntroScript;
 import Scripts.LobbyPuzzleScript;
 import Scripts.LobbyStory;
 import Scripts.Match2PuzzleScript;
+import Scripts.LobbyPuzzleScript;
 import Scripts.TestMap.GhostScript;
 import Tilesets.LobbyTileset2;
-import Scripts.LobbyPuzzleScript;
+import java.util.ArrayList;
 
 // Based on the LobbyMap2 you pasted earlier. Merge the new parts into your own copy if you have changed it since:
 //   - lobbyIntroSeen + introStarted fields
@@ -74,7 +73,6 @@ public class LobbyMap2 extends Map {
         getMapTile(17, 1).setInteractScript(new ChangeMapScript(KitchenMap::new));
         getMapTile(22, 1).setInteractScript(new ChangeMapScript(BathroomMap2::new));
 
-        // double door on the left: the library
         getMapTile(2, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
         
         // room door on the far left: the bedroom

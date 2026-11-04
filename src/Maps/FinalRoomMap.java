@@ -26,10 +26,10 @@ public class FinalRoomMap extends Map {
 
     @Override 
     public void loadScripts() {
-        getMapTile(2, 2).setInteractScript(new BathroomPuzzleScript());
-        getMapTile(2, 13).setInteractScript(new Match2PuzzleScript());
-        getMapTile(13, 2).setInteractScript(new KitchenPuzzleScript());
-        getMapTile(13, 13).setInteractScript(new BedroomPuzzleScript());
+        getMapTile(2, 2).setInteractScript(new FinalRoomPuzzle1Script());
+        getMapTile(2, 13).setInteractScript(new FinalRoomPuzzle2Script());
+        getMapTile(13, 2).setInteractScript(new FinalRoomPuzzle3Script());
+        getMapTile(13, 13).setInteractScript(new FinalRoomPuzzle4Script());
     }
     
 }

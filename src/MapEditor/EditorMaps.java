@@ -1,17 +1,7 @@
 package MapEditor;
 
 import Level.Map;
-import Maps.BathroomMap2;
-import Maps.BedroomMap2;
-import Maps.CleanKitchenMap;
-import Maps.FinalRoomMap;
-import Maps.KitchenMap;
-import Maps.LibraryMap2;
-import Maps.LobbyMap2;
-import Maps.NewMap;
-import Maps.OutsideMap;
-import Maps.TestMap;
-import Maps.TitleScreenMap;
+import Maps.*;
 import java.util.ArrayList;
 
 public class EditorMaps {
