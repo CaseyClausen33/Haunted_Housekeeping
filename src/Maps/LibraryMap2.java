@@ -1,12 +1,18 @@
 package Maps;
 
+import java.util.ArrayList;
+
 import Level.Map;
+import Level.NPC;
 import Level.Player;
-import Puzzles.StoryProgress;
+import NPCs.LibraryGhost;
 import Puzzles.Match2Puzzle;
+import Puzzles.StoryProgress;
 import Scripts.ChangeMapScript;
 import Scripts.Match2PuzzleScript;
 import Scripts.RoomStory;
+import Scripts.TestMap.LibraryGhostScript;
+import Scripts.TestMap.LibraryGhostScriptRestored;
 import Tilesets.CleanLibraryTileset;
 import Tilesets.LibraryTileset;
 
@@ -37,5 +43,20 @@ public class LibraryMap2 extends Map {
         getMapTile(12, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
         // the puzzle: the table with the open book
         getMapTile(13, 4).setInteractScript(new Match2PuzzleScript());
+    }
+
+    @Override
+    public ArrayList<NPC> loadNPCs() {
+        ArrayList<NPC> npcs = new ArrayList<>();
+
+        LibraryGhost ghost = new LibraryGhost(3, getMapTile(6, 5).getLocation().subtractX(20));
+        if(Match2Puzzle.solved) {
+            ghost.setInteractScript(new LibraryGhostScriptRestored());
+        } else {
+            ghost.setInteractScript(new LibraryGhostScript());
+        }
+        npcs.add(ghost);
+
+        return npcs;
     }
 }
