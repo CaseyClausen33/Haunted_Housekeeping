@@ -198,7 +198,7 @@ public class FinalRoomPuzzle3 extends JFrame {
         bottomPanel.setBackground(new Color(35, 25, 45));
 
         messageLabel = new JLabel(
-            "Clear 30 ghosts to win!",
+            "Clear 50 ghosts to win!",
             SwingConstants.CENTER
         );
 
@@ -555,7 +555,7 @@ public class FinalRoomPuzzle3 extends JFrame {
         generateBoard();
 
         messageLabel.setText(
-            "Clear 30 ghosts to win!"
+            "Clear 50 ghosts to win!"
         );
 
         updateStats();
