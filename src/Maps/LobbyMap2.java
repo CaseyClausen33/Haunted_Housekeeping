@@ -1,5 +1,7 @@
 package Maps;
 
+import java.util.ArrayList;
+
 import Level.Map;
 import Level.NPC;
 import Level.Player;
@@ -10,11 +12,8 @@ import Scripts.ChangeMapScript;
 import Scripts.LobbyIntroScript;
 import Scripts.LobbyPuzzleScript;
 import Scripts.LobbyStory;
-import Scripts.Match2PuzzleScript;
-import Scripts.LobbyPuzzleScript;
 import Scripts.TestMap.GhostScript;
 import Tilesets.LobbyTileset2;
-import java.util.ArrayList;
 
 // Based on the LobbyMap2 you pasted earlier. Merge the new parts into your own copy if you have changed it since:
 //   - lobbyIntroSeen + introStarted fields
@@ -70,13 +69,17 @@ public class LobbyMap2 extends Map {
 
     @Override
     public void loadScripts() {
+        // doors on the right: the kitchen and bathroom
         getMapTile(17, 1).setInteractScript(new ChangeMapScript(KitchenMap::new));
         getMapTile(22, 1).setInteractScript(new ChangeMapScript(BathroomMap2::new));
 
-        getMapTile(2, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
+        // door on the left: the bedroom
+        getMapTile(2, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
         
-        // room door on the far left: the bedroom
-        getMapTile(4, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
+        // double doors on the left: the library
+        // One of the newer commits must have changed this? I thought it's supposed to be the double doors?
+        getMapTile(6, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
+        getMapTile(7, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
 
         getMapTile(11, 5).setInteractScript(new LobbyPuzzleScript());
 
