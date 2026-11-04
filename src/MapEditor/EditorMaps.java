@@ -1,15 +1,25 @@
 package MapEditor;
 
-import Level.Map;
-import Maps.*;
 import java.util.ArrayList;
+
+import Level.Map;
+import Maps.BathroomMap2;
+import Maps.BedroomMap2;
+import Maps.CleanKitchenMap;
+import Maps.FinalRoomMap;
+import Maps.KitchenMap;
+import Maps.LibraryMap2;
+import Maps.LobbyMap2;
+import Maps.NewMap;
+import Maps.OutsideMap;
+import Maps.TestMap;
+import Maps.TitleScreenMap;
 
 public class EditorMaps {
     public static ArrayList<String> getMapNames() {
         return new ArrayList<String>() {{
             add("TestMap");
             add("TitleScreen");
-            add("HotelLobbyMap");
             add("newMap");
             add("KitchenMap");
             add("CleanKitchenMap");

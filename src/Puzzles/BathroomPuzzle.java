@@ -2,15 +2,32 @@
 
 package Puzzles;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.Window;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.Random;
+
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 public class BathroomPuzzle extends JFrame {
 
     // Read by the bathroom exit script to decide whether the player can leave the bathroom
-    public static volatile boolean solved = true;
+    public static volatile boolean solved = false;
 
     // True while the puzzle window is open (lets the game script wait for it to close)
     private static volatile boolean open = false;
