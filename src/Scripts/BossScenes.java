@@ -12,6 +12,7 @@ import ScriptActions.ScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
 import ScriptActions.WaitScriptAction;
 import Utils.Direction;
+import Puzzles.StoryProgress;
 
 // The two scenes in the boss room at the top of the stairs.
 // They use StoryNPCs.EVELYN, ARTHUR and HEARTS, which must be in the boss room's loadNPCs()

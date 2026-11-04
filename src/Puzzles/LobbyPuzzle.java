@@ -137,30 +137,46 @@ public class LobbyPuzzle extends JFrame {
     private void initializePuzzle() {
 
         // Create solved board:
-        for (int i = 0; i < 15; i++) {
-            tiles[i] = i + 1;
-        }
+        // for (int i = 0; i < 15; i++) {
+        //     tiles[i] = i + 1;
+        // }
 
-        // 0 represents the empty space
-        tiles[15] = 0;
-        emptyPosition = 15;
-        moves = 0;
-        animating = false;
+        // Almost-solved board for testing
+    tiles = new int[] {
+        1,  2,  3,  4,
+        5,  6,  7,  8,
+        9, 10, 11, 12,
+        13, 0, 14, 15
+    };
 
-        /*
-         * Shuffle by making legal moves.
-         * This guarantees that the puzzle remains solvable.
-         * The number of moves should be 150, I am setting it to 5 for testing purposes.
-         */
-        for (int i = 0; i < 150; i++) {
-            int[] possibleMoves = getPossibleMoves();
-            int randomPosition = possibleMoves[random.nextInt(possibleMoves.length)];
+    // 0 represents the empty space
+    emptyPosition = 13;
 
-            swapTiles(randomPosition, emptyPosition);
+    moves = 0;
+    animating = false;
 
-            emptyPosition = randomPosition;
-        }
-        repaint();
+    repaint();
+
+        // // 0 represents the empty space
+        // tiles[15] = 0;
+        // emptyPosition = 15;
+        // moves = 0;
+        // animating = false;
+
+        // /*
+        //  * Shuffle by making legal moves.
+        //  * This guarantees that the puzzle remains solvable.
+        //  * The number of moves should be 150, I am setting it to 5 for testing purposes.
+        //  */
+        // for (int i = 0; i < 150; i++) {
+        //     int[] possibleMoves = getPossibleMoves();
+        //     int randomPosition = possibleMoves[random.nextInt(possibleMoves.length)];
+
+        //     swapTiles(randomPosition, emptyPosition);
+
+        //     emptyPosition = randomPosition;
+        // }
+        // repaint();
     }
 
     private void handleClick(int mouseX, int mouseY) {

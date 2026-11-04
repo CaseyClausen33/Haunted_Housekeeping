@@ -14,6 +14,11 @@ import Scripts.RoomStory;
 import Scripts.SimpleTextScript;
 import Scripts.TestMap.BathroomGhostScript;
 import Scripts.TestMap.BathroomGhostScriptRestored;
+import Scripts.TestMap.BathroomGhostScript;
+import Scripts.BathroomPuzzleScript;
+import Puzzles.BathroomPuzzle;
+import Puzzles.StoryProgress;
+import Level.Player;
 import Tilesets.BathroomTileset2;
 import Tilesets.CleanBathroomTileset2;
 
