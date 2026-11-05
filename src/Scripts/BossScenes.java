@@ -19,6 +19,7 @@ import Puzzles.StoryProgress;
 // (StoryNPCs.addStoryGhosts does it in one line). The characters appear next to the player,
 // so the scenes work wherever the player is standing in the room.
 public class BossScenes {
+         private static final float WALK_SPEED = 2;
 
     // Plays when the player first walks into the boss room: Evelyn confronts them
     public static Script before() {
@@ -50,6 +51,7 @@ public class BossScenes {
         return new SceneScript(() -> {
             ArrayList<ScriptAction> a = new ArrayList<>();
             a.add(new LockPlayerScriptAction());
+            a.add(new CutsceneActions.PlayerWalkTo(7, 12, false, WALK_SPEED, Direction.RIGHT));
             a.add(new WaitScriptAction(40));
             a.add(Say.note("The cold fades from the room. The rose petals settle on the floor."));
             a.add(new CutsceneActions.NPCAppearNear(StoryNPCs.EVELYN, 3, 0));
