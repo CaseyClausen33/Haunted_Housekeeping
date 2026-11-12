@@ -25,7 +25,7 @@ public class LibraryMap2 extends Map {
         super("library_map2.txt", Match2Puzzle.solved ? new CleanLibraryTileset() : new LibraryTileset());
         // after the puzzle is solved the room reloads clean and the player appears beside the puzzle; otherwise at the door
         if (StoryProgress.consumeReload(StoryProgress.Room.LIBRARY)) {
-            this.playerStartPosition = getMapTile(13, 5).getLocation();
+            this.playerStartPosition = getMapTile(14, 8).getLocation();
         } else {
             this.playerStartPosition = getMapTile(12, 2).getLocation();
         }
@@ -42,7 +42,7 @@ public class LibraryMap2 extends Map {
     public void loadScripts() {
         getMapTile(12, 1).setInteractScript(new ChangeMapScript(LobbyMap2::new));
         // the puzzle: the table with the open book
-        getMapTile(13, 4).setInteractScript(new Match2PuzzleScript());
+        getMapTile(14, 8).setInteractScript(new Match2PuzzleScript());
     }
 
     @Override

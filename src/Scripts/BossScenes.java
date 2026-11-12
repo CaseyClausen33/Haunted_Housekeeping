@@ -12,7 +12,6 @@ import ScriptActions.ScriptAction;
 import ScriptActions.UnlockPlayerScriptAction;
 import ScriptActions.WaitScriptAction;
 import Utils.Direction;
-import Puzzles.StoryProgress;
 
 // The two scenes in the boss room at the top of the stairs.
 // They use StoryNPCs.EVELYN, ARTHUR and HEARTS, which must be in the boss room's loadNPCs()
@@ -33,13 +32,13 @@ public class BossScenes {
             a.add(new WaitScriptAction(20));
             a.add(Say.evelyn("You've come a long way, little one.",
                     "Further than I thought you would."));
-            a.add(Say.player("Evelyn. I know it was you."));
+            a.add(Say.player("Evelyn. I knew it was you."));
             a.add(Say.evelyn("...Then you know why I can't let you take his hotel."));
             a.add(Say.player("I'm not taking it. I'm trying to save it."));
             a.add(Say.evelyn("Arthur built every inch of this place. No one else has the right to run it!",
                     "If you truly want it, prove yourself. Solve my final trial, if you can."));
             a.add(new CutsceneActions.NPCDisappear(StoryNPCs.EVELYN));
-            a.add(Say.player("Then let's settle this."));
+            a.add(Say.player("Then let's settle this. I'll make you proud, Grandpa..."));
             a.add(new UnlockPlayerScriptAction());
             return a;
         });
@@ -51,8 +50,8 @@ public class BossScenes {
             ArrayList<ScriptAction> a = new ArrayList<>();
             a.add(new LockPlayerScriptAction());
             a.add(new WaitScriptAction(40));
-            a.add(Say.note("The cold fades from the room. The rose petals settle on the floor."));
-            a.add(new CutsceneActions.NPCAppearNear(StoryNPCs.EVELYN, 3, 0));
+            a.add(Say.note("The chill fades from the room. The rose petals settle on the floor."));
+            a.add(new CutsceneActions.NPCAppearNear(StoryNPCs.EVELYN, 2, 0));
             a.add(new CutsceneActions.FacePlayer(Direction.RIGHT));
             a.add(new WaitScriptAction(25));
             a.add(Say.evelyn("...You solved it.",
