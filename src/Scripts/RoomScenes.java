@@ -74,15 +74,14 @@ public class RoomScenes {
                             "Wait, one of them fell open on the floor."),
                     Say.note("A pressed flower is tucked inside, with a note: \"For the man who built this place. I never found the courage to tell him. - E.\""),
                     Say.player("Whoever wrote this was in love with someone here.",
-                            "And she signed it with an E again."),
+                            "And she signed it with an E."),
                     progress()));
 
             default: return new SceneScript(() -> scene(
                     Say.note("The glowing fades. The room feels warm again."),
                     Say.player("I think the curse is broken!"),
                     Say.note("Something glints under the pillow: a small silver locket."),
-                    Say.player("It has an \"E\" engraved on it... and a tiny photo of my grandfather inside!",
-                            "The roses, the recipe, the note, and now this. Somebody here cared about him very much."),
+                    Say.player("It has an \"E\" engraved on it... and a tiny photo of my grandfather inside!"),
                     progress()));
         }
     }
@@ -93,7 +92,7 @@ public class RoomScenes {
             case 1:  return Say.player("One room down, three to go.");
             case 2:  return Say.player("Two rooms down. Halfway there.");
             case 3:  return Say.player("Three down... just one more room to fix.");
-            default: return Say.player("That's all four rooms! I should head back to the lobby.");
+            default: return Say.player("The roses, the recipe, the note, and the locket. Somebody here cared about him very much.", "That's all four rooms! I should head back to the lobby.");
         }
     }
 

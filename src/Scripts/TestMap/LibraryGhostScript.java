@@ -1,8 +1,18 @@
 package Scripts.TestMap;
 
-import Level.Script;
-import ScriptActions.*;
 import java.util.ArrayList;
+
+import Level.Script;
+import ScriptActions.ConditionalScriptAction;
+import ScriptActions.ConditionalScriptActionGroup;
+import ScriptActions.CustomRequirement;
+import ScriptActions.LockPlayerScriptAction;
+import ScriptActions.NPCFacePlayerScriptAction;
+import ScriptActions.NPCLockScriptAction;
+import ScriptActions.NPCUnlockScriptAction;
+import ScriptActions.ScriptAction;
+import ScriptActions.TextboxScriptAction;
+import ScriptActions.UnlockPlayerScriptAction;
 
 // script for talking to library ghost npc
 public class LibraryGhostScript extends Script {
@@ -66,7 +76,7 @@ public class LibraryGhostScript extends Script {
                 });
 
                 addScriptAction(new TextboxScriptAction() {{
-                    addText("Oh, thank you, stranger! They’re just over \n there, in front of this bookshelf to my left.  ");
+                    addText("Oh, thank you, stranger! They’re just over \n there, on the desk to my right.  ");
                 }});
             }});
 
