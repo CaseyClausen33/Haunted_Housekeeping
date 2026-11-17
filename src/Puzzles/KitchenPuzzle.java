@@ -12,7 +12,7 @@ public class KitchenPuzzle extends JFrame {
     // Read by KitchenExitScript to decide whether the player can leave the kitchen
     public static volatile boolean solved = false;
 
-    // True while the puzzle window is open (lets the game script wait for it to close)
+    // True while the puzzle window is open
     private static volatile boolean open = false;
 
     public static boolean isOpen() {
@@ -24,6 +24,7 @@ public class KitchenPuzzle extends JFrame {
         if (open) {
             return;
         }
+
         open = true;
         SwingUtilities.invokeLater(() -> new KitchenPuzzle());
     }
@@ -63,7 +64,7 @@ class KitchenPanel extends JPanel {
     // true = burner is lit
     private boolean[] burners = new boolean[SIZE * SIZE];
 
-    // 0.0 = fully off, 1.0 = fully glowing (used for smooth fading)
+    // 0.0 = fully off, 1.0 = fully glowing
     private double[] glow = new double[SIZE * SIZE];
 
     private int moves = 0;
@@ -75,7 +76,6 @@ class KitchenPanel extends JPanel {
     private JButton resetButton;
 
     private Random random = new Random();
-
 
     public KitchenPanel() {
 
@@ -90,9 +90,11 @@ class KitchenPanel extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
+
                 if (won) {
                     return;
                 }
+
                 handleClick(e.getX(), e.getY());
             }
         });
@@ -101,16 +103,30 @@ class KitchenPanel extends JPanel {
     private void createButtons() {
 
         resetButton = new JButton("RESET");
+
         resetButton.setBounds(125, 325, 150, 35);
-        resetButton.setFont(new Font("Serif", Font.BOLD, 16));
+
+        resetButton.setFont(
+                new Font("Serif", Font.BOLD, 16)
+        );
 
         resetButton.setForeground(Color.WHITE);
 
-        resetButton.setBackground(new Color(70, 55, 75));
+        resetButton.setBackground(
+                new Color(70, 55, 75)
+        );
 
         resetButton.setFocusPainted(false);
-        resetButton.setBorder(BorderFactory.createLineBorder(new Color(150, 120, 150), 2));
+
+        resetButton.setBorder(
+                BorderFactory.createLineBorder(
+                        new Color(150, 120, 150),
+                        2
+                )
+        );
+
         resetButton.addActionListener(e -> {
+
             if (!won) {
                 initializePuzzle();
             }
@@ -121,7 +137,7 @@ class KitchenPanel extends JPanel {
 
     private void initializePuzzle() {
 
-        // Start with every burner off (solved)
+        // Start with every burner off
         for (int i = 0; i < burners.length; i++) {
             burners[i] = false;
         }
@@ -131,16 +147,23 @@ class KitchenPanel extends JPanel {
 
         /*
          * Shuffle by pressing random burners.
-         * Every press is reversible, so this guarantees the puzzle is solvable.
+         *
+         * Every press is reversible, so this guarantees
+         * that the puzzle is solvable.
+         *
          * Repeat until the board is not already solved.
          *
-         * Note: KitchenPuzzle.solved is intentionally NOT reset here, so a
-         * puzzle the player already beat stays beaten.
+         * KitchenPuzzle.solved is intentionally NOT reset here,
+         * so a puzzle the player already beat stays beaten.
          */
         do {
+
             for (int i = 0; i < 20; i++) {
-                pressBurner(random.nextInt(burners.length));
+                pressBurner(
+                        random.nextInt(burners.length)
+                );
             }
+
         } while (checkWin());
 
         repaint();
@@ -157,10 +180,21 @@ class KitchenPanel extends JPanel {
                 double target = burners[i] ? 1.0 : 0.0;
 
                 if (glow[i] < target) {
-                    glow[i] = Math.min(target, glow[i] + 0.12);
+
+                    glow[i] = Math.min(
+                            target,
+                            glow[i] + 0.12
+                    );
+
                     changed = true;
+
                 } else if (glow[i] > target) {
-                    glow[i] = Math.max(target, glow[i] - 0.12);
+
+                    glow[i] = Math.max(
+                            target,
+                            glow[i] - 0.12
+                    );
+
                     changed = true;
                 }
             }
@@ -175,10 +209,12 @@ class KitchenPanel extends JPanel {
 
     @Override
     public void removeNotify() {
+
         // Stop the timer when the window is closed
         if (glowTimer != null) {
             glowTimer.stop();
         }
+
         super.removeNotify();
     }
 
@@ -196,28 +232,67 @@ class KitchenPanel extends JPanel {
         // Find row and column
         int column = (mouseX - BOARD_X) / TILE_SIZE;
         int row = (mouseY - BOARD_Y) / TILE_SIZE;
+
         int position = row * SIZE + column;
 
+        // Press the burner
         pressBurner(position);
+
+        // Count the move
         moves++;
 
         repaint();
 
-        // Check for win
+        /*
+         * Check for a win FIRST.
+         *
+         * This means the player can still solve
+         * the puzzle on their 35th move.
+         */
         if (checkWin()) {
+
             won = true;
-            KitchenPuzzle.solved = true;   // unlocks the kitchen exit
+
+            // Unlocks the kitchen exit
+            KitchenPuzzle.solved = true;
 
             Timer winTimer = new Timer(500, e -> {
+
                 ((Timer) e.getSource()).stop();
+
                 showWinScreen();
             });
+
             winTimer.setRepeats(false);
             winTimer.start();
+
+            return;
+        }
+
+        /*
+         * Move limit.
+         *
+         * If the player reaches 35 moves without solving
+         * the puzzle, show the restart screen.
+         */
+        if (moves >= 30) {
+
+            won = true;
+
+            Timer loseTimer = new Timer(500, e -> {
+
+                ((Timer) e.getSource()).stop();
+
+                showLoseScreen();
+            });
+
+            loseTimer.setRepeats(false);
+            loseTimer.start();
         }
     }
 
-    // Toggles the burner at position and its up/down/left/right neighbors
+    // Toggles the burner at position and its
+    // up/down/left/right neighbors
     private void pressBurner(int position) {
 
         int row = position / SIZE;
@@ -227,31 +302,38 @@ class KitchenPanel extends JPanel {
 
         // Up
         if (row > 0) {
-            burners[position - SIZE] = !burners[position - SIZE];
+            burners[position - SIZE] =
+                    !burners[position - SIZE];
         }
 
         // Down
         if (row < SIZE - 1) {
-            burners[position + SIZE] = !burners[position + SIZE];
+            burners[position + SIZE] =
+                    !burners[position + SIZE];
         }
 
         // Left
         if (column > 0) {
-            burners[position - 1] = !burners[position - 1];
+            burners[position - 1] =
+                    !burners[position - 1];
         }
 
         // Right
         if (column < SIZE - 1) {
-            burners[position + 1] = !burners[position + 1];
+            burners[position + 1] =
+                    !burners[position + 1];
         }
     }
 
     private boolean checkWin() {
+
         for (int i = 0; i < burners.length; i++) {
+
             if (burners[i]) {
                 return false;
             }
         }
+
         return true;
     }
 
@@ -269,105 +351,304 @@ class KitchenPanel extends JPanel {
                 JOptionPane.INFORMATION_MESSAGE
         );
 
-        Window window = SwingUtilities.getWindowAncestor(this);
+        Window window =
+                SwingUtilities.getWindowAncestor(this);
 
         if (window != null) {
             window.dispose();
         }
     }
 
+    private void showLoseScreen() {
+
+        JOptionPane.showOptionDialog(
+                this,
+
+                "You went over the 30-move limit!\n\n" +
+                "Try the kitchen puzzle again.",
+
+                "Puzzle Failed",
+
+                JOptionPane.DEFAULT_OPTION,
+
+                JOptionPane.WARNING_MESSAGE,
+
+                null,
+
+                new Object[]{"RESTART"},
+
+                "RESTART"
+        );
+
+        // Restart the puzzle
+        initializePuzzle();
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
 
         super.paintComponent(g);
-        Graphics2D g2 = (Graphics2D) g.create();
+
+        Graphics2D g2 =
+                (Graphics2D) g.create();
 
         // Better graphics
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON
+        );
 
-        g2.setColor(new Color(220, 205, 220));
+        // Title
+        g2.setColor(
+                new Color(220, 205, 220)
+        );
 
-        g2.setFont(new Font("Serif", Font.BOLD, 24));
+        g2.setFont(
+                new Font(
+                        "Serif",
+                        Font.BOLD,
+                        24
+                )
+        );
 
-        String title = "🔥  Cool Down The Kitchen  🔥";
+        String title =
+                "🔥  Cool Down The Kitchen  🔥";
 
-        FontMetrics titleMetrics = g2.getFontMetrics();
+        FontMetrics titleMetrics =
+                g2.getFontMetrics();
 
-        int titleX = (getWidth() - titleMetrics.stringWidth(title)) / 2;
+        int titleX =
+                (getWidth() -
+                        titleMetrics.stringWidth(title))
+                        / 2;
 
-        g2.drawString(title, titleX, 55);
+        g2.drawString(
+                title,
+                titleX,
+                55
+        );
 
-        g2.setFont(new Font("Serif", Font.PLAIN, 15));
+        // Instructions
+        g2.setFont(
+                new Font(
+                        "Serif",
+                        Font.PLAIN,
+                        15
+                )
+        );
 
-        g2.setColor(new Color(180, 170, 185));
+        g2.setColor(
+                new Color(180, 170, 185)
+        );
 
-        String instructions = "Turn off every burner! Each one affects its neighbors.";
+        String instructions =
+                "Turn off every burner! Each one affects its neighbors.";
 
-        int instructionX = (getWidth() - g2.getFontMetrics().stringWidth(instructions)) / 2;
+        int instructionX =
+                (getWidth() -
+                        g2.getFontMetrics()
+                                .stringWidth(instructions))
+                        / 2;
 
-        g2.drawString(instructions, instructionX, 78);
+        g2.drawString(
+                instructions,
+                instructionX,
+                78
+        );
 
-        g2.setFont(new Font("SansSerif", Font.BOLD, 14));
+        // Move counter
+        g2.setFont(
+                new Font(
+                        "SansSerif",
+                        Font.BOLD,
+                        14
+                )
+        );
 
-        g2.setColor(new Color(200, 190, 200));
+        g2.setColor(
+                new Color(200, 190, 200)
+        );
 
-        g2.drawString("Moves: " + moves, 20, 100);
+        // Moved slightly higher so it does not overlap the burners
+        g2.drawString(
+                "Moves: " + moves + " / 30",
+                20,
+                95
+        );
 
         // Stovetop background
-        g2.setColor(new Color(40, 36, 46));
-        g2.fillRoundRect(BOARD_X - 6, BOARD_Y - 6,
-                SIZE * TILE_SIZE + 12, SIZE * TILE_SIZE + 12, 20, 20);
+        g2.setColor(
+                new Color(40, 36, 46)
+        );
 
+        g2.fillRoundRect(
+                BOARD_X - 6,
+                BOARD_Y - 6,
+                SIZE * TILE_SIZE + 12,
+                SIZE * TILE_SIZE + 12,
+                20,
+                20
+        );
+
+        // Draw burners
         for (int i = 0; i < burners.length; i++) {
 
-            int x = BOARD_X + (i % SIZE) * TILE_SIZE;
+            int x =
+                    BOARD_X +
+                    (i % SIZE) * TILE_SIZE;
 
-            int y = BOARD_Y + (i / SIZE) * TILE_SIZE;
+            int y =
+                    BOARD_Y +
+                    (i / SIZE) * TILE_SIZE;
 
-            drawBurner(g2, glow[i], x, y);
+            drawBurner(
+                    g2,
+                    glow[i],
+                    x,
+                    y
+            );
         }
 
         g2.dispose();
     }
 
-    private void drawBurner(Graphics2D g2, double heat, int x, int y) {
+    private void drawBurner(
+            Graphics2D g2,
+            double heat,
+            int x,
+            int y) {
 
-        int cx = x + TILE_SIZE / 2;
-        int cy = y + TILE_SIZE / 2;
+        int cx =
+                x + TILE_SIZE / 2;
+
+        int cy =
+                y + TILE_SIZE / 2;
 
         // Soft glow halo behind lit burners
         if (heat > 0.01) {
-            g2.setColor(new Color(255, 120, 30, (int) (70 * heat)));
-            g2.fillOval(cx - 24, cy - 24, 48, 48);
+
+            g2.setColor(
+                    new Color(
+                            255,
+                            120,
+                            30,
+                            (int) (70 * heat)
+                    )
+            );
+
+            g2.fillOval(
+                    cx - 24,
+                    cy - 24,
+                    48,
+                    48
+            );
         }
 
-        // Burner base color fades from cold gray to hot orange
-        Color cold = new Color(60, 55, 65);
-        Color hot = new Color(255, 130, 40);
-        g2.setColor(blend(cold, hot, heat));
-        g2.fillOval(cx - 19, cy - 19, 38, 38);
+        // Burner base color
+        // fades from cold gray to hot orange
+        Color cold =
+                new Color(60, 55, 65);
+
+        Color hot =
+                new Color(255, 130, 40);
+
+        g2.setColor(
+                blend(cold, hot, heat)
+        );
+
+        g2.fillOval(
+                cx - 19,
+                cy - 19,
+                38,
+                38
+        );
 
         // Outer ring
-        Color coldRing = new Color(110, 95, 115);
-        Color hotRing = new Color(255, 200, 100);
-        g2.setColor(blend(coldRing, hotRing, heat));
-        g2.setStroke(new BasicStroke(3));
-        g2.drawOval(cx - 19, cy - 19, 38, 38);
+        Color coldRing =
+                new Color(110, 95, 115);
+
+        Color hotRing =
+                new Color(255, 200, 100);
+
+        g2.setColor(
+                blend(
+                        coldRing,
+                        hotRing,
+                        heat
+                )
+        );
+
+        g2.setStroke(
+                new BasicStroke(3)
+        );
+
+        g2.drawOval(
+                cx - 19,
+                cy - 19,
+                38,
+                38
+        );
 
         // Inner ring
-        g2.setStroke(new BasicStroke(2));
-        g2.setColor(blend(new Color(45, 40, 50), new Color(255, 230, 150), heat));
-        g2.drawOval(cx - 10, cy - 10, 20, 20);
+        g2.setStroke(
+                new BasicStroke(2)
+        );
+
+        g2.setColor(
+                blend(
+                        new Color(45, 40, 50),
+                        new Color(255, 230, 150),
+                        heat
+                )
+        );
+
+        g2.drawOval(
+                cx - 10,
+                cy - 10,
+                20,
+                20
+        );
 
         // Center dot
-        g2.setColor(blend(new Color(30, 27, 35), new Color(255, 245, 200), heat));
-        g2.fillOval(cx - 4, cy - 4, 8, 8);
+        g2.setColor(
+                blend(
+                        new Color(30, 27, 35),
+                        new Color(255, 245, 200),
+                        heat
+                )
+        );
+
+        g2.fillOval(
+                cx - 4,
+                cy - 4,
+                8,
+                8
+        );
     }
 
-    private Color blend(Color a, Color b, double t) {
-        int r = (int) (a.getRed() + (b.getRed() - a.getRed()) * t);
-        int g = (int) (a.getGreen() + (b.getGreen() - a.getGreen()) * t);
-        int bl = (int) (a.getBlue() + (b.getBlue() - a.getBlue()) * t);
+    private Color blend(
+            Color a,
+            Color b,
+            double t) {
+
+        int r =
+                (int) (
+                        a.getRed() +
+                        (b.getRed() - a.getRed()) * t
+                );
+
+        int g =
+                (int) (
+                        a.getGreen() +
+                        (b.getGreen() - a.getGreen()) * t
+                );
+
+        int bl =
+                (int) (
+                        a.getBlue() +
+                        (b.getBlue() - a.getBlue()) * t
+                );
+
         return new Color(r, g, bl);
     }
 }

@@ -13,7 +13,9 @@ import Scripts.LobbyIntroScript;
 import Scripts.LobbyPuzzleScript;
 import Scripts.LobbyStory;
 import Scripts.TestMap.GhostScript;
+import Tilesets.CleanLobbyTileset;
 import Tilesets.LobbyTileset2;
+import Puzzles.StoryProgress;
 
 // Based on the LobbyMap2 you pasted earlier. Merge the new parts into your own copy if you have changed it since:
 //   - lobbyIntroSeen + introStarted fields
@@ -29,7 +31,7 @@ public class LobbyMap2 extends Map {
     private boolean introStarted = false;
 
     public LobbyMap2() {
-        super("lobby_map2.txt", new LobbyTileset2());
+        super("lobby_map2.txt", StoryProgress.reunionSeen ? new CleanLobbyTileset() : new LobbyTileset2());
         this.playerStartPosition = getMapTile(11, 10).getLocation();
     }
 

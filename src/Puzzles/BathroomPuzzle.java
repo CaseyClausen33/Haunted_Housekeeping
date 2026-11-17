@@ -24,6 +24,7 @@ public class BathroomPuzzle extends JFrame {
         if (open) {
             return;
         }
+
         open = true;
         SwingUtilities.invokeLater(() -> new BathroomPuzzle());
     }
@@ -53,6 +54,7 @@ public class BathroomPuzzle extends JFrame {
     }
 }
 
+
 class BathroomPanel extends JPanel {
 
     private static final int SIZE = 4;
@@ -60,7 +62,11 @@ class BathroomPanel extends JPanel {
     private static final int BOARD_X = 82;
     private static final int BOARD_Y = 75;
 
-    // connections[row][column][direction]: 0 = up, 1 = right, 2 = down, 3 = left
+    // Maximum number of moves allowed
+    private static final int MOVE_LIMIT = 15;
+
+    // connections[row][column][direction]:
+    // 0 = up, 1 = right, 2 = down, 3 = left
     private boolean[][][] connections = new boolean[SIZE][SIZE][4];
 
     private int moves = 0;
@@ -75,6 +81,7 @@ class BathroomPanel extends JPanel {
     public BathroomPanel() {
 
         setLayout(null);
+
         setBackground(new Color(25, 22, 30));
 
         createButtons();
@@ -84,18 +91,23 @@ class BathroomPanel extends JPanel {
 
             @Override
             public void mousePressed(MouseEvent e) {
+
                 if (won) {
                     return;
                 }
+
                 handleClick(e.getX(), e.getY());
             }
         });
     }
 
+
     private void createButtons() {
 
         resetButton = new JButton("RESET");
+
         resetButton.setBounds(165, 320, 75, 30);
+
         resetButton.setFont(new Font("Serif", Font.BOLD, 12));
 
         resetButton.setForeground(Color.WHITE);
@@ -103,8 +115,16 @@ class BathroomPanel extends JPanel {
         resetButton.setBackground(new Color(70, 55, 75));
 
         resetButton.setFocusPainted(false);
-        resetButton.setBorder(BorderFactory.createLineBorder(new Color(150, 120, 150), 2));
+
+        resetButton.setBorder(
+                BorderFactory.createLineBorder(
+                        new Color(150, 120, 150),
+                        2
+                )
+        );
+
         resetButton.addActionListener(e -> {
+
             if (!won) {
                 initializePuzzle();
             }
@@ -112,6 +132,7 @@ class BathroomPanel extends JPanel {
 
         add(resetButton);
     }
+
 
     private void initializePuzzle() {
 
@@ -122,8 +143,11 @@ class BathroomPanel extends JPanel {
         createRandomSolvedPuzzle();
 
         for (int row = 0; row < SIZE; row++) {
+
             for (int column = 0; column < SIZE; column++) {
+
                 int rotations = random.nextInt(4);
+
                 for (int i = 0; i < rotations; i++) {
                     rotatePipe(row, column);
                 }
@@ -132,6 +156,7 @@ class BathroomPanel extends JPanel {
 
         /*
          * Make sure the board does not start already solved.
+         *
          * Rotating random pipes until the path breaks is safer than always rotating
          * one fixed tile, because that tile might not be on the water-to-drain path.
          *
@@ -139,18 +164,24 @@ class BathroomPanel extends JPanel {
          * puzzle the player already beat stays beaten.
          */
         while (checkWin()) {
-            rotatePipe(random.nextInt(SIZE), random.nextInt(SIZE));
+            rotatePipe(
+                    random.nextInt(SIZE),
+                    random.nextInt(SIZE)
+            );
         }
 
         repaint();
     }
+
 
     // Creates the solved state of the puzzle
     private void createRandomSolvedPuzzle() {
 
         // Clear board
         for (int row = 0; row < SIZE; row++) {
+
             for (int column = 0; column < SIZE; column++) {
+
                 for (int direction = 0; direction < 4; direction++) {
                     connections[row][column][direction] = false;
                 }
@@ -158,34 +189,46 @@ class BathroomPanel extends JPanel {
         }
 
         boolean[][] visited = new boolean[SIZE][SIZE];
+
         generateMaze(0, 0, visited);
     }
 
-    private void generateMaze(int row, int column, boolean[][] visited) {
+
+    private void generateMaze(
+            int row,
+            int column,
+            boolean[][] visited
+    ) {
 
         visited[row][column] = true;
+
         int[] directions = {0, 1, 2, 3};
 
         // Shuffle directions
         for (int i = directions.length - 1; i > 0; i--) {
+
             int j = random.nextInt(i + 1);
+
             int temp = directions[i];
 
             directions[i] = directions[j];
+
             directions[j] = temp;
         }
 
         for (int direction : directions) {
+
             int newRow = row;
             int newColumn = column;
 
             if (direction == 0) newRow--;       // UP
             if (direction == 1) newColumn++;    // RIGHT
             if (direction == 2) newRow++;       // DOWN
-            if (direction == 3) newColumn--;    // LEFT
+            if (direction == 3) newColumn--;   // LEFT
 
             if (newRow < 0 || newRow >= SIZE ||
                     newColumn < 0 || newColumn >= SIZE) {
+
                 continue;
             }
 
@@ -197,11 +240,13 @@ class BathroomPanel extends JPanel {
             connections[row][column][direction] = true;
 
             int opposite = (direction + 2) % 4;
+
             connections[newRow][newColumn][opposite] = true;
 
             generateMaze(newRow, newColumn, visited);
         }
     }
+
 
     private void handleClick(int mouseX, int mouseY) {
 
@@ -219,23 +264,54 @@ class BathroomPanel extends JPanel {
         int row = (mouseY - BOARD_Y) / TILE_SIZE;
 
         rotatePipe(row, column);
+
         moves++;
 
         repaint();
 
-        // Check for win
+        // Check for win FIRST.
+        // This allows the player to solve the puzzle
+        // on their final allowed move.
         if (checkWin()) {
+
             won = true;
-            BathroomPuzzle.solved = true;   // unlocks the bathroom exit
+
+            // Unlocks the bathroom exit
+            BathroomPuzzle.solved = true;
 
             Timer winTimer = new Timer(250, e -> {
+
                 ((Timer) e.getSource()).stop();
+
                 showWinScreen();
             });
+
             winTimer.setRepeats(false);
+
             winTimer.start();
+
+            return;
+        }
+
+        // If the player used all of their moves without solving,
+        // end the puzzle.
+        if (moves >= MOVE_LIMIT) {
+
+            won = true;
+
+            Timer loseTimer = new Timer(250, e -> {
+
+                ((Timer) e.getSource()).stop();
+
+                showLoseScreen();
+            });
+
+            loseTimer.setRepeats(false);
+
+            loseTimer.start();
         }
     }
+
 
     // Rotates a pipe 90 degrees clockwise
     private void rotatePipe(int row, int column) {
@@ -251,15 +327,25 @@ class BathroomPanel extends JPanel {
         connections[row][column][3] = oldDown;
     }
 
+
     // Solved when water can travel from the top-left tile to the drain in the bottom-right
     private boolean checkWin() {
+
         boolean[][] visited = new boolean[SIZE][SIZE];
+
         return canReachDrain(0, 0, visited);
     }
 
-    private boolean canReachDrain(int row, int column, boolean[][] visited) {
 
-        if (row < 0 || row >= SIZE || column < 0 || column >= SIZE) {
+    private boolean canReachDrain(
+            int row,
+            int column,
+            boolean[][] visited
+    ) {
+
+        if (row < 0 || row >= SIZE ||
+                column < 0 || column >= SIZE) {
+
             return false;
         }
 
@@ -276,8 +362,16 @@ class BathroomPanel extends JPanel {
 
         // Up
         if (connections[row][column][0]) {
-            if (row > 0 && connections[row - 1][column][2]) {
-                if (canReachDrain(row - 1, column, visited)) {
+
+            if (row > 0 &&
+                    connections[row - 1][column][2]) {
+
+                if (canReachDrain(
+                        row - 1,
+                        column,
+                        visited
+                )) {
+
                     return true;
                 }
             }
@@ -285,8 +379,16 @@ class BathroomPanel extends JPanel {
 
         // Right
         if (connections[row][column][1]) {
-            if (column < SIZE - 1 && connections[row][column + 1][3]) {
-                if (canReachDrain(row, column + 1, visited)) {
+
+            if (column < SIZE - 1 &&
+                    connections[row][column + 1][3]) {
+
+                if (canReachDrain(
+                        row,
+                        column + 1,
+                        visited
+                )) {
+
                     return true;
                 }
             }
@@ -294,8 +396,16 @@ class BathroomPanel extends JPanel {
 
         // Down
         if (connections[row][column][2]) {
-            if (row < SIZE - 1 && connections[row + 1][column][0]) {
-                if (canReachDrain(row + 1, column, visited)) {
+
+            if (row < SIZE - 1 &&
+                    connections[row + 1][column][0]) {
+
+                if (canReachDrain(
+                        row + 1,
+                        column,
+                        visited
+                )) {
+
                     return true;
                 }
             }
@@ -303,8 +413,16 @@ class BathroomPanel extends JPanel {
 
         // Left
         if (connections[row][column][3]) {
-            if (column > 0 && connections[row][column - 1][1]) {
-                if (canReachDrain(row, column - 1, visited)) {
+
+            if (column > 0 &&
+                    connections[row][column - 1][1]) {
+
+                if (canReachDrain(
+                        row,
+                        column - 1,
+                        visited
+                )) {
+
                     return true;
                 }
             }
@@ -313,14 +431,15 @@ class BathroomPanel extends JPanel {
         return false;
     }
 
+
     private void showWinScreen() {
 
         JOptionPane.showMessageDialog(
                 this,
 
                 "✨ Bathroom Restored! ✨\n\n" +
-                "You connected the pipes!\n\n" +
-                "The water is flowing again!",
+                        "You connected the pipes!\n\n" +
+                        "The water is flowing again!",
 
                 "Puzzle Complete!",
 
@@ -329,19 +448,51 @@ class BathroomPanel extends JPanel {
 
         Window window = SwingUtilities.getWindowAncestor(this);
 
-            if (window != null) {
-                window.dispose();
-            }
-        }  
+        if (window != null) {
+            window.dispose();
+        }
+    }
+
+
+    private void showLoseScreen() {
+
+        JOptionPane.showOptionDialog(
+                this,
+
+                "You ran out of moves!\n\n" +
+                        "You went over the " + MOVE_LIMIT + "-move limit.\n\n" +
+                        "Try again and plan your rotations more carefully!",
+
+                "Puzzle Failed!",
+
+                JOptionPane.DEFAULT_OPTION,
+
+                JOptionPane.WARNING_MESSAGE,
+
+                null,
+
+                new Object[]{"RESTART"},
+
+                "RESTART"
+        );
+
+        // Restart the puzzle
+        initializePuzzle();
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {
 
         super.paintComponent(g);
+
         Graphics2D g2 = (Graphics2D) g.create();
 
         // Better graphics
-        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g2.setRenderingHint(
+                RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON
+        );
 
         g2.setColor(new Color(220, 205, 220));
 
@@ -351,7 +502,8 @@ class BathroomPanel extends JPanel {
 
         FontMetrics titleMetrics = g2.getFontMetrics();
 
-        int titleX = (getWidth() - titleMetrics.stringWidth(title)) / 2;
+        int titleX =
+                (getWidth() - titleMetrics.stringWidth(title)) / 2;
 
         g2.drawString(title, titleX, 35);
 
@@ -359,101 +511,285 @@ class BathroomPanel extends JPanel {
 
         g2.setColor(new Color(180, 170, 185));
 
-        String instructions = "Rotate the pipes to reach the drain!";
+        String instructions =
+                "Rotate the pipes to reach the drain!";
 
-        int instructionX = (getWidth() - g2.getFontMetrics().stringWidth(instructions)) / 2;
+        int instructionX =
+                (getWidth() -
+                        g2.getFontMetrics().stringWidth(instructions)) / 2;
 
-        g2.drawString(instructions, instructionX, 55);
+        g2.drawString(
+                instructions,
+                instructionX,
+                55
+        );
 
-        g2.setFont(new Font("SansSerif", Font.BOLD, 13));
+        // Move counter
+        g2.setFont(
+                new Font(
+                        "SansSerif",
+                        Font.BOLD,
+                        13
+                )
+        );
 
-        g2.setColor(new Color(200, 190, 200));
+        // Turn the counter red when the player is
+        // within five moves of the limit.
+        if (moves >= MOVE_LIMIT - 5) {
 
-        g2.drawString("Moves: " + moves, 15, 70);
+            g2.setColor(
+                    new Color(220, 100, 100)
+            );
+
+        } else {
+
+            g2.setColor(
+                    new Color(200, 190, 200)
+            );
+        }
+
+        g2.drawString(
+                "Moves: " + moves + " / " + MOVE_LIMIT,
+                15,
+                70
+        );
 
         for (int row = 0; row < SIZE; row++) {
+
             for (int column = 0; column < SIZE; column++) {
 
-                int x = BOARD_X + column * TILE_SIZE;
+                int x =
+                        BOARD_X +
+                                column * TILE_SIZE;
 
-                int y = BOARD_Y + row * TILE_SIZE;
+                int y =
+                        BOARD_Y +
+                                row * TILE_SIZE;
 
-                drawTile(g2, row, column, x, y);
+                drawTile(
+                        g2,
+                        row,
+                        column,
+                        x,
+                        y
+                );
             }
         }
 
         g2.dispose();
     }
 
+
     // Draws a single tile
-    private void drawTile(Graphics2D g2, int row, int column, int x, int y) {
+    private void drawTile(
+            Graphics2D g2,
+            int row,
+            int column,
+            int x,
+            int y
+    ) {
 
-        g2.setColor(new Color(55, 48, 55));
-        g2.fillRoundRect(x + 3, y + 3, TILE_SIZE - 6, TILE_SIZE - 6, 12, 12);
+        g2.setColor(
+                new Color(55, 48, 55)
+        );
 
-        g2.setColor(new Color(130, 105, 135));
-        g2.setStroke(new BasicStroke(2));
-        g2.drawRoundRect(x + 3, y + 3, TILE_SIZE - 6, TILE_SIZE - 6, 12, 12);
+        g2.fillRoundRect(
+                x + 3,
+                y + 3,
+                TILE_SIZE - 6,
+                TILE_SIZE - 6,
+                12,
+                12
+        );
 
-        drawPipe(g2, row, column, x, y);
+        g2.setColor(
+                new Color(130, 105, 135)
+        );
+
+        g2.setStroke(
+                new BasicStroke(2)
+        );
+
+        g2.drawRoundRect(
+                x + 3,
+                y + 3,
+                TILE_SIZE - 6,
+                TILE_SIZE - 6,
+                12,
+                12
+        );
+
+        drawPipe(
+                g2,
+                row,
+                column,
+                x,
+                y
+        );
     }
 
-    // Draws the pipe connections (plus the water source and drain) for a tile
-    private void drawPipe(Graphics2D g2, int row, int column, int x, int y) {
 
-        int centerX = x + TILE_SIZE / 2;
-        int centerY = y + TILE_SIZE / 2;
+    // Draws the pipe connections
+    // plus the water source and drain
+    private void drawPipe(
+            Graphics2D g2,
+            int row,
+            int column,
+            int x,
+            int y
+    ) {
 
-        g2.setColor(new Color(175, 95, 45));
-        g2.setStroke(new BasicStroke(12, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
+        int centerX =
+                x + TILE_SIZE / 2;
+
+        int centerY =
+                y + TILE_SIZE / 2;
+
+        g2.setColor(
+                new Color(175, 95, 45)
+        );
+
+        g2.setStroke(
+                new BasicStroke(
+                        12,
+                        BasicStroke.CAP_ROUND,
+                        BasicStroke.JOIN_ROUND
+                )
+        );
 
         // Up
         if (connections[row][column][0]) {
-            g2.drawLine(centerX, centerY, centerX, y + 5);
+
+            g2.drawLine(
+                    centerX,
+                    centerY,
+                    centerX,
+                    y + 5
+            );
         }
 
         // Right
         if (connections[row][column][1]) {
-            g2.drawLine(centerX, centerY, x + TILE_SIZE - 5, centerY);
+
+            g2.drawLine(
+                    centerX,
+                    centerY,
+                    x + TILE_SIZE - 5,
+                    centerY
+            );
         }
 
         // Down
         if (connections[row][column][2]) {
-            g2.drawLine(centerX, centerY, centerX, y + TILE_SIZE - 5);
+
+            g2.drawLine(
+                    centerX,
+                    centerY,
+                    centerX,
+                    y + TILE_SIZE - 5
+            );
         }
 
         // Left
         if (connections[row][column][3]) {
-            g2.drawLine(centerX, centerY, x + 5, centerY);
+
+            g2.drawLine(
+                    centerX,
+                    centerY,
+                    x + 5,
+                    centerY
+            );
         }
 
-        g2.setColor(new Color(225, 145, 75));
-        g2.setStroke(new BasicStroke(3));
+        g2.setColor(
+                new Color(225, 145, 75)
+        );
 
-        g2.fillOval(centerX - 7, centerY - 7, 14, 14);
+        g2.setStroke(
+                new BasicStroke(3)
+        );
+
+        g2.fillOval(
+                centerX - 7,
+                centerY - 7,
+                14,
+                14
+        );
 
         // Water source (top-left)
         if (row == 0 && column == 0) {
-            g2.setColor(new Color(80, 170, 255));
-            g2.fillOval(centerX - 8, centerY - 8, 16, 16);
+
+            g2.setColor(
+                    new Color(80, 170, 255)
+            );
+
+            g2.fillOval(
+                    centerX - 8,
+                    centerY - 8,
+                    16,
+                    16
+            );
 
             g2.setColor(Color.WHITE);
-            g2.setFont(new Font("SansSerif", Font.BOLD, 10));
-            g2.drawString("W", centerX - 4, centerY + 4);
+
+            g2.setFont(
+                    new Font(
+                            "SansSerif",
+                            Font.BOLD,
+                            10
+                    )
+            );
+
+            g2.drawString(
+                    "W",
+                    centerX - 4,
+                    centerY + 4
+            );
         }
 
         // Drain (bottom-right)
-        if (row == SIZE - 1 && column == SIZE - 1) {
-            g2.setColor(new Color(35, 35, 40));
-            g2.fillOval(centerX - 12, centerY - 12, 24, 24);
+        if (row == SIZE - 1 &&
+                column == SIZE - 1) {
 
-            g2.setColor(new Color(120, 120, 130));
-            g2.setStroke(new BasicStroke(2));
+            g2.setColor(
+                    new Color(35, 35, 40)
+            );
 
-            g2.drawOval(centerX - 12, centerY - 12, 24, 24);
+            g2.fillOval(
+                    centerX - 12,
+                    centerY - 12,
+                    24,
+                    24
+            );
 
-            g2.drawLine(centerX - 7, centerY - 5, centerX + 7, centerY + 5);
-            g2.drawLine(centerX + 7, centerY - 5, centerX - 7, centerY + 5);
+            g2.setColor(
+                    new Color(120, 120, 130)
+            );
+
+            g2.setStroke(
+                    new BasicStroke(2)
+            );
+
+            g2.drawOval(
+                    centerX - 12,
+                    centerY - 12,
+                    24,
+                    24
+            );
+
+            g2.drawLine(
+                    centerX - 7,
+                    centerY - 5,
+                    centerX + 7,
+                    centerY + 5
+            );
+
+            g2.drawLine(
+                    centerX + 7,
+                    centerY - 5,
+                    centerX - 7,
+                    centerY + 5
+            );
         }
     }
 }
