@@ -1,8 +1,16 @@
 package Scripts.TestMap;
 
-import Level.Script;
-import ScriptActions.*;
 import java.util.ArrayList;
+
+import Level.Script;
+import Puzzles.StoryProgress;
+import ScriptActions.LockPlayerScriptAction;
+import ScriptActions.NPCFacePlayerScriptAction;
+import ScriptActions.NPCLockScriptAction;
+import ScriptActions.NPCUnlockScriptAction;
+import ScriptActions.ScriptAction;
+import ScriptActions.TextboxScriptAction;
+import ScriptActions.UnlockPlayerScriptAction;
 
 // script for talking to lobby ghost npc
 public class LobbyGhostScript extends Script {
@@ -15,7 +23,7 @@ public class LobbyGhostScript extends Script {
         scriptActions.add(new NPCLockScriptAction());
 
         scriptActions.add(new NPCFacePlayerScriptAction());
-
+        /* 
         scriptActions.add(new TextboxScriptAction() {{
             addText("Oh? Are you a guest?", new String[] { "Yes", "No" });
         }});
@@ -55,10 +63,24 @@ public class LobbyGhostScript extends Script {
 
             
         }});
+        */
+        scriptActions.add(new TextboxScriptAction() {{
+            addText(roomProgressComment());
+        }});
 
         scriptActions.add(new NPCUnlockScriptAction());
         scriptActions.add(new UnlockPlayerScriptAction());
 
         return scriptActions;
+    }
+
+    private static String roomProgressComment() {
+        switch (StoryProgress.solvedCount()) {
+            case 0: return "Get to work! There are still four rooms left to clean!";
+            case 1: return "You've completed your first room. Great job!";
+            case 2: return "You're halfway there! Don't give up now!";
+            case 3: return "Just one more to go! The hotel is almost ready to open!";
+            default: return "You've helped us so much with cleaning! But there's still one thing left to do...";
+        }
     }
 }

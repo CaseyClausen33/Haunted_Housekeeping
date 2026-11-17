@@ -12,7 +12,7 @@ import Scripts.ChangeMapScript;
 import Scripts.LobbyIntroScript;
 import Scripts.LobbyPuzzleScript;
 import Scripts.LobbyStory;
-import Scripts.TestMap.GhostScript;
+import Scripts.TestMap.LobbyGhostScript;
 import Tilesets.LobbyTileset2;
 
 // Based on the LobbyMap2 you pasted earlier. Merge the new parts into your own copy if you have changed it since:
@@ -39,9 +39,9 @@ public class LobbyMap2 extends Map {
 
         // The lobby ghost stands behind the front desk (the desk is in row 4, the ghost is centered on column 5).
         // Before the intro cutscene it is hidden; LobbyIntroScript makes it appear.
-        Ghost ghost = new Ghost(1, getMapTile(5, 4).getLocation().addX(-4).addY(-48));
+        Ghost ghost = new Ghost(1, getMapTile(4, 2).getLocation().addX(-4).addY(-48));
         ghost.setIsHidden(!lobbyIntroSeen);
-        ghost.setInteractScript(new GhostScript());
+        ghost.setInteractScript(new LobbyGhostScript());
         npcs.add(ghost);
 
         StoryNPCs.addLobbyCast(npcs, this);
@@ -77,7 +77,6 @@ public class LobbyMap2 extends Map {
         getMapTile(2, 1).setInteractScript(new ChangeMapScript(BedroomMap2::new));
         
         // double doors on the left: the library
-        // One of the newer commits must have changed this? I thought it's supposed to be the double doors?
         getMapTile(6, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
         getMapTile(7, 1).setInteractScript(new ChangeMapScript(LibraryMap2::new));
 
